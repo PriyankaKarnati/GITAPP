@@ -16,7 +16,7 @@ private val retrofit = Retrofit.Builder().addConverterFactory(ScalarsConverterFa
 interface GitApiService{
     @GET("repositories")
     fun getProperties(@Query("since") since:Int):
-            Call<ResponseBody>
+            Call<String>
 
 }
 

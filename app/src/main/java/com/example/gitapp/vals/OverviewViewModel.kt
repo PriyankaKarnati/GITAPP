@@ -16,19 +16,20 @@ class OverviewViewModel:ViewModel() {
 
     init{
         getGitApiResponse()
+        Log.i("on Failed","failed")
     }
 
     private fun getGitApiResponse(){
 
-             GitApi.retrofitService.getProperties(5).enqueue(object: Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+             GitApi.retrofitService.getProperties(5).enqueue(object: Callback<String> {
+                override fun onFailure(call: Call<String>, t: Throwable) {
                     _response.value =  "Failure: " + t.message
                     Log.i("on Failed","failed")
                 }
 
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    _response.value = response.body()?.toString()
-                    Log.i("onSuccess",response.body().toString())
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    _response.value = response.body()
+                    Log.i("onSuccess",response.body())
                 }
             } )
     }
