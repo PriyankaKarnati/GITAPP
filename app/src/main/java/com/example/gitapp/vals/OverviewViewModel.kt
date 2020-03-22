@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gitapp.network.GitApi
+import com.example.gitapp.network.GitProperty
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,17 +22,21 @@ class OverviewViewModel:ViewModel() {
 
     private fun getGitApiResponse(){
 
-             GitApi.retrofitService.getProperties(5).enqueue(object: Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
+        GitApi.retrofitService.getProperties(5).enqueue(object : Callback<List<GitProperty>> {
+            override fun onFailure(call: Call<List<GitProperty>>, t: Throwable) {
                     _response.value =  "Failure: " + t.message
                     Log.i("on Failed","failed")
                 }
 
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    _response.value = response.body()
-                    Log.i("onSuccess",response.body())
-                }
-            } )
+
+            override fun onResponse(
+                call: Call<List<GitProperty>>,
+                response: Response<List<GitProperty>>
+            ) {
+                _response.value = "Success :${response.body()?.size} git properties retrieved"
+                //Log.i("onSuccess",response.body())
+            }
+        })
     }
 //    override fun onFailure(call: Call<String>, t: Throwable) {
 //        _response.value = "Failure: " + t.message
