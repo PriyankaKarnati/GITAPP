@@ -10,7 +10,7 @@
         android:id="@+id/overview"
         android:name="com.example.gitapp.vals.OverviewFragment"
         android:label="fragment_overview"
-        tools:layout="@layout/fragment_overview" >
+        tools:layout="@layout/fragment_overview">
         <action
             android:id="@+id/action_overview_to_detail"
             app:destination="@id/detail" />
