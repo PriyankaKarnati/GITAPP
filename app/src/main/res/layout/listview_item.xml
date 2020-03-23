@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="property"
+            type="com.example.gitapp.network.GitProperty" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="#FAF0EF">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/gitURL"
+            android:fadingEdge="horizontal|vertical|none"
+            app:imageUrl="@{property.owner.imgSrcUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.03"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.39"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Name : @{property.name}"
+            android:textColor="#0B0101"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.906"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.114" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@{property.owner.login}"
+            android:textAlignment="viewStart"
+            android:textColor="#0B0101"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.906"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/tv1"
+            app:layout_constraintVertical_bias="0.166" />
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@{property.description}"
+            android:textColor="#0E0000"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.906"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/tv2"
+            app:layout_constraintVertical_bias="0.609" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

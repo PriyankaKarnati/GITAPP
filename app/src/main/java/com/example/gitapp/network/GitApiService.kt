@@ -15,16 +15,18 @@ private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 private val retrofit =
     Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory()).baseUrl(
-    BASE_URL).build()
-interface GitApiService{
+            BASE_URL
+        ).build()
+
+interface GitApiService {
     @GET("repositories")
     fun getPropertiesAsync(@Query("since") since: Int):
             Deferred<List<GitProperty>>
 
 }
 
-object GitApi{
-    val retrofitService : GitApiService by lazy{
+object GitApi {
+    val retrofitService: GitApiService by lazy {
         retrofit.create(GitApiService::class.java)
     }
 }

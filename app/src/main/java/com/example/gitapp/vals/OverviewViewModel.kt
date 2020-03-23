@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gitapp.network.GitApi
+import com.example.gitapp.network.GitProperty
 import kotlinx.coroutines.*
 import java.lang.Exception
 
@@ -12,6 +13,9 @@ class OverviewViewModel:ViewModel() {
     val response : LiveData<String>//external mutable LiveData for response String
         get() = _response
 
+    private val _properties = MutableLiveData<List<GitProperty>>()
+    val properties: LiveData<List<GitProperty>>
+        get() = _properties
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -27,6 +31,9 @@ class OverviewViewModel:ViewModel() {
             try {
                 var listResult = getPropertiesDeferred.await()
                 _response.value = "Success : ${listResult.size} git properties retrieved."
+                if (listResult.isNotEmpty()) {
+                    _properties.value = listResult
+                }
             } catch (e: Exception) {
                 _response.value = "Failed: ${e.message}"
             }
