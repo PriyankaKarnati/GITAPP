@@ -1,6 +1,6 @@
 package com.example.gitapp.vals
 
-import android.app.Activity;
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,14 +25,15 @@ class OverviewFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var viewS = inflater.inflate(R.layout.fragment_overview, container, false)
+        val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
         overviewViewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
 
 
-        initialiseList()
+
         observeLiveData()
-        var plist = viewS?.findViewById<RecyclerView>(R.id.property_list)
+        val plist = viewS?.findViewById<RecyclerView>(R.id.property_list)
         plist?.adapter = photoListAdapter
+
         return viewS
     }
 
@@ -40,7 +41,7 @@ class OverviewFragment : Fragment() {
         overviewViewModel.getPosts().observe(this, Observer { photoListAdapter.submitList(it) })
     }
 
-    private fun initialiseList() {
+    private fun goto() {
 
     }
 
