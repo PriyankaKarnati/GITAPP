@@ -3,33 +3,49 @@ package com.example.gitapp.vals
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
-import com.example.gitapp.databinding.ListviewItemBinding
-import com.example.gitapp.network.GitProperty
+import com.example.gitapp.bindImage
+import com.example.gitapp.models.Another
+import com.example.gitapp.models.GitProperty
+import kotlinx.android.synthetic.main.listview_item.view.*
 
-var data = listOf<GitProperty>()
 
 class PhotoListAdapter :
-    ListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
+    PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitItemViewHolder {
-        return GitItemViewHolder(ListviewItemBinding.inflate(LayoutInflater.from(parent.context)))
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.listview_item, parent, false)
+        return GitItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: GitItemViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        if (item != null) {
+            holder.bind(item)
+        }
     }
 
-    class GitItemViewHolder(private val binding: ListviewItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class GitItemViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        val nameText = itemView.tv1
+        val loginText = itemView.tv2
+        val desText = itemView.tv3
+        val imageURL = itemView.imageView
+
         fun bind(gitProperty: GitProperty) {
-            binding.property = gitProperty
-            binding.executePendingBindings()
+            with(gitProperty) {
+                bindImage(imageURL, owner.imgSrcUrl)
+                nameText.text = "Name : $name"
+                loginText.text = "Login ID : ${owner.login}"
+                desText.text = "Description : $description"
+            }
         }
+
     }
 
     companion object DiffCallBack : DiffUtil.ItemCallback<GitProperty>() {

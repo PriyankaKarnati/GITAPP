@@ -3,9 +3,10 @@ package com.example.gitapp
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.gitapp.network.GitProperty
+import com.example.gitapp.models.GitProperty
 import com.example.gitapp.vals.PhotoListAdapter
 
 @BindingAdapter("imageUrl")
@@ -18,9 +19,10 @@ fun bindImage(imgView: ImageView, imgURL: String?) {
 }
 
 @BindingAdapter("listImage")
-fun bindList(recyclerView: RecyclerView, data: List<GitProperty>?) {
+fun bindList(recyclerView: RecyclerView, data: PagedList<GitProperty>?) {
 
     val adapter = recyclerView.adapter as PhotoListAdapter
     adapter.submitList(data)
 
 }
+

@@ -1,6 +1,6 @@
-package com.example.gitapp.network
+package com.example.gitapp.models
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class GitProperty(
     val id: Int,
@@ -11,7 +11,7 @@ data class GitProperty(
 
 data class Another(
     val login: String,
-    @Json(name = "avatar_url") val imgSrcUrl: String
+    @SerializedName("avatar_url") val imgSrcUrl: String
 )
 
 //version_android_gradle_plugin = "3.3.2"
