@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_overview.*
 
 class OverviewFragment : Fragment() {
-    private var photoListAdapter = PhotoListAdapter()
+    private lateinit var photoListAdapter: PhotoListAdapter
     lateinit var overviewViewModel: OverviewViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,11 +29,21 @@ class OverviewFragment : Fragment() {
         overviewViewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
 
 
-
+        photoListAdapter = PhotoListAdapter(PhotoListAdapter.OnClickListener {
+            overviewViewModel.displaySelectedProperties(it)
+        })
         observeLiveData()
         val plist = viewS?.findViewById<RecyclerView>(R.id.property_list)
         plist?.adapter = photoListAdapter
 
+        overviewViewModel.navigateToSelected.observe(this, Observer {
+            if (null != it) {
+                this.findNavController()
+                    .navigate(OverviewFragmentDirections.actionOverviewToDetail(it))
+                overviewViewModel.displayCompleted()
+
+            }
+        })
         return viewS
     }
 

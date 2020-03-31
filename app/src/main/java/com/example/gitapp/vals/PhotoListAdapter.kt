@@ -15,7 +15,7 @@ import com.example.gitapp.models.GitProperty
 import kotlinx.android.synthetic.main.listview_item.view.*
 
 
-class PhotoListAdapter :
+class PhotoListAdapter(val onClickListener: OnClickListener) :
     PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitItemViewHolder {
         val view =
@@ -27,6 +27,9 @@ class PhotoListAdapter :
         val item = getItem(position)
         if (item != null) {
             holder.bind(item)
+            holder.itemView.setOnClickListener {
+                onClickListener.onClick(item)
+            }
         }
     }
 
@@ -58,7 +61,13 @@ class PhotoListAdapter :
         }
     }
 
+    class OnClickListener(val clickListener: (gitProperty: GitProperty) -> Unit) {
+        fun onClick(gitProperty: GitProperty) = clickListener(gitProperty)
+    }
 }
+
+
+
 
 
 

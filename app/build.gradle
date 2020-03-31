@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -21,6 +22,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    androidExtensions{
+        experimental = true
     }
     dataBinding {
         enabled = true

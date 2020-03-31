@@ -1,6 +1,7 @@
 package com.example.gitapp.vals
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.gitapp.models.GitProperty
 
 
@@ -15,6 +16,11 @@ import com.example.gitapp.paging.PagedDataSource
 
 class OverviewViewModel : ViewModel() {
     var postsLiveData: LiveData<PagedList<GitProperty>>
+
+    private val _navigateToSelected = MutableLiveData<GitProperty>()
+    val navigateToSelected: LiveData<GitProperty>
+        get() = _navigateToSelected
+
 
     init {
         val config = PagedList.Config.Builder()
@@ -35,6 +41,15 @@ class OverviewViewModel : ViewModel() {
             }
         }
         return LivePagedListBuilder(dataSourceFactory, config)
+    }
+
+    fun displaySelectedProperties(gitProperty: GitProperty) {
+        _navigateToSelected.value = gitProperty
+
+    }
+
+    fun displayCompleted() {
+        _navigateToSelected.value = null
     }
 }
 

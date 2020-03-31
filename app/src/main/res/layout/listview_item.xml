@@ -10,23 +10,23 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100sp"
+        android:layout_height="100sp"
+        android:background="#0C0B0B"
         android:contentDescription="@string/gitURL"
         android:fadingEdge="horizontal|vertical|none"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/tv1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv1"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
         android:textAlignment="textStart"
         android:textColor="#0B0101"
@@ -38,8 +38,8 @@
 
     <TextView
         android:id="@+id/tv2"
-        android:layout_width="292dp"
-        android:layout_height="40dp"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:textAlignment="textStart"
         android:textColor="#0B0101"
@@ -51,13 +51,13 @@
 
     <TextView
         android:id="@+id/tv3"
-        android:layout_width="290dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed-medium"
         android:textAlignment="textStart"
         android:textColor="#0E0000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -68,13 +68,12 @@
         android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="9dp"
-        android:background="#FFFFFF"
+        android:background="#FAF7F7"
         android:clickable="false"
         android:contentDescription="@string/border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv3"
         app:srcCompat="@android:drawable/divider_horizontal_dark" />
 </androidx.constraintlayout.widget.ConstraintLayout>

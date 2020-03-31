@@ -13,11 +13,16 @@
         tools:layout="@layout/fragment_overview">
         <action
             android:id="@+id/action_overview_to_detail"
-            app:destination="@id/detail" />
+            app:destination="@+id/detail" />
     </fragment>
     <fragment
+
         android:id="@+id/detail"
-        android:name="com.example.gitapp.vals.OverviewFragment"
+        android:name="com.example.gitapp.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="selectedProperty"
+            app:argType="com.example.gitapp.models.GitProperty" />
+    </fragment>
 </navigation>
