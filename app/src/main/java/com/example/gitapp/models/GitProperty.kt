@@ -10,8 +10,11 @@ import kotlinx.android.parcel.RawValue
 data class GitProperty(
     val id: Int,
     val name: String,
+    val full_name: String?,
     val owner: Another,
+    val html_url: String?,
     var description: String?//some values are null
+
 ) : Parcelable {
 
 }
@@ -20,6 +23,7 @@ data class GitProperty(
 @Parcelize
 data class Another(
     val login: String,
+    val type: String?,
     @SerializedName("avatar_url") val imgSrcUrl: String
 ) : Parcelable {
 

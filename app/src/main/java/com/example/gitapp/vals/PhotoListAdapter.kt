@@ -35,16 +35,16 @@ class PhotoListAdapter(val onClickListener: OnClickListener) :
 
     class GitItemViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        val nameText = itemView.tv1
-        val loginText = itemView.tv2
+        val nameText = itemView.tv2
+        val loginText = itemView.tv1
         val desText = itemView.tv3
         val imageURL = itemView.imageView
 
         fun bind(gitProperty: GitProperty) {
             with(gitProperty) {
                 bindImage(imageURL, owner.imgSrcUrl)
-                nameText.text = "Name : $name"
-                loginText.text = "Login ID : ${owner.login}"
+                nameText.text = "Repo Name : $name"
+                loginText.text = "Owner Login ID : ${owner.login}"
                 desText.text = "Description : $description"
             }
         }
