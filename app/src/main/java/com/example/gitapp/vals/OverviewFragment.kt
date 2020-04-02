@@ -20,10 +20,11 @@ import kotlinx.android.synthetic.main.fragment_overview.*
 class OverviewFragment : Fragment() {
     private lateinit var photoListAdapter: PhotoListAdapter
     lateinit var overviewViewModel: OverviewViewModel
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
         overviewViewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
@@ -38,8 +39,9 @@ class OverviewFragment : Fragment() {
 
         overviewViewModel.navigateToSelected.observe(this, Observer {
             if (null != it) {
+
                 this.findNavController()
-                    .navigate(OverviewFragmentDirections.actionOverviewToDetail(it))
+                        .navigate(OverviewFragmentDirections.actionOverviewToDetail(it))
                 overviewViewModel.displayCompleted()
 
             }
@@ -49,10 +51,6 @@ class OverviewFragment : Fragment() {
 
     private fun observeLiveData() {
         overviewViewModel.getPosts().observe(this, Observer { photoListAdapter.submitList(it) })
-    }
-
-    private fun goto() {
-
     }
 
 

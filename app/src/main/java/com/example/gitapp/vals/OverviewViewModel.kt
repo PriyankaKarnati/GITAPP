@@ -24,9 +24,9 @@ class OverviewViewModel : ViewModel() {
 
     init {
         val config = PagedList.Config.Builder()
-            .setPageSize(100)
-            .setEnablePlaceholders(false)
-            .build()
+                .setPageSize(100)
+                .setEnablePlaceholders(false)
+                .build()
         postsLiveData = initializedPagedListBuilder(config).build()
     }
 
