@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.gitapp.R
 import com.example.gitapp.databinding.FragmentDetailBinding
 import com.example.gitapp.models.GitProperty
+import com.example.gitapp.detail.DetailViewModelFactory
 
 class DetailFragment : Fragment() {
     lateinit var gitProperty: GitProperty
