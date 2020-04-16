@@ -33,11 +33,21 @@ class FragmentPagerAdapter(val list: PagedList<GitProperty>) : PagerAdapter() {
             print(e.message)
         }
         val textV1 = view.findViewById<TextView>(R.id.tv1)
-        textV1.text = list[position]?.full_name
+        textV1.text = "Full Name : " + list[position]?.full_name
+
+        val textV2 = view.findViewById<TextView>(R.id.tv2)
+        textV2.text = "User Type : " + list[position]?.owner?.type
+
+        val textV3 = view.findViewById<TextView>(R.id.tv3)
+        textV3.text = "GitHub URL : " + list[position]?.html_url
+
+        val textV4 = view.findViewById<TextView>(R.id.tv4)
+        textV4.text = "Description : " + list[position]?.description
 //            Glide.with(this.context)
 //                    .load(imgURL)
 //                    .into(this)
 //        }
+
 //        //view.findViewById<Te>()
 
 

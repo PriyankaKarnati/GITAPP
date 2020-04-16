@@ -3,9 +3,11 @@
 package com.example.gitapp.detail
 
 import android.os.Bundle
+import android.util.Log.i
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -49,16 +51,26 @@ class DetailFragment : Fragment() {
 //            if (null != it) {
         detailViewModel.setList(sharedModel.postsLiveData.value!!)
         pagerAdapter = FragmentPagerAdapter(detailViewModel.pList.value!!)
-        if (container != null) {
-            pagerAdapter.instantiateItem(container, detailViewModel.getSelectedValue())
-        }
-        //binding.vPager.endFakeDrag()
-        binding.vPager.adapter = pagerAdapter
-        // }
+
+        pagerAdapter.notifyDataSetChanged()
+//         }
 //
-        //})
+//        })
 
 
+//        if (container != null) {
+//            //pagerAdapter.instantiateItem(container, detailViewModel.getSelectedValue())
+//
+//        }
+//
+
+        //binding.vPager.endFakeDrag()
+
+        binding.vPager.adapter = pagerAdapter
+        binding.vPager.currentItem = detailViewModel.getSelectedValue()
+
+
+        Toast.makeText(this.context, "Swipe Left/Right to see rest of Repos!", Toast.LENGTH_LONG).show()
 //        pagerAdapter = PageListAdapter(detailViewModel.pList.value!!)
 //        if (container != null) {
 //            pagerAdapter.instantiateItem(container,detailViewModel.getSelectedValue())

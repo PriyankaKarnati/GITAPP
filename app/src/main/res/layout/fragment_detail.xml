@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:fontFamily="@font/della_respira"
+                    android:fontFamily="@font/copse"
                     android:textAlignment="center"
                     android:textColor="#100B0B"
                     android:textSize="22sp"
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/della_respira"
+                    android:fontFamily="@font/copse"
 
                     android:textAlignment="center"
                     android:textAllCaps="false"
@@ -89,8 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/della_respira"
-
+                    android:fontFamily="@font/copse"
                     android:textAlignment="center"
                     android:textColor="#130303"
                     android:textSize="22sp"
@@ -107,8 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/della_respira"
-
+                    android:fontFamily="@font/copse"
                     android:textAlignment="center"
                     android:textColor="#0E0000"
                     android:textSize="22sp"
