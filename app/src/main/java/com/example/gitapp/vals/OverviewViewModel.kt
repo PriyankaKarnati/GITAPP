@@ -1,5 +1,6 @@
 package com.example.gitapp.vals
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.gitapp.models.GitProperty
@@ -21,13 +22,16 @@ class OverviewViewModel : ViewModel() {
     val navigateToSelected: LiveData<GitProperty>
         get() = _navigateToSelected
 
-
+    //    private val _navigateToSelectedPosition = MutableLiveData<Int>()
+//    val navigateToSelectedPosition:LiveData<Int>
+//    get() = _navigateToSelectedPosition
     init {
         val config = PagedList.Config.Builder()
                 .setPageSize(100)
                 .setEnablePlaceholders(false)
                 .build()
         postsLiveData = initializedPagedListBuilder(config).build()
+        //_navigateToSelectedPosition.value = postsLiveData.value?.indexOf(_navigateToSelected.value)
     }
 
     fun getPosts(): LiveData<PagedList<GitProperty>> = postsLiveData
@@ -52,6 +56,7 @@ class OverviewViewModel : ViewModel() {
         _navigateToSelected.value = null
     }
 }
+
 
 //--------------------version 2------------------------------
 //class OverviewViewModel (dataSourceFactory: DataSourceFactory):ViewModel() {

@@ -24,5 +24,12 @@
         <argument
             android:name="selectedProperty"
             app:argType="com.example.gitapp.models.GitProperty" />
+        <!--        <argument-->
+        <!--            android:name="position"-->
+        <!--            app:argType="Int"/>-->
+        <!--        <argument android:name="List"-->
+        <!--            app:argType="androidx.paging.PagedList"/>-->
+
+
     </fragment>
 </navigation>

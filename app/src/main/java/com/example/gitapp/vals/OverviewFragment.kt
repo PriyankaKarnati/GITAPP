@@ -27,7 +27,7 @@ class OverviewFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
-        overviewViewModel = ViewModelProviders.of(this).get(OverviewViewModel::class.java)
+        overviewViewModel = activity.run { ViewModelProviders.of(this!!).get(OverviewViewModel::class.java) }
 
 
         photoListAdapter = PhotoListAdapter(PhotoListAdapter.OnClickListener {

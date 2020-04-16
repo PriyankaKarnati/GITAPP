@@ -1,6 +1,7 @@
 package com.example.gitapp.models
 
 import android.os.Parcelable
+import androidx.paging.PagedList
 import com.bumptech.glide.load.resource.bitmap.VideoDecoder.parcel
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -29,6 +30,9 @@ data class Another(
 
 }
 
+
+//@Parcelize
+//class PList:ArrayList<GitProperty>(),Parcelable
 //version_android_gradle_plugin = "3.3.2"
 //version_core = "1.0.1"
 //version_constraint_layout = "1.1.3"

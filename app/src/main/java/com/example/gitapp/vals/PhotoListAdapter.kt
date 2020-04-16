@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
 import com.example.gitapp.bindImage
-import com.example.gitapp.models.Another
 import com.example.gitapp.models.GitProperty
 import kotlinx.android.synthetic.main.listview_item.view.*
 
@@ -38,7 +36,7 @@ class PhotoListAdapter(val onClickListener: OnClickListener) :
         val nameText = itemView.tv2
         val loginText = itemView.tv1
         val desText = itemView.tv3
-        val imageURL = itemView.imageView
+        val imageURL = itemView.gitImageView
 
         fun bind(gitProperty: GitProperty) {
             with(gitProperty) {
