@@ -13,12 +13,12 @@ class GitClient {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
         private val okHttpClient = OkHttpClient().newBuilder()
-            .connectTimeout(2, TimeUnit.MINUTES)
-            .readTimeout(2, TimeUnit.MINUTES)
-            .writeTimeout(2, TimeUnit.MINUTES)
-            .retryOnConnectionFailure(true)
-            .addInterceptor(loggingInterceptor)
-            .build()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .readTimeout(2, TimeUnit.MINUTES)
+                .writeTimeout(2, TimeUnit.MINUTES)
+                .retryOnConnectionFailure(true)
+                .addInterceptor(loggingInterceptor)
+                .build()
 
 
         var retrofit: Retrofit? = null
@@ -26,9 +26,9 @@ class GitClient {
         fun getClient(): Retrofit {
             when (retrofit) {
                 null -> retrofit = Retrofit.Builder().baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                    .client(okHttpClient).build()
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                        .client(okHttpClient).build()
             }
             return retrofit as Retrofit
         }

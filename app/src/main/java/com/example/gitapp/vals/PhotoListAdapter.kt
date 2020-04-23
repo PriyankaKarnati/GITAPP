@@ -14,10 +14,10 @@ import kotlinx.android.synthetic.main.listview_item.view.*
 
 
 class PhotoListAdapter(val onClickListener: OnClickListener) :
-    PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
+        PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitItemViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.listview_item, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.listview_item, parent, false)
         return GitItemViewHolder(view)
     }
 
@@ -32,7 +32,7 @@ class PhotoListAdapter(val onClickListener: OnClickListener) :
     }
 
     class GitItemViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+            RecyclerView.ViewHolder(itemView) {
         val nameText = itemView.tv2
         val loginText = itemView.tv1
         val desText = itemView.tv3

@@ -23,7 +23,6 @@ class DetailViewModel(gitProperty: GitProperty, app: Application) : AndroidViewM
         get() = _pList
 
     init {
-        //_pList.value = pagedList
         _selectedProper.value = gitProperty
 
     }

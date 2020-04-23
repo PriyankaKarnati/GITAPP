@@ -18,6 +18,7 @@
         tools:context=".detail">
 
 
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -71,7 +72,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/andika"
-
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#171212"
@@ -117,14 +117,16 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv3"
                     app:layout_constraintVertical_bias="0.0" />
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </ScrollView>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
