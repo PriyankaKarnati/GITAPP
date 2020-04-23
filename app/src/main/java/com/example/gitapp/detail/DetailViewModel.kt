@@ -38,6 +38,11 @@ class DetailViewModel(gitProperty: GitProperty, app: Application) : AndroidViewM
         Log.i("DetailModel", "${position.value}")
         return position.value!!
     }
+
+    fun setCurrentGitProperty(posit: Int) {
+        _position.value = posit
+        _selectedProper.value = _pList.value!![posit]
+    }
 }
 
 

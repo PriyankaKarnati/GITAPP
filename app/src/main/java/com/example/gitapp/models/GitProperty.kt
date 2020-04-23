@@ -16,9 +16,7 @@ data class GitProperty(
     val html_url: String?,
     var description: String?//some values are null
 
-) : Parcelable {
-
-}
+) : Parcelable
 
 
 @Parcelize
@@ -26,9 +24,7 @@ data class Another(
     val login: String,
     val type: String?,
     @SerializedName("avatar_url") val imgSrcUrl: String
-) : Parcelable {
-
-}
+) : Parcelable
 
 
 //@Parcelize

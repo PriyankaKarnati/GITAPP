@@ -3,7 +3,7 @@
 package com.example.gitapp.detail
 
 import android.os.Bundle
-import android.util.Log.i
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +11,13 @@ import android.widget.Toast
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedList
-import androidx.viewpager.widget.ViewPager
-import com.example.gitapp.R
 import com.example.gitapp.databinding.FragmentDetailBinding
 import com.example.gitapp.models.GitProperty
 import com.example.gitapp.vals.OverviewViewModel
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 
 class DetailFragment : Fragment() {
-    private lateinit var viewPager: ViewPager
-    private lateinit var pagerAdapter: FragmentPagerAdapter
+    lateinit var gitP: GitProperty
+    private lateinit var pagerAdapter: FragPagerAdapter
     private lateinit var sharedModel: OverviewViewModel
     private lateinit var detailViewModel: DetailViewModel
 
@@ -35,24 +31,72 @@ class DetailFragment : Fragment() {
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-        val gitP = DetailFragmentArgs.fromBundle(arguments!!).selectedProperty
+//            try{
+//                gitP = arguments!!.getParcelable("git_Property")!!
+//            }
+//            catch(e:Exception){
+//                print(e.message)
+//            }
+//            if(!::gitP.isInitialized){
+        gitP = DetailFragmentArgs.fromBundle(arguments!!).selectedProperty
+//            }
+
         //val pLProperty = DetailFragmentArgs.fromBundle(arguments!!).list
 
         val detailViewModelFactory = DetailViewModelFactory(gitP, application)
 
         detailViewModel =
                 ViewModelProviders.of(this, detailViewModelFactory).get(DetailViewModel::class.java)
-        //binding.detailViewModel = detailViewModel
+        binding.detailViewModel = detailViewModel
 
 
         sharedModel = activity.run { ViewModelProviders.of(this!!).get(OverviewViewModel::class.java) }
 
-//        sharedModel.getPosts().observe(this, Observer {
-//            if (null != it) {
-        detailViewModel.setList(sharedModel.postsLiveData.value!!)
-        pagerAdapter = FragmentPagerAdapter(detailViewModel.pList.value!!)
+        sharedModel.getPosts().observe(this, Observer {
+            if (null != it) {
+                detailViewModel.setList(it)
+                // binding.detailViewModel = detailViewModel
+            }
+        }
+        )
 
-        pagerAdapter.notifyDataSetChanged()
+        detailViewModel.pList.observe(this, Observer {
+            if (null != it) {
+                //pagerAdapter.notifyDataSetChanged()
+                pagerAdapter = FragPagerAdapter(it)
+                pagerAdapter.notifyDataSetChanged()
+
+
+                binding.vPager.adapter = pagerAdapter
+                binding.vPager.setCurrentItem(detailViewModel.getSelectedValue(), true)
+
+
+//        if (container != null) {
+//            pagerAdapter.instantiateItem(container,detailViewModel!!.getSelectedValue())
+//        }
+
+
+//        }
+//        else{
+                detailViewModel.setCurrentGitProperty(binding.vPager.currentItem)
+//        }
+                Log.i("AtPresent", "${detailViewModel.selectedProper.value}")
+                //if(savedInstanceState==null) {
+
+                //}
+
+
+            }
+        })
+
+
+        // pagerAdapter.notifyDataSetChanged()
+
+
+        Toast.makeText(this.context, "Swipe Left/Right to see rest of Repos!", Toast.LENGTH_LONG).show()
+
+
+
 //         }
 //
 //        })
@@ -66,11 +110,8 @@ class DetailFragment : Fragment() {
 
         //binding.vPager.endFakeDrag()
 
-        binding.vPager.adapter = pagerAdapter
-        binding.vPager.currentItem = detailViewModel.getSelectedValue()
 
 
-        Toast.makeText(this.context, "Swipe Left/Right to see rest of Repos!", Toast.LENGTH_LONG).show()
 //        pagerAdapter = PageListAdapter(detailViewModel.pList.value!!)
 //        if (container != null) {
 //            pagerAdapter.instantiateItem(container,detailViewModel.getSelectedValue())
@@ -84,6 +125,7 @@ class DetailFragment : Fragment() {
         return binding.root
 
     }
+
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        super.onViewCreated(view, savedInstanceState)
@@ -107,9 +149,12 @@ class DetailFragment : Fragment() {
 //        fun newInstance(gitProperty: GitProperty): DetailFragment {
 //            val fragment = DetailFragment()
 //
-//           // Log.i("passed","passed here")
-//            //Log.i("2","companion")
-//            fragment.gitProperty = gitProperty
+//           i("passed","passed here")
+//            val args = Bundle()
+//            args.putParcelable("git_Property",gitProperty)
+//            i("2","companion")
+//            fragment.arguments = args
+//
 //            return fragment
 //        }
 //    }

@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alef</item>
+        <item>@font/andika</item>
         <item>@font/copse</item>
         <item>@font/della_respira</item>
         <item>@font/federo</item>
