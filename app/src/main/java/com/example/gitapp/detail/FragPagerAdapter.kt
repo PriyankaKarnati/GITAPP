@@ -102,11 +102,11 @@ class FragPagerAdapter(private val list: PagedList<GitProperty>) : PagerAdapter(
         return list.size
     }
 
-    private val _POSIT = MutableLiveData<Int>()
-    var POSIT: LiveData<Int> = _POSIT
+//    private val _POSIT = MutableLiveData<Int>()
+//    var POSIT: LiveData<Int> = _POSIT
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        _POSIT.value = position
+        //_POSIT.value = position
         val view = LayoutInflater.from(container.context).inflate(R.layout.fragment_detail, container, false)
 
         list.loadAround(position)
@@ -130,17 +130,18 @@ class FragPagerAdapter(private val list: PagedList<GitProperty>) : PagerAdapter(
         val textV4 = view.findViewById<TextView>(R.id.tv4)
         textV4.text = "Description : " + list[position]?.description
         container.addView(view)
+        //_POSIT.value = position
         return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
-
+//        _POSIT.value = position
         container.removeView(obj as View)
-        //_POSIT.value = position
+
     }
 
     override fun getItemPosition(`object`: Any): Int {
-        return POSITION_UNCHANGED
+        return POSITION_NONE
     }
 
 

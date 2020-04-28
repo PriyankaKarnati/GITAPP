@@ -65,11 +65,11 @@ class DetailFragment : Fragment() {
                 //
 
                 binding.vPager.currentItem = detailViewModel.getSelectedValue()
-                pagerAdapter.POSIT.observe(this, Observer { itt ->
-                    detailViewModel.setCurrentGitProperty(itt)
-
-                    Log.i("AtPresent", "$itt")
-                })
+//                pagerAdapter.POSIT.observe(this, Observer { itt ->
+//                    detailViewModel.setCurrentGitProperty(itt)
+//
+//                    Log.i("AtPresent", "$itt")
+//                })
 
             }
         })

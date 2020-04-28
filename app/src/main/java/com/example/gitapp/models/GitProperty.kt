@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.paging.PagedList
 import com.bumptech.glide.load.resource.bitmap.VideoDecoder.parcel
 import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
@@ -21,9 +22,11 @@ data class GitProperty(
 
 @Parcelize
 data class Another(
-    val login: String,
-    val type: String?,
-    @SerializedName("avatar_url") val imgSrcUrl: String
+        val login: String,
+        val type: String?,
+        @Json(name = "avatar_url") val imgSrcUrl: String
 ) : Parcelable
+
+
 
 
