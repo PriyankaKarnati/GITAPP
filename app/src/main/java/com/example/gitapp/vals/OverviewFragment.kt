@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
 import com.example.gitapp.bindList
+import com.example.gitapp.models.GitProperty
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_overview.*
 
@@ -33,10 +34,9 @@ class OverviewFragment : Fragment() {
 
 
         photoListAdapter = PhotoListAdapter(PhotoListAdapter.OnClickListener {
-            overviewViewModel.displaySelectedProperties(it)
-        }, PhotoListAdapter.OnLongPressListener {
 
-            Log.i("this", "${it.full_name}")
+        }, PhotoListAdapter.OnLongPressListener {
+            overviewViewModel.displaySelectedProperties(it)
         })
         observeLiveData()
         val plist = viewS?.findViewById<RecyclerView>(R.id.property_list)

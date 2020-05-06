@@ -45,17 +45,26 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
 
 
             holder.itemView.setOnClickListener {
-                it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
-                onClickListener.onClick(item)
+
+                if (it.foreground != null) {
+                    it.foreground = null
+                    true
+                } else {
+                    it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorForeGround))
+
+                    Toast.makeText(it.context, "You clicked on ${item.full_name}!!", Toast.LENGTH_SHORT).show()
+                    onClickListener.onClick(item)
+
+                    true
+                }
 
             }
             holder.itemView.setOnLongClickListener {
-                it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorForeGround))
-                Toast.makeText(it.context, "You clicked on ${item.full_name}!!", Toast.LENGTH_SHORT).show()
+                it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
                 onLongPressListener.onLongClick(item)
-
                 true
             }
+
 
         }
     }
@@ -91,7 +100,7 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
         }
 
         fun calculateSizeOfView(context: Context, cols: Int): Int {
-
+            //image size set according to phone size and col numbers
             val displayMetrics = context.resources.displayMetrics
             val dpWidth = displayMetrics.widthPixels
             return (dpWidth / cols)
@@ -105,6 +114,7 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
     class OnLongPressListener(val longPressListener: (gitProperty: GitProperty) -> Unit) {
 
         fun onLongClick(gitProperty: GitProperty) = longPressListener(gitProperty)
+
     }
 }
 //override fun onTouchEvent(motionEvent: MotionEvent?): Boolean {
