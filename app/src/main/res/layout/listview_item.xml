@@ -4,78 +4,80 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#E4E9F8">
+    android:clickable="true"
+    android:focusable="true">
 
     <ImageView
         android:id="@+id/gitImageView"
-        android:layout_width="80sp"
-        android:layout_height="80sp"
-        android:background="#0C0B0B"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/gitURL"
         android:fadingEdge="horizontal|vertical|none"
-        app:layout_constraintBottom_toTopOf="@+id/tv3"
-        app:layout_constraintEnd_toStartOf="@+id/tv1"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/tv1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/andika"
-        android:textAlignment="textStart"
-        android:textColor="#0B0101"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/gitImageView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/andika"
-        android:textAlignment="textStart"
-        android:textColor="#0B0101"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/gitImageView"
-        app:layout_constraintTop_toBottomOf="@+id/tv1" />
-
-    <TextView
-        android:id="@+id/tv3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/andika"
-        android:textAlignment="textStart"
-        android:textColor="#0E0000"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gitImageView" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="9dp"
-        android:background="#FAF7F7"
-        android:clickable="false"
-        android:contentDescription="@string/border"
+        android:padding="2sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/divider_horizontal_dark" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <!--  <TextView-->
+    <!--      android:id="@+id/tv1"-->
+    <!--      android:layout_width="0dp"-->
+    <!--      android:layout_height="wrap_content"-->
+    <!--      android:layout_marginStart="10dp"-->
+    <!--      android:fontFamily="@font/andika"-->
+    <!--      android:textAlignment="textStart"-->
+    <!--      android:textColor="#0B0101"-->
+    <!--      android:textSize="16sp"-->
+    <!--      app:layout_constraintBottom_toTopOf="@+id/tv2"-->
+    <!--      app:layout_constraintEnd_toEndOf="parent"-->
+    <!--      app:layout_constraintHorizontal_bias="0.0"-->
+    <!--      app:layout_constraintStart_toEndOf="@+id/gitImageView"-->
+    <!--      app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--  <TextView-->
+    <!--      android:id="@+id/tv2"-->
+    <!--      android:layout_width="0dp"-->
+    <!--      android:layout_height="wrap_content"-->
+    <!--      android:layout_marginStart="10dp"-->
+    <!--      android:fontFamily="@font/andika"-->
+    <!--      android:textAlignment="textStart"-->
+    <!--      android:textColor="#0B0101"-->
+    <!--      android:textSize="16sp"-->
+    <!--      app:layout_constraintBottom_toTopOf="@+id/tv3"-->
+    <!--      app:layout_constraintEnd_toEndOf="parent"-->
+    <!--      app:layout_constraintHorizontal_bias="0.0"-->
+    <!--      app:layout_constraintStart_toEndOf="@+id/gitImageView"-->
+    <!--      app:layout_constraintTop_toBottomOf="@+id/tv1" />-->
+
+    <!--  <TextView-->
+    <!--      android:id="@+id/tv3"-->
+    <!--      android:layout_width="0dp"-->
+    <!--      android:layout_height="wrap_content"-->
+    <!--      android:fontFamily="@font/andika"-->
+    <!--      android:textAlignment="textStart"-->
+    <!--      android:textColor="#0E0000"-->
+    <!--      android:textSize="16sp"-->
+    <!--      app:layout_constraintBottom_toTopOf="@+id/imageView2"-->
+    <!--      app:layout_constraintEnd_toEndOf="parent"-->
+    <!--      app:layout_constraintHorizontal_bias="0.0"-->
+    <!--      app:layout_constraintStart_toStartOf="parent"-->
+    <!--      app:layout_constraintTop_toBottomOf="@+id/gitImageView" />-->
+
+    <!--  <ImageView-->
+    <!--      android:id="@+id/imageView2"-->
+    <!--      android:layout_width="0dp"-->
+    <!--      android:layout_height="9dp"-->
+    <!--      android:background="#FAF7F7"-->
+    <!--      android:clickable="false"-->
+    <!--      android:contentDescription="@string/border"-->
+    <!--      app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--      app:layout_constraintEnd_toEndOf="parent"-->
+    <!--      app:layout_constraintHorizontal_bias="0.0"-->
+    <!--      app:layout_constraintStart_toStartOf="parent"-->
+    <!--      app:srcCompat="@android:drawable/divider_horizontal_dark" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

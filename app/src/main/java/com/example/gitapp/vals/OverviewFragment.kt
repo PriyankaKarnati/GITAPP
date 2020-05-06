@@ -2,9 +2,11 @@ package com.example.gitapp.vals
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -32,6 +34,9 @@ class OverviewFragment : Fragment() {
 
         photoListAdapter = PhotoListAdapter(PhotoListAdapter.OnClickListener {
             overviewViewModel.displaySelectedProperties(it)
+        }, PhotoListAdapter.OnLongPressListener {
+
+            Log.i("this", "${it.full_name}")
         })
         observeLiveData()
         val plist = viewS?.findViewById<RecyclerView>(R.id.property_list)

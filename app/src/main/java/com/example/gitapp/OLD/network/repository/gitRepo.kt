@@ -1,24 +1,17 @@
-package com.example.gitapp.repository
+package com.example.gitapp.OLD.network.repository
 
-import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.paging.PagedList
-import androidx.paging.PagedList.BoundaryCallback
-import com.example.gitapp.models.GitProperty
-import com.example.gitapp.network.NetworkState
-import com.example.gitapp.repository.paging.PagedDataSourceFactory
-import com.example.gitapp.repository.paging.gitNetwork
-import com.example.gitapp.repository.storage.gitDB
-import kotlinx.coroutines.CoroutineScope
+//import android.content.Context
+//import com.example.gitapp.OLD.network.repository.paging.gitNetwork
+//import com.example.gitapp.OLD.network.repository.storage.gitDB
+//import kotlinx.coroutines.CoroutineScope
 
-
-class gitRepo(context: Context, scope: CoroutineScope) {
-    private lateinit var network: gitNetwork
-    private lateinit var database: gitDB
-
-
-}
+//
+//class gitRepo(context: Context, scope: CoroutineScope) {
+//    private lateinit var network: gitNetwork
+//    private lateinit var database: gitDB
+//
+//
+//}
 
 
 //

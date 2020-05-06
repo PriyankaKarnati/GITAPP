@@ -17,4 +17,3 @@ class DetailViewModelFactory(private val property: GitProperty,
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-

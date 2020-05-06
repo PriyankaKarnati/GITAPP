@@ -1,4 +1,4 @@
-package com.example.gitapp.network
+package com.example.gitapp.OLD.network
 
 import com.example.gitapp.models.GitProperty
 import retrofit2.Response

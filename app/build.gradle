@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
 
     implementation "com.github.bumptech.glide:glide:4.9.0"
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    kapt "com.github.bumptech.glide:compiler:4.9.0"
     implementation"android.arch.navigation:navigation-fragment-ktx:1.0.0-rc02"
     implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-rc02"
 
@@ -87,4 +87,30 @@ dependencies {
     // joda time library for dealing with time
     implementation 'joda-time:joda-time:2.10'
     implementation 'com.android.support:multidex:1.0.3'
+
+
+    //////koin
+    // Koin
+    def koin_version = '2.0.1'
+    // Koin for Kotlin
+    implementation "org.koin:koin-core:$koin_version"
+    // Koin for Unit tests
+    testImplementation "org.koin:koin-test:$koin_version"
+
+    // Koin for Android
+    implementation "org.koin:koin-android:$koin_version"
+
+    // Koin AndroidX Scope features
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    // Koin AndroidX ViewModel features
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // Freshco
+    implementation 'com.facebook.fresco:fresco:2.1.0'
+
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
 }

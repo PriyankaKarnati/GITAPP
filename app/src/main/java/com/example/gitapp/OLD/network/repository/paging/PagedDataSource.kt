@@ -1,15 +1,14 @@
-package com.example.gitapp.repository.paging
+package com.example.gitapp.OLD.network.repository.paging
 
-import android.graphics.Movie
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.example.gitapp.models.GitProperty
-import com.example.gitapp.network.GitApiService
-import com.example.gitapp.network.GitClient
-import com.example.gitapp.network.NetworkState
-import com.example.gitapp.network.NetworkState.Companion.LOADED
-import com.example.gitapp.network.NetworkState.Companion.LOADING
+import com.example.gitapp.OLD.network.GitApiService
+import com.example.gitapp.OLD.network.GitClient
+//import com.example.gitapp.OLD.network.NetworkState
+//import com.example.gitapp.OLD.network.NetworkState.Companion.LOADED
+//import com.example.gitapp.OLD.network.NetworkState.Companion.LOADING
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
 class PagedDataSource(private val scope: CoroutineScope) : PageKeyedDataSource<Int, GitProperty>() {
     private val apiService = GitClient.getClient().create(GitApiService::class.java)
 
-    private val ntwk = MutableLiveData<NetworkState>()
+    // private val ntwk = MutableLiveData<NetworkState>()
     override fun loadInitial(
             params: LoadInitialParams<Int>,
             callback: LoadInitialCallback<Int, GitProperty>
@@ -26,10 +25,10 @@ class PagedDataSource(private val scope: CoroutineScope) : PageKeyedDataSource<I
         scope.launch {
             try {
                 val response = apiService.getProperties(0)
-                ntwk.postValue(LOADING)
+                //ntwk.postValue(LOADING)
                 when {
                     response.isSuccessful -> {
-                        ntwk.postValue(LOADED)
+                        //ntwk.postValue(LOADED)
                         val listing = response.body()
                         callback.onResult(listing ?: listOf(), null, 1)
                     }
@@ -37,7 +36,7 @@ class PagedDataSource(private val scope: CoroutineScope) : PageKeyedDataSource<I
 
             } catch (e: Exception) {
                 Log.e("PostsDataSource", "Failed to fetch data!")
-                ntwk.postValue(NetworkState(NetworkState.Status.FAILED, e.message!!))
+                //ntwk.postValue(NetworkState(NetworkState.Status.FAILED, e.message!!))
             }
         }
     }
@@ -48,7 +47,7 @@ class PagedDataSource(private val scope: CoroutineScope) : PageKeyedDataSource<I
                 val response = apiService.getProperties(params.key)
                 when {
                     response.isSuccessful -> {
-                        ntwk.postValue(LOADED)
+                        //ntwk.postValue(LOADED)
                         val listing = response.body()
                         callback.onResult(listing ?: listOf(), params.key.inc())
                     }
@@ -57,30 +56,30 @@ class PagedDataSource(private val scope: CoroutineScope) : PageKeyedDataSource<I
             } catch (e: Exception) {
                 Log.e("PostsDataSource", "Failed to fetch data!")
 
-                ntwk.postValue(NetworkState(NetworkState.Status.FAILED, e.message!!))
+                //ntwk.postValue(NetworkState(NetworkState.Status.FAILED, e.message!!))
             }
         }
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, GitProperty>) {
-//        scope.launch {
-//            try {
-//                val response = apiService.getProperties(0)
-//                when {
-//                    response.isSuccessful -> {
-//
-//                        ntwk.postValue(LOADED)
-//                        val listing = response.body()
-//                        callback.onResult(listing ?: listOf(), params.key.dec())
-//                    }
-//                }
-//
-//            } catch (e: Exception) {
-//                Log.e("PostsDataSource", "Failed to fetch data!")
-//
-//                ntwk.postValue(NetworkState(NetworkState.Status.FAILED, e.message!!))
-//            }
-//        }
+        scope.launch {
+            try {
+                val response = apiService.getProperties(0)
+                when {
+                    response.isSuccessful -> {
+
+                        //  ntwk.postValue(LOADED)
+                        val listing = response.body()
+                        callback.onResult(listing ?: listOf(), params.key.dec())
+                    }
+                }
+
+            } catch (e: Exception) {
+                Log.e("PostsDataSource", "Failed to fetch data!")
+
+                // ntwk.postValue(NetworkState(NetworkState.Status.FAILED, e.message!!))
+            }
+        }
     }
 
     override fun invalidate() {

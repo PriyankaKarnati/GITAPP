@@ -1,26 +1,25 @@
-package com.example.gitapp.repository.paging
+package com.example.gitapp.OLD.network.repository.paging
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.example.gitapp.models.GitProperty
-import com.example.gitapp.network.NetworkState
 import kotlinx.coroutines.CoroutineScope
 
-class PagedDataSourceFactory(private val scope: CoroutineScope) : DataSource.Factory<Int, GitProperty>() {
-    private val ntwk = MutableLiveData<PagedDataSource>()
-    var gitPagedDataSource = PagedDataSource(scope)
-
-
-    override fun create(): DataSource<Int, GitProperty> {
-        ntwk.postValue(gitPagedDataSource)
-        return gitPagedDataSource
-    }
-
-    fun getNetworkState(): MutableLiveData<PagedDataSource> {
-        return ntwk
-    }
-    // fun getGit():
-}
+//class PagedDataSourceFactory(private val scope: CoroutineScope) : DataSource.Factory<Int, GitProperty>() {
+//    private val ntwk = MutableLiveData<PagedDataSource>()
+//    var gitPagedDataSource = PagedDataSource(scope)
+//
+//
+//    override fun create(): DataSource<Int, GitProperty> {
+//        ntwk.postValue(gitPagedDataSource)
+//        return gitPagedDataSource
+//    }
+//
+//    fun getNetworkState(): MutableLiveData<PagedDataSource> {
+//        return ntwk
+//    }
+//    // fun getGit():
+//}
 //public class NetMoviesDataSourceFactory extends DataSource.Factory {
 //
 //    private static final String TAG = NetMoviesDataSourceFactory.class.getSimpleName();

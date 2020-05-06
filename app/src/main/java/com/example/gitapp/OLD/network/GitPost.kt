@@ -1,9 +1,7 @@
-package com.example.gitapp.network
+package com.example.gitapp.OLD.network
 
-import android.os.Parcelable
 import androidx.room.Entity
 import com.example.gitapp.models.Another
-import com.squareup.moshi.Json
 
 //@Entity
 //data class RedditPost(
@@ -21,14 +19,14 @@ import com.squareup.moshi.Json
 //)
 
 
-@Entity
-data class GitPost(
-
-        val id: Int,
-        val name: String,
-        val full_name: String?,
-        val owner: Another,
-        val html_url: String?,
-        var description: String?
-
-)
+//@Entity
+//data class GitPost(
+//
+//        val id: Int,
+//        val name: String,
+//        val full_name: String?,
+//        val owner: Another,
+//        val html_url: String?,
+//        var description: String?
+//
+//)

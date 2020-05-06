@@ -10,13 +10,21 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/property_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="#3A3838"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"
+
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintVertical_bias="0.0"
+        app:spanCount="3"
         tools:listitem="@layout/listview_item" />
 
 

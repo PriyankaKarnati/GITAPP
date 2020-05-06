@@ -10,7 +10,6 @@ import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
-@Entity(tableName = "properties")
 @Parcelize
 data class GitProperty(
         @PrimaryKey
