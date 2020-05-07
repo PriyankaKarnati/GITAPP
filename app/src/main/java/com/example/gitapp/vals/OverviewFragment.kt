@@ -49,11 +49,11 @@ class OverviewFragment : Fragment() {
 
             }
         })
-        Toast.makeText(
-            this.context,
-            "Long Press an image to know more about them !",
-            Toast.LENGTH_SHORT
-        ).show()
+//        Toast.makeText(
+//            this.context,
+//            "Long Press an image to know more about them !",
+//            Toast.LENGTH_SHORT
+//        ).show()
         return viewS
     }
 

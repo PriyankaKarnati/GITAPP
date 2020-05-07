@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.example.gitapp.OLD.network.repository.paging.PagedDataSource
+import com.example.gitapp.paging.PagedDataSource
 import com.example.gitapp.models.GitProperty
 
 
