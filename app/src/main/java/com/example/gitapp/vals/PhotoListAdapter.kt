@@ -23,6 +23,8 @@ import kotlinx.android.synthetic.main.listview_item.view.*
 
 class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressListener: OnLongPressListener) :
         PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
+
+    private var clickedList: MutableList<GitProperty> = arrayListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitItemViewHolder {
         val view =
                 LayoutInflater.from(parent.context).inflate(R.layout.listview_item, parent, false)
@@ -48,19 +50,37 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
 
                 if (it.foreground != null) {
                     it.foreground = null
+                    clickedList.remove(item)
                     true
                 } else {
-                    it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorForeGround))
-
-                    Toast.makeText(it.context, "You clicked on ${item.full_name}!!", Toast.LENGTH_SHORT).show()
-                    onClickListener.onClick(item)
+                    if (clickedList.size < 5) {
+                        it.foreground = ColorDrawable(
+                            ContextCompat.getColor(
+                                it.context,
+                                R.color.colorForeGround
+                            )
+                        )
+                        clickedList.add(item)
+                        Toast.makeText(
+                            it.context,
+                            "You clicked on ${item.full_name}!!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        onClickListener.onClick(item)
+                    } else {
+                        Toast.makeText(
+                            it.context,
+                            "You Clicked 5 items already",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
                     true
                 }
 
             }
             holder.itemView.setOnLongClickListener {
-                it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
+                //it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
                 onLongPressListener.onLongClick(item)
                 true
             }
@@ -113,7 +133,11 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
 
     class OnLongPressListener(val longPressListener: (gitProperty: GitProperty) -> Unit) {
 
-        fun onLongClick(gitProperty: GitProperty) = longPressListener(gitProperty)
+        fun onLongClick(gitProperty: GitProperty) {
+
+            longPressListener(gitProperty)
+
+        }
 
     }
 }
