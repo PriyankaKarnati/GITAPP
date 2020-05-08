@@ -3,17 +3,15 @@ package com.example.gitapp.vals
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.view.LayoutInflater
-import android.view.ScaleGestureDetector
-import android.view.View
+import android.view.*
 import android.view.View.OnTouchListener
-import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
 import com.example.gitapp.bindImage
@@ -34,10 +32,10 @@ class PhotoListAdapter(
                 LayoutInflater.from(parent.context).inflate(R.layout.listview_item, parent, false)
         val size = calculateSizeOfView(view.context, cols)
 
-        val margin = cols * 3 // any vertical spacing margin = your_margin * column_count
+        val margin = cols * 1 // any vertical spacing margin = your_margin * column_count
         val layoutParams = GridLayout.LayoutParams(ViewGroup.LayoutParams(size - margin, size)) // width and height
 
-        layoutParams.bottomMargin = cols * 3 // horizontal spacing if needed
+        layoutParams.bottomMargin = cols * 1 / 2 // horizontal spacing if needed
         view.layoutParams = layoutParams
 
         return GitItemViewHolder(view)
@@ -48,6 +46,7 @@ class PhotoListAdapter(
         val item = getItem(position)
         if (item != null) {
             holder.bind(item)
+
 
 
             holder.itemView.setOnClickListener {
@@ -67,8 +66,7 @@ class PhotoListAdapter(
                         clickedList.add(item)
                         Toast.makeText(
                             it.context,
-                            "You clicked on ${item.full_name}!!",
-                            Toast.LENGTH_SHORT
+                            "You clicked on ${item.full_name}!!", Toast.LENGTH_SHORT
                         ).show()
                         onClickListener.onClick(item)
                     } else {
@@ -145,6 +143,54 @@ class PhotoListAdapter(
         }
 
     }
+//    class ScaleListener(
+//                        var layoutManagers: ArrayList<GridLayoutManager>, var viewX:RecyclerView
+//    ) : ScaleGestureDetector(viewX.context,
+//        object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+//            override fun onScale(detector: ScaleGestureDetector): Boolean {
+//                if (detector.currentSpan > 200 && detector.timeDelta > 200) {
+//                    if (detector.currentSpan - detector.previousSpan < -1) {
+//                        //if(layoutManager)
+//
+//                        for (j in 0..2) {
+//                            if (viewX.layoutManager == layoutManagers[j]) {
+//                                viewX?.layoutManager = layoutManagers[j + 1]
+//
+//                                return true
+//                            }
+//                        }
+//                        //                       if (mCurrentLayoutManager === mGridLayoutManager1) {
+////                            mCurrentLayoutManager = mGridLayoutManager2
+////                            mRvPhotos.setLayoutManager(mGridLayoutManager2)
+////                            return true
+////                        } else if (mCurrentLayoutManager === mGridLayoutManager2) {
+////                            mCurrentLayoutManager = mGridLayoutManager3
+////                            mRvPhotos.setLayoutManager(mGridLayoutManager3)
+////                            return true
+////                        }
+//                    } else if (detector.currentSpan - detector.previousSpan > 1) {
+//                        for (j in 1..3) {
+//                            if (viewX.layoutManager == layoutManagers[j]) {
+//                                viewX?.layoutManager = layoutManagers[j - 1]
+//                                //curLM = layoutManagers[j - 1]
+//                                return true
+//                            }
+//                        }
+////                        if (mCurrentLayoutManager === mGridLayoutManager3) {
+////                            mCurrentLayoutManager = mGridLayoutManager2
+////                            mRvPhotos.setLayoutManager(mGridLayoutManager2)
+////                            return true
+////                        } else if (mCurrentLayoutManager === mGridLayoutManager2) {
+////                            mCurrentLayoutManager = mGridLayoutManager1
+////                            mRvPhotos.setLayoutManager(mGridLayoutManager1)
+////                            return true
+////                        }
+//                    }
+//                }
+//                return false
+//            }
+//        })
+//
 
 
 }
@@ -152,25 +198,9 @@ class PhotoListAdapter(
 //        mScaleGestureDetector!!.onTouchEvent(motionEvent)
 //        return true
 //    }
-//    class ScaleListener( var mScaleGestureDetector: ScaleGestureDetector?,
-//            var mScaleFactor :Float,var LM:GridLayoutManager,var viewX:RecyclerView
-//    ) : SimpleOnScaleGestureListener() {
-////        override fun onScale(mscaleGestureDetector: ScaleGestureDetector): Boolean {
-////            mScaleFactor *= mscaleGestureDetector.scaleFactor
-//////            mScaleFactor = Math.max(0.1f,
-//////                    Math.min(mScaleFactor, 10.0f))
-//////            .setScaleX(mScaleFactor)
-//////            mImageView.setScaleY(mScaleFactor)
-////
-////            var columns = 3
-////
-////            //if(mScaleFactor<=0.1f)LM.spanCount =
-////
-////
-////
-////        }
-//    }
-//}
+
+
+
 
 
 

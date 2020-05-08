@@ -2,6 +2,7 @@ package com.example.gitapp.vals
 
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
@@ -38,7 +39,14 @@ class OverviewFragment : Fragment() {
         }
         var curLM = layoutManagers[0]
         plist?.layoutManager = layoutManagers[0]
-        var mScaleGestureDetector =
+        photoListAdapter = PhotoListAdapter(3, PhotoListAdapter.OnClickListener {
+
+        }, PhotoListAdapter.OnLongPressListener {
+            overviewViewModel.displaySelectedProperties(it)
+        })
+        observeLiveData()
+        plist?.adapter = photoListAdapter
+        val mScaleGestureDetector =
             ScaleGestureDetector(this.context, object : SimpleOnScaleGestureListener() {
                 override fun onScale(detector: ScaleGestureDetector): Boolean {
                     if (detector.currentSpan > 200 && detector.timeDelta > 200) {
@@ -47,7 +55,21 @@ class OverviewFragment : Fragment() {
 
                             for (j in 0..2) {
                                 if (curLM == layoutManagers[j]) {
+//                                    private Parcelable recyclerViewState;
+//                                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+//
+//// Restore state
+//                                    recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+                                    var recyclerViewState: Parcelable? =
+                                        (plist?.layoutManager as GridLayoutManager).onSaveInstanceState()
                                     plist?.layoutManager = layoutManagers[j + 1]
+                                    photoListAdapter = setAdapter(j + 4)
+
+                                    observeLiveData()
+
+                                    plist?.adapter = photoListAdapter
+                                    observeClickedImage()
+                                    plist!!.layoutManager!!.onRestoreInstanceState(recyclerViewState)
                                     curLM = layoutManagers[j + 1]
                                     return true
                                 }
@@ -64,7 +86,19 @@ class OverviewFragment : Fragment() {
                         } else if (detector.currentSpan - detector.previousSpan > 1) {
                             for (j in 1..3) {
                                 if (curLM == layoutManagers[j]) {
+                                    var recyclerViewState: Parcelable? =
+                                        (plist?.layoutManager as GridLayoutManager).onSaveInstanceState()
                                     plist?.layoutManager = layoutManagers[j - 1]
+                                    photoListAdapter = setAdapter(j + 2)
+
+                                    observeLiveData()
+
+                                    plist?.adapter = photoListAdapter
+                                    observeClickedImage()
+                                    plist!!.layoutManager!!.onRestoreInstanceState(recyclerViewState)
+                                    //recyclerViewState = plist.layoutManager!!.onSaveInstanceState()
+
+                                    //plist!!.layoutManager!!.onRestoreInstanceState(recyclerViewState)
                                     curLM = layoutManagers[j - 1]
                                     return true
                                 }
@@ -85,33 +119,18 @@ class OverviewFragment : Fragment() {
             })
         plist?.setOnTouchListener { it, event ->
             mScaleGestureDetector.onTouchEvent(event)
-
             false
         }
-        photoListAdapter = PhotoListAdapter(curLM.spanCount, PhotoListAdapter.OnClickListener {
-
-        }, PhotoListAdapter.OnLongPressListener {
-            overviewViewModel.displaySelectedProperties(it)
-        })
-        observeLiveData()
-        plist?.adapter = photoListAdapter
 
 
+//        observeLiveData()
+//        plist?.adapter = photoListAdapter
+        observeClickedImage()
 
-
-        overviewViewModel.navigateToSelected.observe(this, Observer {
-            if (null != it) {
-
-                this.findNavController()
-                        .navigate(OverviewFragmentDirections.actionOverviewToDetail(it))
-                overviewViewModel.displayCompleted()
-
-            }
-        })
         Toast.makeText(
             this.context,
             "Long Press an image to know more about them !",
-            Toast.LENGTH_SHORT
+            Toast.LENGTH_LONG
         ).show()
 
 
@@ -119,6 +138,25 @@ class OverviewFragment : Fragment() {
         return viewS
     }
 
+    private fun setAdapter(cols: Int): PhotoListAdapter {
+        return PhotoListAdapter(cols, PhotoListAdapter.OnClickListener {
+
+        }, PhotoListAdapter.OnLongPressListener {
+            overviewViewModel.displaySelectedProperties(it)
+        })
+    }
+
+    private fun observeClickedImage() {
+        overviewViewModel.navigateToSelected.observe(this, Observer {
+            if (null != it) {
+
+                this.findNavController()
+                    .navigate(OverviewFragmentDirections.actionOverviewToDetail(it))
+                overviewViewModel.displayCompleted()
+
+            }
+        })
+    }
     private fun observeLiveData() {
         overviewViewModel.getPosts().observe(this, Observer { photoListAdapter.submitList(it) })
     }
