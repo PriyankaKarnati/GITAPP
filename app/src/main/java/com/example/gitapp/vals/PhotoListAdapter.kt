@@ -1,12 +1,12 @@
 package com.example.gitapp.vals
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.ScaleGestureDetector
 import android.view.View
-import android.view.View.OnLongClickListener
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.Toast
@@ -21,19 +21,23 @@ import com.example.gitapp.models.GitProperty
 import kotlinx.android.synthetic.main.listview_item.view.*
 
 
-class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressListener: OnLongPressListener) :
+class PhotoListAdapter(
+    val cols: Int,
+    val onClickListener: OnClickListener,
+    val onLongPressListener: OnLongPressListener
+) :
         PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
 
     private var clickedList: MutableList<GitProperty> = arrayListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitItemViewHolder {
         val view =
                 LayoutInflater.from(parent.context).inflate(R.layout.listview_item, parent, false)
-        val size = calculateSizeOfView(view.context, 3)
+        val size = calculateSizeOfView(view.context, cols)
 
-        val margin = 3 * 3 // any vertical spacing margin = your_margin * column_count
+        val margin = cols * 3 // any vertical spacing margin = your_margin * column_count
         val layoutParams = GridLayout.LayoutParams(ViewGroup.LayoutParams(size - margin, size)) // width and height
 
-//        layoutParams.bottomMargin = 8 // horizontal spacing if needed
+        layoutParams.bottomMargin = cols * 3 // horizontal spacing if needed
         view.layoutParams = layoutParams
 
         return GitItemViewHolder(view)
@@ -80,7 +84,8 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
 
             }
             holder.itemView.setOnLongClickListener {
-                //it.foreground = ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
+                it.foreground =
+                    ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
                 onLongPressListener.onLongClick(item)
                 true
             }
@@ -140,6 +145,8 @@ class PhotoListAdapter(val onClickListener: OnClickListener, val onLongPressList
         }
 
     }
+
+
 }
 //override fun onTouchEvent(motionEvent: MotionEvent?): Boolean {
 //        mScaleGestureDetector!!.onTouchEvent(motionEvent)
