@@ -6,22 +6,23 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.gitapp.db.GitHubdb
-import com.example.gitapp.paging.PagedDataSource
 import com.example.gitapp.models.GitProperty
+import com.example.gitapp.paging.GitBoundaryCallBack
 
 
 //import com.example.gitapp.OLD.network.repository.Listing
 
 /////-------------version 3---------------------
 
-class OverviewViewModel(database: GitHubdb, application: Application) :
-    AndroidViewModel(application) {
+class OverviewViewModel(list: PagedList<GitProperty?>?) :
+    ViewModel() {
 
     //    private lateinit var repository: Listing
 //    init{
 //        repository =
 //    }
-    var postsLiveData: LiveData<PagedList<GitProperty>>
+    private val _postsLiveData = MutableLiveData<PagedList<GitProperty?>?>()
+    private var postsLiveData: LiveData<PagedList<GitProperty?>?> = _postsLiveData
 
 
     private val _navigateToSelected = MutableLiveData<GitProperty>()
@@ -29,33 +30,34 @@ class OverviewViewModel(database: GitHubdb, application: Application) :
         get() = _navigateToSelected
 
     init {
-        val config = PagedList.Config.Builder()
-            .setPageSize(100)
-            .setEnablePlaceholders(false)
-            .build()
-        val gitRepos = database.postDao().posts()
-        postsLiveData = initializedPagedListBuilder(gitRepos, config).build()
-
+//        val config = PagedList.Config.Builder()
+//            .setPageSize(100)
+//            .setEnablePlaceholders(false)
+//            .build()
+//        //val gitRepos = database.postDao().posts()
+//        postsLiveData = initializedPagedListBuilder(database, config).build()
+        _postsLiveData.value = list
 
     }
 
-    fun getPosts(): LiveData<PagedList<GitProperty>> = postsLiveData
+    fun getPosts(): LiveData<PagedList<GitProperty?>?> = postsLiveData
 
     //
-    private fun initializedPagedListBuilder(
-        inst: DataSource.Factory<Int, GitProperty>,
-        config: PagedList.Config
-    ):
-            LivePagedListBuilder<Int, GitProperty> {
+//    private fun initializedPagedListBuilder(
+//        inst: GitHubdb,
+//        config: PagedList.Config
+//    ):
+//            LivePagedListBuilder<Int, GitProperty> {
+//
+//        val livePageListBuilder = LivePagedListBuilder(
+//            inst.postDao().posts(),
+//            config
+//        )
+//        livePageListBuilder.setBoundaryCallback(GitBoundaryCallBack(inst ))
+//        return livePageListBuilder
+//    }
 
-        val livePageListBuilder = LivePagedListBuilder<Int, GitProperty>(
-            inst,
-            config
-        )
-        return livePageListBuilder
-    }
-
-        //val database = gitDB.create()
+    //val database = gitDB.create()
 //        val livePageListBuilder = LivePagedListBuilder<Int, RedditPost>(
 //                database.postDao().posts(),
 //                config)

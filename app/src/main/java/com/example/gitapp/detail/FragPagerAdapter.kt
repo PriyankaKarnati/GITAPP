@@ -94,11 +94,11 @@ import kotlinx.android.synthetic.main.fragment_detail.view.*
 //    }
 //}
 
-class FragPagerAdapter(private val list: PagedList<GitProperty>) : PagerAdapter() {
+class FragPagerAdapter(private val list: PagedList<GitProperty?>?) : PagerAdapter() {
     override fun isViewFromObject(view: View, obj: Any) = view == obj
 
     override fun getCount(): Int {
-        return list.size
+        return list!!.size
     }
 
 //    private val _POSIT = MutableLiveData<Int>()
@@ -108,9 +108,9 @@ class FragPagerAdapter(private val list: PagedList<GitProperty>) : PagerAdapter(
         //_POSIT.value = position
         val view = LayoutInflater.from(container.context).inflate(R.layout.fragment_detail, container, false)
 
-        list.loadAround(position)
+        list?.loadAround(position)
 
-        val imgURL = list[position]?.owner?.imgSrcUrl
+        val imgURL = list?.get(position)?.owner?.imgSrcUrl
         val imgView = view.findViewById<ImageView>(R.id.imageView)
         try {
             bindImage(imgView, imgURL)
@@ -118,16 +118,16 @@ class FragPagerAdapter(private val list: PagedList<GitProperty>) : PagerAdapter(
             print(e.message)
         }
         val textV1 = view.findViewById<TextView>(R.id.tv1)
-        textV1.text = "Full Name : " + list[position]?.full_name
+        textV1.text = "Full Name : " + list?.get(position)?.full_name
 
         val textV2 = view.findViewById<TextView>(R.id.tv2)
-        textV2.text = "User Type : " + list[position]?.owner?.type
+        textV2.text = "User Type : " + list?.get(position)?.owner?.type
 
         val textV3 = view.findViewById<TextView>(R.id.tv3)
-        textV3.text = "GitHub URL : " + list[position]?.html_url
+        textV3.text = "GitHub URL : " + list?.get(position)?.html_url
 
         val textV4 = view.findViewById<TextView>(R.id.tv4)
-        textV4.text = "Description : " + list[position]?.description
+        textV4.text = "Description : " + list?.get(position)?.description
         container.addView(view)
         //_POSIT.value = position
         return view

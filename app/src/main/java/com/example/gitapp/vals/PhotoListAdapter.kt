@@ -54,7 +54,6 @@ class PhotoListAdapter(
                 if (it.foreground != null) {
                     it.foreground = null
                     clickedList.remove(item)
-                    true
                 } else {
                     if (clickedList.size < 5) {
                         it.foreground = ColorDrawable(
@@ -77,7 +76,6 @@ class PhotoListAdapter(
                         ).show()
                     }
 
-                    true
                 }
 
             }
@@ -103,7 +101,7 @@ class PhotoListAdapter(
 
         fun bind(gitProperty: GitProperty) {
             with(gitProperty) {
-                bindImage(imageURL, owner.imgSrcUrl)
+                bindImage(imageURL, owner?.imgSrcUrl)
 //                nameText.text = "Repo Name : $name"
 //                loginText.text = "Owner Login ID : ${owner.login}"
 //                desText.text = "Description : $description"
