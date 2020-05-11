@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.example.gitapp.db.GitHubdb
 import com.example.gitapp.paging.PagedDataSource
 import com.example.gitapp.models.GitProperty
 
@@ -13,13 +14,15 @@ import com.example.gitapp.models.GitProperty
 
 /////-------------version 3---------------------
 
-class OverviewViewModel(application: Application) : AndroidViewModel(application) {
+class OverviewViewModel(database: GitHubdb, application: Application) :
+    AndroidViewModel(application) {
 
     //    private lateinit var repository: Listing
 //    init{
 //        repository =
 //    }
     var postsLiveData: LiveData<PagedList<GitProperty>>
+
 
     private val _navigateToSelected = MutableLiveData<GitProperty>()
     val navigateToSelected: LiveData<GitProperty>
@@ -30,7 +33,8 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
             .setPageSize(100)
             .setEnablePlaceholders(false)
             .build()
-        postsLiveData = initializedPagedListBuilder(config).build()
+        val gitRepos = database.postDao().posts()
+        postsLiveData = initializedPagedListBuilder(gitRepos, config).build()
 
 
     }
@@ -38,23 +42,33 @@ class OverviewViewModel(application: Application) : AndroidViewModel(application
     fun getPosts(): LiveData<PagedList<GitProperty>> = postsLiveData
 
     //
-    private fun initializedPagedListBuilder(config: PagedList.Config):
+    private fun initializedPagedListBuilder(
+        inst: DataSource.Factory<Int, GitProperty>,
+        config: PagedList.Config
+    ):
             LivePagedListBuilder<Int, GitProperty> {
+
+        val livePageListBuilder = LivePagedListBuilder<Int, GitProperty>(
+            inst,
+            config
+        )
+        return livePageListBuilder
+    }
+
         //val database = gitDB.create()
 //        val livePageListBuilder = LivePagedListBuilder<Int, RedditPost>(
 //                database.postDao().posts(),
 //                config)
 //        return livePageListBuilder
-        val dataSourceFactory = object : DataSource.Factory<Int, GitProperty>() {
-            override fun create(): DataSource<Int, GitProperty> {
-                return PagedDataSource(viewModelScope)
-            }
-        }
-//        return LivePagedListBuilder(database.,config).setBoundaryCallback(boundary)
-        return LivePagedListBuilder(dataSourceFactory, config)
+//        val dataSourceFactory = object : DataSource.Factory<Int, GitProperty>() {
+//            override fun create(): DataSource<Int, GitProperty> {
+//                return PagedDataSource(viewModelScope)
+//            }
+//        }
+////        return LivePagedListBuilder(database.,config).setBoundaryCallback(boundary)
+//        return LivePagedListBuilder(dataSourceFactory, config)
 
-
-    }
+    //}
 
     fun displaySelectedProperties(gitProperty: GitProperty) {
         _navigateToSelected.value = gitProperty

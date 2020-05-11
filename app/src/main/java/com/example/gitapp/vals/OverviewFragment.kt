@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
+import com.example.gitapp.db.GitHubdb
 
 
 class OverviewFragment : Fragment() {
@@ -28,7 +29,12 @@ class OverviewFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
-        overviewViewModel = activity.run { ViewModelProviders.of(this!!).get(OverviewViewModel::class.java) }
+        val application = requireNotNull(this.activity).application
+        val database = GitHubdb.create(this.context!!)
+        val viewModelFactory = OverviewModelFactory(database, application)
+        overviewViewModel = activity.run {
+            ViewModelProviders.of(this!!, viewModelFactory).get(OverviewViewModel::class.java)
+        }
 
 
         val plist = viewS?.findViewById<RecyclerView>(R.id.property_list)

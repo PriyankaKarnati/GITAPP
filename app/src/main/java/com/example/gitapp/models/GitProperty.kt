@@ -10,19 +10,21 @@ import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
+@Entity
 @Parcelize
 data class GitProperty(
         @PrimaryKey
         val id: Int,
         val name: String,
         val full_name: String?,
-        val owner: Another,
+        val owner: Another?,
         val html_url: String?,
         var description: String?//some values are null
 
 ) : Parcelable
 
 
+@Entity
 @Parcelize
 data class Another(
         val login: String,
