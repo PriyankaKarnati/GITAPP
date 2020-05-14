@@ -18,7 +18,7 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".extGallery.ExtGalFragment"></activity>
+        <activity android:name=".extGallery.ExtGalActivity"></activity>
     </application>
 
 </manifest>

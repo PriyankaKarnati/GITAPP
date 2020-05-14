@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/extGalFragment"
-        android:name="com.example.slides.extGallery.ExtGalFragment"
+        android:name="com.example.slides.extGallery.ExtGalActivity"
         android:label="ExtGalFragment">
         <action
             android:id="@+id/action_extGalFragment_to_myGalFragment"

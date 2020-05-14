@@ -2,4 +2,5 @@
     <string name="app_name">Slides</string>
     <string name="plus">+</string>
     <string name="gallery_image_view">Gallery image view</string>
+    <string name="gal_art">GalArt</string>
 </resources>

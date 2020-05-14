@@ -7,14 +7,15 @@
     android:id="@+id/extGalFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#D00C2535"
     android:orientation="vertical"
-    tools:context=".extGallery.ExtGalFragment">
+    tools:context=".extGallery.ExtGalActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/galleryList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/LayoutColour"
+        android:background="#D00C2535"
         android:paddingLeft="5sp"
         android:paddingRight="5sp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -22,7 +23,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:spanCount="3"
+        app:spanCount="4"
         tools:listitem="@layout/grid_item_view" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabInSlide"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:foregroundGravity="top|left|bottom|right"
+        android:src="@drawable/ic_add_black_24dp"
+        android:visibility="invisible"
+        app:backgroundTint="#FF9E80"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.939"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintVertical_bias="0.939"
+        app:rippleColor="#0C0A0A" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

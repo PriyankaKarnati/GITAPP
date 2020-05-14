@@ -11,16 +11,23 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slides.R
 import com.example.slides.bindImage
 
-class ExtPhotoAdapter : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder>(DiffCallBack) {
+class ExtPhotoAdapter() : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder>(DiffCallBack) {
 
+    private var _clickedList = MutableLiveData<ArrayList<String>>()
+    private var clickedList: LiveData<ArrayList<String>> = _clickedList
 
-    private var clickedList: MutableList<String> = arrayListOf()
+    fun getList(): LiveData<ArrayList<String>> {
+        return clickedList
+
+    }
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
     ): ListItemViewHolder {
@@ -49,16 +56,19 @@ class ExtPhotoAdapter : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder>(
 
                 if (it.foreground != null) {
                     it.foreground = null
-                    clickedList.remove(item)
+                    _clickedList.value?.remove(item)
                 } else {
-                    if (clickedList.size < 5) {
+
+                    if (_clickedList.value?.size!! < 5) {
+
                         it.foreground = ColorDrawable(
                             ContextCompat.getColor(
                                 it.context,
                                 R.color.OtherElements
                             )
                         )
-                        clickedList.add(item)
+                        _clickedList.value?.add(item)
+
                         Toast.makeText(
                             it.context,
                             "You clicked on ${item.length}!!", Toast.LENGTH_SHORT

@@ -3,29 +3,14 @@ package com.example.gitapp.vals
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.ScaleGestureDetector
-import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
-import com.example.gitapp.db.GitHubdb
-import com.example.gitapp.models.GitProperty
-import com.example.gitapp.paging.GitBoundaryCallBack
 import com.example.slides.MainActivity
-import com.example.slides.extGallery.ExtGalFragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class OverviewFragment : Fragment() {
@@ -35,10 +20,14 @@ class OverviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
-        val buttonID = viewS.findViewById<FloatingActionButton>(R.id.fab_git)
+        val buttonID = viewS.findViewById<Button>(R.id.button)
         buttonID.setOnClickListener {
             val intent = Intent(this.context, MainActivity::class.java)
             startActivity(intent)
+        }
+        val toolBar = viewS.findViewById<androidx.appcompat.widget.Toolbar>(R.id.tool_bar_id)
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).setSupportActionBar(toolBar)
         }
         return viewS
     }
