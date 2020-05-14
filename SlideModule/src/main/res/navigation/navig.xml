@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navig"
+    app:startDestination="@id/myGalFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/myGalFragment"
+        android:name="com.example.slides.myGallery.MyGalFragment"
+        android:label="fragment_gal"
+        tools:layout="@layout/fragment_gal">
+        <action
+            android:id="@+id/action_myGalFragment_to_extGalFragment"
+            app:destination="@id/extGalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/extGalFragment"
+        android:name="com.example.slides.extGallery.ExtGalFragment"
+        android:label="ExtGalFragment">
+        <action
+            android:id="@+id/action_extGalFragment_to_myGalFragment"
+            app:destination="@id/myGalFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popEnterAnim="@anim/fragment_open_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
+    </fragment>
+</navigation>
