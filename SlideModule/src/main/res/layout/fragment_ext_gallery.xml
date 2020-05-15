@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="extViewModel"
+            type="com.example.slides.extGallery.ExtViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/extGalFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -74,7 +83,7 @@
                 android:textAllCaps="true"
                 android:textColor="#FBEBE7"
                 android:textStyle="bold"
-                android:visibility="invisible"
+                android:visibility="@{extViewModel.set==false?View.INVISIBLE:View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,3 +112,4 @@
         app:rippleColor="#0C0A0A" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slides.R
+import com.example.slides.databinding.FragmentExtGalleryBinding
 import com.example.slides.models.ImagePath
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.slides.models.ImagesPaths
@@ -34,22 +36,24 @@ class ExtGalFragment : Fragment() {
 
 
         // Here, thisActivity is the current activity
-        val viewS = inflater.inflate(R.layout.fragment_ext_gallery, container, false)
+        val binding = FragmentExtGalleryBinding.inflate(inflater)
+        // val viewS = inflater.inflate(R.layout.fragment_ext_gallery, container, false)
         val toolBar =
-            viewS.findViewById<androidx.appcompat.widget.Toolbar>(R.id.tool_bar_id_ext_gal)
+            binding.toolBarIdExtGal
+        binding.lifecycleOwner = this
         if (activity is AppCompatActivity) {
             (activity as AppCompatActivity).setSupportActionBar(toolBar)
         }
 
 
-        val recyler = viewS.findViewById<RecyclerView>(R.id.galleryList)
+        val recyler = binding.galleryList
         val viewModel = ViewModelProviders.of(this).get(ExtViewModel::class.java)
-
+        binding.extViewModel = viewModel
         val adapter =
             ExtPhotoAdapter(ExtPhotoAdapter.OnClickListener { imagePath: ImagePath, view: View ->
                 viewModel.onImageClick(imagePath, view)
             })
-        recyler.adapter = adapter
+        binding.galleryList.adapter = adapter
 
 
 
@@ -57,13 +61,9 @@ class ExtGalFragment : Fragment() {
             adapter.submitList(it)
         })
 
-        val buttonSelect = viewS.findViewById<Button>(R.id.imageSelectButton)
+        val buttonSelect = binding.imageSelectButton
         buttonSelect.setOnClickListener { button ->
             viewModel.getClickedList().observe(this.viewLifecycleOwner, Observer {
-
-                Log.i("ExtGalKK", "clicked list size ${it.size}")
-
-                buttonSelect.visibility = View.VISIBLE
 
 
                 Log.i("ExtGal", "clicked list size ${it.size}")
@@ -90,7 +90,7 @@ class ExtGalFragment : Fragment() {
 //        })
 
 
-        return viewS
+        return binding.root
     }
 
 

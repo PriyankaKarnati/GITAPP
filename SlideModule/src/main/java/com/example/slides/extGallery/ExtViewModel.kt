@@ -36,6 +36,8 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
 
     }
 
+    private var _set = MutableLiveData<Boolean>()
+    var set: LiveData<Boolean> = _set
     private var _clickedImage = MutableLiveData<ImagePath>()
     private var clickedImage: LiveData<ImagePath> = _clickedImage
 
@@ -47,13 +49,11 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
     private var _imagesList = MutableLiveData<ImagesPaths>()
     var imagesList: LiveData<ImagesPaths> = _imagesList
 
-    private lateinit var buttonID: Button
-
     init {
         getAllImages(application)
         _clickedList.value = ImagesPaths()
 
-
+        _set.value = false
     }
 
     fun getImageList(): LiveData<ImagesPaths> {
@@ -66,8 +66,10 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
         if (view.foreground != null) {
             view.foreground = null
             _clickedList.value?.remove(imageID)
+            if (_clickedList.value?.size == 0) _set.value = false
         } else {
             if (_clickedList.value?.size!! < 5) {
+                _set.value = true
                 view.foreground = ColorDrawable(
                     ContextCompat.getColor(
                         view.context,
