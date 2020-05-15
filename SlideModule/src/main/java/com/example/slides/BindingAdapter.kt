@@ -5,6 +5,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slides.extGallery.ExtPhotoAdapter
+import com.example.slides.models.ImagePath
 
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgURL: String?) {
@@ -21,7 +22,7 @@ fun bindImage(imgView: ImageView, imgURL: String?) {
 }
 
 @BindingAdapter("listImage")
-fun bindList(recyclerView: RecyclerView, data: List<String>?) {
+fun bindList(recyclerView: RecyclerView, data: List<ImagePath>?) {
 
     val adapter = recyclerView.adapter as ExtPhotoAdapter
     adapter.submitList(data)

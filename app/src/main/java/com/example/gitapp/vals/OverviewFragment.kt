@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.gitapp.R
 import com.example.slides.MainActivity
+import kotlinx.android.synthetic.main.fragment_overview.view.*
 
 
 class OverviewFragment : Fragment() {
@@ -20,7 +21,7 @@ class OverviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
-        val buttonID = viewS.findViewById<Button>(R.id.button)
+        val buttonID = viewS.findViewById<Button>(R.id.buttonOverview)
         buttonID.setOnClickListener {
             val intent = Intent(this.context, MainActivity::class.java)
             startActivity(intent)

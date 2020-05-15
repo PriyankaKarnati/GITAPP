@@ -11,13 +11,18 @@
         android:name="com.example.slides.myGallery.MyGalFragment"
         android:label="fragment_gal"
         tools:layout="@layout/fragment_gal">
+        <argument
+            android:name="selectedImages"
+            app:argType="com.example.slides.models.ImagesPaths" />
         <action
             android:id="@+id/action_myGalFragment_to_extGalFragment"
-            app:destination="@id/extGalFragment" />
+            app:destination="@id/extGalFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/extGalFragment"
-        android:name="com.example.slides.extGallery.ExtGalActivity"
+        android:name="com.example.slides.extGallery.ExtGalFragment"
         android:label="ExtGalFragment">
         <action
             android:id="@+id/action_extGalFragment_to_myGalFragment"

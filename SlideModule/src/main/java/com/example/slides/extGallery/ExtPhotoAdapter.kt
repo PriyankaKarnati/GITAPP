@@ -3,6 +3,7 @@ package com.example.slides.extGallery
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,16 +19,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slides.R
 import com.example.slides.bindImage
+import com.example.slides.models.ImagePath
+import com.example.slides.models.ImagesPaths
 
-class ExtPhotoAdapter() : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder>(DiffCallBack) {
+class ExtPhotoAdapter(val onClickListener: OnClickListener) :
+    ListAdapter<ImagePath, ExtPhotoAdapter.ListItemViewHolder>(DiffCallBack) {
 
-    private var _clickedList = MutableLiveData<ArrayList<String>>()
-    private var clickedList: LiveData<ArrayList<String>> = _clickedList
-
-    fun getList(): LiveData<ArrayList<String>> {
-        return clickedList
-
-    }
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
     ): ListItemViewHolder {
@@ -51,43 +48,13 @@ class ExtPhotoAdapter() : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder
     override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            holder.bind(item)
+            holder.bind(item.path)
             holder.itemView.setOnClickListener {
-
-                if (it.foreground != null) {
-                    it.foreground = null
-                    _clickedList.value?.remove(item)
-                } else {
-
-                    if (_clickedList.value?.size!! < 5) {
-
-                        it.foreground = ColorDrawable(
-                            ContextCompat.getColor(
-                                it.context,
-                                R.color.OtherElements
-                            )
-                        )
-                        _clickedList.value?.add(item)
-
-                        Toast.makeText(
-                            it.context,
-                            "You clicked on ${item.length}!!", Toast.LENGTH_SHORT
-                        ).show()
-
-                    } else {
-                        Toast.makeText(
-                            it.context,
-                            "You Clicked 5 items already",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-                }
-
+                onClickListener.onClick(item, it)
             }
+
+
         }
-
-
     }
 
     class ListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -102,12 +69,12 @@ class ExtPhotoAdapter() : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder
     }
 
 
-    companion object DiffCallBack : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
+    companion object DiffCallBack : DiffUtil.ItemCallback<ImagePath>() {
+        override fun areItemsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
             return true
         }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
+        override fun areContentsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
             return oldItem.equals(newItem)
         }
 
@@ -120,7 +87,11 @@ class ExtPhotoAdapter() : ListAdapter<String, ExtPhotoAdapter.ListItemViewHolder
 
     }
 
-    class OnClickListener(val clickListener: (gitProperty: String) -> Unit) {
-        fun onClick(gitProperty: String) = clickListener(gitProperty)
+    class OnClickListener(val clickListener: (gitProperty: ImagePath, imageView: View) -> Unit) {
+
+        fun onClick(gitProperty: ImagePath, itemView: View) {
+            clickListener(gitProperty, itemView)
+
+        }
     }
 }

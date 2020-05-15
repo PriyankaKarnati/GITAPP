@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.slides.R
-import com.example.slides.extGallery.ExtGalActivity
+import com.example.slides.extGallery.ExtGalFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -28,8 +29,7 @@ class MyGalFragment : Fragment() {
 
         val buttonID = viewS?.findViewById<FloatingActionButton>(R.id.fab)
         buttonID?.setOnClickListener {
-            val intent = Intent(this.context, ExtGalActivity::class.java)
-            startActivity(intent)
+            this.findNavController().navigate(R.id.action_myGalFragment_to_extGalFragment)
 
 
         }

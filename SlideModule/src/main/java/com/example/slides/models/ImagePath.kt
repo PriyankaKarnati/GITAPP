@@ -7,3 +7,6 @@ import kotlinx.android.parcel.Parcelize
 data class ImagePath(
     val path: String
 ) : Parcelable
+
+@Parcelize
+class ImagesPaths : ArrayList<ImagePath>(), Parcelable

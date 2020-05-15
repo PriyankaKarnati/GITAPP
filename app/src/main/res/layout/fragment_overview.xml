@@ -37,26 +37,26 @@
                 android:textColor="#FBECEB"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button"
-                app:layout_constraintHorizontal_bias="0.03"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.050000012" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonOverview"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:fontFamily="@font/averia_sans_libre"
                 android:text="@string/go_to_custom_gallery"
-                android:textAlignment="textEnd"
-                android:textColor="#E1C6BD"
-                android:textSize="20sp"
+                android:textColor="#F6DED7"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/appTextView"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
