@@ -13,7 +13,9 @@
         tools:layout="@layout/fragment_gal">
         <argument
             android:name="selectedImages"
-            app:argType="com.example.slides.models.ImagesPaths" />
+            android:defaultValue="@null"
+            app:argType="com.example.slides.models.ImagesPaths"
+            app:nullable="true" />
         <action
             android:id="@+id/action_myGalFragment_to_extGalFragment"
             app:destination="@id/extGalFragment"

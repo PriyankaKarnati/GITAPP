@@ -1,28 +1,19 @@
 package com.example.slides.extGallery
 
-import android.database.Cursor
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.slides.R
 import com.example.slides.databinding.FragmentExtGalleryBinding
 import com.example.slides.models.ImagePath
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.example.slides.models.ImagesPaths
 
 
 class ExtGalFragment : Fragment() {
@@ -68,7 +59,8 @@ class ExtGalFragment : Fragment() {
 
                 Log.i("ExtGal", "clicked list size ${it.size}")
                 this.findNavController().navigate(
-                    ExtGalFragmentDirections.actionExtGalFragmentToMyGalFragment(it)
+                    ExtGalFragmentDirections.actionExtGalFragmentToMyGalFragment()
+                        .setSelectedImages(it)
                 )
 
 
