@@ -21,6 +21,7 @@
             app:destination="@id/extGalFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim"
             app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/myGalFragment"
             app:popUpToInclusive="false" />
     </fragment>
     <fragment

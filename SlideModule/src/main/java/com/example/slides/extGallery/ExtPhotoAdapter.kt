@@ -1,26 +1,18 @@
 package com.example.slides.extGallery
 
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slides.R
 import com.example.slides.bindImage
 import com.example.slides.models.ImagePath
-import com.example.slides.models.ImagesPaths
 
 class ExtPhotoAdapter(val onClickListener: OnClickListener) :
     ListAdapter<ImagePath, ExtPhotoAdapter.ListItemViewHolder>(DiffCallBack) {
@@ -68,10 +60,18 @@ class ExtPhotoAdapter(val onClickListener: OnClickListener) :
 
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
 
     companion object DiffCallBack : DiffUtil.ItemCallback<ImagePath>() {
         override fun areItemsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
-            return true
+            return oldItem.equals(newItem)
         }
 
         override fun areContentsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {

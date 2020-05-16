@@ -45,9 +45,10 @@ class MyGalViewModel(
 
 
     init {
+        Log.i("InsertToDb", "Called")
         initInsertToDb(database, selectedImageList)
         _clickedList.value = ImagesPaths()
-        initGetFromDb(database)
+
 
     }
 
@@ -90,31 +91,35 @@ class MyGalViewModel(
         uiScope.launch {
             insertToDb(database, selectedImageList)
         }
+        //initGetFromDb(database)
     }
 
     suspend fun insertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
-        withContext(Dispatchers.IO) {
+        _getUpdateList.value = withContext(Dispatchers.IO) {
             if (selectedImageList != null) {
                 Log.i("InsertToDB", "$selectedImageList")
                 for (i in selectedImageList)
                     database.insert(i)
             }
-        }
-
-    }
-
-    fun initGetFromDb(database: MyGalDao) {
-        uiScope.launch {
-            getFromDb(database)
-        }
-    }
-
-    suspend fun getFromDb(database: MyGalDao) {
-        _getUpdateList.value = withContext(Dispatchers.IO) {
-
             return@withContext database.posts()
         }
+
     }
+
+//    fun initGetFromDb(database: MyGalDao) {
+//        uiScope.launch {
+//            getFromDb(database)
+//        }
+//    }
+//
+//    suspend fun getFromDb(database: MyGalDao) {
+//        _getUpdateList.value = withContext(Dispatchers.IO) {
+//
+//            Log.i("InsertToDB@@", "${database.posts().size}")
+//            return@withContext database.posts()
+//        }
+//      //  Log.i("MYGAL","${_getUpdateList.value!!.size}")
+//    }
 
 
 }

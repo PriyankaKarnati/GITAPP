@@ -3,6 +3,7 @@ package com.example.slides.myGallery
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class MyGalFragment : Fragment() {
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private lateinit var viewModel: MyGalViewModel
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private lateinit var adapter: ExtPhotoAdapter
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -68,24 +75,32 @@ class MyGalFragment : Fragment() {
         val dataSource = MyGalDb.getInstance(application).myGalDao
         val viewModelFactory = MyGalViewModelFactory(dataSource, selectedList, application)
 
-        var viewModel =
+        viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(MyGalViewModel::class.java)
 
-        binding.myViewModel = viewModel
 
-        val adapter =
-            ExtPhotoAdapter(ExtPhotoAdapter.OnClickListener { imagePath: ImagePath, view: View ->
-                viewModel.onImageClick(imagePath, view)
-            })
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            adapter =
+                ExtPhotoAdapter(ExtPhotoAdapter.OnClickListener { imagePath: ImagePath, view: View ->
+                    viewModel.onImageClick(imagePath, view)
+                    //                viewModel.initInsertToDb(dataSource,selectedList)
+                    //                viewModel.initGetFromDb(dataSource)
+                })
+        }
 
         binding.intGalFrag.adapter = adapter
 
-        viewModel.getUpdateList.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
-        })
+//        viewModel.getUpdateList.observe(viewLifecycleOwner, Observer {
+//            Log.i("ExtGal","$it")
+//            adapter.submitList(it)
+//        })
+        binding.myViewModel = viewModel
 
 
         return binding.root
 
     }
+
+
 }
