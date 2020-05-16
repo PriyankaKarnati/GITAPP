@@ -47,6 +47,7 @@ class MyGalViewModel(
     init {
         initInsertToDb(database, selectedImageList)
         _clickedList.value = ImagesPaths()
+        initGetFromDb(database)
 
     }
 
@@ -94,6 +95,7 @@ class MyGalViewModel(
     suspend fun insertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
         withContext(Dispatchers.IO) {
             if (selectedImageList != null) {
+                Log.i("InsertToDB", "$selectedImageList")
                 for (i in selectedImageList)
                     database.insert(i)
             }
@@ -108,8 +110,9 @@ class MyGalViewModel(
     }
 
     suspend fun getFromDb(database: MyGalDao) {
-        withContext(Dispatchers.IO) {
-            _getUpdateList.value = database.posts().value
+        _getUpdateList.value = withContext(Dispatchers.IO) {
+
+            return@withContext database.posts()
         }
     }
 

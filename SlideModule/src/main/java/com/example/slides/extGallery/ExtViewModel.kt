@@ -208,7 +208,7 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
 
 
     fun getAllImages(context: Context) {
-        launch(Dispatchers.Main) {
+        launch(coroutineContext) {
             _imagesList.value = withContext(Dispatchers.IO) {
                 loadImagesFromInternalStorage(context)
             }
