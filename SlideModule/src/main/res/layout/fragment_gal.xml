@@ -53,23 +53,23 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:foregroundGravity="top|left|bottom|right"
-        android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="#FF9E80"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.939"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.939"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:foregroundGravity="top|left|bottom|right"
+            android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="#FF9E80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.939"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-        app:rippleColor="#0C0A0A" />
+            app:layout_constraintVertical_bias="0.939"
+            app:rippleColor="#0C0A0A" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/intGalFrag"

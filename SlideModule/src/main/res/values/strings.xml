@@ -4,4 +4,9 @@
     <string name="gallery_image_view">Gallery image view</string>
     <string name="gal_art">GalArt</string>
     <string name="select_ok">Ok</string>
+    <string name="GoToCamera">Camera</string>
+    <string name="deleteSelectedItems">Delete items</string>
+    <string name="deleteDB">Delete All</string>
+    <string name="Nothing"></string>
+    <string name="add_pics">Add pics</string>
 </resources>
