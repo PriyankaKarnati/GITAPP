@@ -71,24 +71,24 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
             if (_clickedList.value?.size!! < 5) {
                 _set.value = true
                 view.foreground = ColorDrawable(
-                    ContextCompat.getColor(
-                        view.context,
-                        R.color.OtherElements
-                    )
+                        ContextCompat.getColor(
+                                view.context,
+                                R.color.OtherElements
+                        )
                 )
 
                 _clickedList.value!!.add(_clickedImage.value!!)
                 Log.i("AdapterExt", "${_clickedList.value}")
 
                 Toast.makeText(
-                    view.context,
-                    "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
+                        view.context,
+                        "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
-                    view.context,
-                    "You Clicked 5 items already",
-                    Toast.LENGTH_SHORT
+                        view.context,
+                        "You Clicked 5 items already",
+                        Toast.LENGTH_SHORT
                 ).show()
 
             }
@@ -131,12 +131,15 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
     }
 
     private fun loadImagesFromInternalStorage(context: Context): ImagesPaths {
-//        val path = Environment.DIRECTORY_PICTURES
+
+//
+//        val path = context.externalCacheDir!!.absolutePath
 //        val files = File(path).listFiles()
-//        Log.i("IMAGES","${files.size}")
-//        val imagePath = ArrayList<String>()
-//        for (file in files!!) imagePath.add(file.absolutePath)
+//        Log.i("IMAGES","${path}")
+//        val imagePath = ImagesPaths()
+//        for (file in files!!) imagePath.add(ImagePath(file.absolutePath))
 //        return imagePath
+//    }
 
 //        val uri: Uri
 //        val cursor: Cursor
@@ -182,7 +185,7 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
 //            }
 //        }
 //        return listOfAllImages
-
+//
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val cursor: Cursor?
         val column_index_data: Int
@@ -191,12 +194,12 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
         var absolutePathOfImage: String? = null
 
         val projection =
-            arrayOf(MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+                arrayOf(MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
 
         cursor = context.contentResolver.query(uri, projection, null, null, null)
         column_index_data = cursor!!.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
         column_index_folder_name =
-            cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+                cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
         while (cursor!!.moveToNext()) {
             absolutePathOfImage = cursor.getString(column_index_data)
             val newImage = ImagePath(absolutePathOfImage)
@@ -205,7 +208,7 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
         }
         return listOfAllImages
     }
-
+//
 
     fun getAllImages(context: Context) {
         launch(coroutineContext) {
@@ -215,5 +218,6 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
         }
         Log.i("called", "called")
     }
-}
 
+
+}

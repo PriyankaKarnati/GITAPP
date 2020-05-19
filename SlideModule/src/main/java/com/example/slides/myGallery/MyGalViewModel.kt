@@ -60,30 +60,22 @@ class MyGalViewModel(
             _clickedList.value?.remove(imageID)
 //            if (_clickedList.value?.size == 0) _set.value = false
         } else {
-            if (_clickedList.value?.size!! < 5) {
+
 //                _set.value = true
-                view.foreground = ColorDrawable(
+            view.foreground = ColorDrawable(
                     ContextCompat.getColor(
-                        view.context,
-                        R.color.DbElements
+                            view.context,
+                            R.color.DbElements
                     )
-                )
+            )
 
-                _clickedList.value!!.add(_clickedImage.value!!)
-                Log.i("AdapterExt", "${_clickedList.value}")
+            _clickedList.value!!.add(_clickedImage.value!!)
+            Log.i("AdapterExt", "${_clickedList.value}")
 
-                Toast.makeText(
+            Toast.makeText(
                     view.context,
                     "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    view.context,
-                    "You Clicked 5 items already",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            }
+            ).show()
         }
     }
 
@@ -106,6 +98,33 @@ class MyGalViewModel(
 
     }
 
+    fun deleteSelected(database: MyGalDao) {
+        uiScope.launch {
+            _getUpdateList.value = withContext((Dispatchers.IO)) {
+                for (i in _clickedList.value!!) {
+                    database.deleteSelected(i)
+                }
+                return@withContext database.posts()
+            }
+            _clickedList.value!!.clear()
+        }
+
+
+    }
+
+    fun deleteAll(database: MyGalDao) {
+        Log.i("MyGalViewModel", "deleteAll called")
+        uiScope.launch {
+
+            _getUpdateList.value = withContext((Dispatchers.IO)) {
+                Log.i("MyGalViewModel", "deleteAll called 2")
+                database.deleteAll()
+                return@withContext database.posts()
+            }
+            _clickedList.value!!.clear()
+
+        }
+    }
 //    fun initGetFromDb(database: MyGalDao) {
 //        uiScope.launch {
 //            getFromDb(database)
