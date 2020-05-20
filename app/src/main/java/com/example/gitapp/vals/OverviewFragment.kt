@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.fragment_overview.view.*
 
 class OverviewFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         val viewS = inflater.inflate(R.layout.fragment_overview, container, false)
         val buttonID = viewS.findViewById<Button>(R.id.buttonOverview)

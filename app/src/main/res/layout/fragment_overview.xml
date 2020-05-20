@@ -7,7 +7,7 @@
     android:id="@+id/buttonInModule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D00C2535"
+    android:background="#F00C2535"
     tools:context=".vals.OverviewFragment">
 
     <androidx.appcompat.widget.Toolbar

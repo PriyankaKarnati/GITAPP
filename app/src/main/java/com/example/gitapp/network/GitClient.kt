@@ -17,24 +17,24 @@ class GitClient {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
         private val okHttpClient = OkHttpClient().newBuilder()
-            .connectTimeout(2, TimeUnit.MINUTES)
-            .readTimeout(2, TimeUnit.MINUTES)
-            .writeTimeout(2, TimeUnit.MINUTES)
-            .retryOnConnectionFailure(true)
-            .addInterceptor(loggingInterceptor)
-            .build()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .readTimeout(2, TimeUnit.MINUTES)
+                .writeTimeout(2, TimeUnit.MINUTES)
+                .retryOnConnectionFailure(true)
+                .addInterceptor(loggingInterceptor)
+                .build()
 
         private val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
+                .add(KotlinJsonAdapterFactory())
+                .build()
         var retrofit: Retrofit? = null
 
         fun getClient(): Retrofit {
             when (retrofit) {
                 null -> retrofit = Retrofit.Builder().baseUrl(BASE_URL)
-                    .addConverterFactory(MoshiConverterFactory.create(moshi))
-                    .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                    .client(okHttpClient).build()
+                        .addConverterFactory(MoshiConverterFactory.create(moshi))
+                        .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                        .client(okHttpClient).build()
             }
             return retrofit as Retrofit
         }

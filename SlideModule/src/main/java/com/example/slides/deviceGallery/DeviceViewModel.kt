@@ -1,32 +1,30 @@
-package com.example.slides.extGallery
+package com.example.slides.deviceGallery
 
 import android.app.Application
 import android.content.Context
 import android.database.Cursor
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
-import android.os.Environment
+import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.slides.R
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import kotlinx.coroutines.*
-import java.io.File
+import java.io.FileDescriptor
 import kotlin.coroutines.CoroutineContext
 
 
-class ExtViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
+class DeviceViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
 
     private var _clickedList = MutableLiveData<ImagesPaths>()
     private var clickedList: LiveData<ImagesPaths> = _clickedList
@@ -80,10 +78,10 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
                 _clickedList.value!!.add(_clickedImage.value!!)
                 Log.i("AdapterExt", "${_clickedList.value}")
 
-                Toast.makeText(
-                        view.context,
-                        "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
-                ).show()
+//                Toast.makeText(
+//                        view.context,
+//                        "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
+//                ).show()
             } else {
                 Toast.makeText(
                         view.context,
@@ -186,31 +184,56 @@ class ExtViewModel(application: Application) : AndroidViewModel(application), Co
 //        }
 //        return listOfAllImages
 //
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+//        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+//        val cursor: Cursor?
+//        val column_index_data: Int
+//        val listOfAllImages = ImagesPaths()
+//        var absolutePathOfImage: String?
+//
+//        val projection =
+//                arrayOf(MediaStore.Images.Media._ID)
+//
+//        cursor = context.contentResolver.query(uri, projection, null, null, null)
+//        column_index_data = cursor!!.getColumnIndexOrThrow(_ID)
+////        column_index_folder_name =
+////                cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+//        while (cursor.moveToNext()) {
+//            absolutePathOfImage = cursor.getString(column_index_data)
+//            val newImage = ImagePath(absolutePathOfImage)
+//
+//            listOfAllImages.add(newImage)
+//        }
+//        cursor.close()
+//        return listOfAllImages
+        val uriExternal: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val cursor: Cursor?
-        val column_index_data: Int
-        val column_index_folder_name: Int
+        val columnIndexID: Int
         val listOfAllImages = ImagesPaths()
-        var absolutePathOfImage: String? = null
+//        val pfd = context.getContentResolver().openFileDescriptor(uriExternal, "r")
+//
+//        val fileDescriptor = pfd?.fileDescriptor
+//
+//
+        @Suppress("DEPRECATION") val projection = arrayOf(MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+        var imageId: String
 
-        val projection =
-                arrayOf(MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
 
-        cursor = context.contentResolver.query(uri, projection, null, null, null)
-        column_index_data = cursor!!.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-        column_index_folder_name =
-                cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-        while (cursor!!.moveToNext()) {
-            absolutePathOfImage = cursor.getString(column_index_data)
-            val newImage = ImagePath(absolutePathOfImage)
-
-            listOfAllImages.add(newImage)
+        cursor = context.contentResolver.query(uriExternal, projection, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC")
+        if (cursor != null) {
+            @Suppress("DEPRECATION")
+            columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+            while (cursor.moveToNext()) {
+                imageId = cursor.getString(columnIndexID)
+                listOfAllImages.add(ImagePath(imageId))
+            }
+            cursor.close()
         }
         return listOfAllImages
     }
 //
 
-    fun getAllImages(context: Context) {
+    private fun getAllImages(context: Context) {
         launch(coroutineContext) {
             _imagesList.value = withContext(Dispatchers.IO) {
                 loadImagesFromInternalStorage(context)

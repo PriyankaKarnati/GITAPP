@@ -1,4 +1,4 @@
-package com.example.slides.extGallery
+package com.example.slides.DeviceGallery
 
 import android.os.Build
 import android.os.Bundle
@@ -12,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.slides.databinding.FragmentExtGalleryBinding
+import com.example.slides.databinding.FragmentDeviceGalleryBinding
+import com.example.slides.deviceGallery.DevicePhotoAdapter
+import com.example.slides.deviceGallery.DeviceViewModel
 import com.example.slides.models.ImagePath
 
 
-class ExtGalFragment : Fragment() {
+class DeviceGalFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -27,8 +29,8 @@ class ExtGalFragment : Fragment() {
 
 
         // Here, thisActivity is the current activity
-        val binding = FragmentExtGalleryBinding.inflate(inflater)
-        // val viewS = inflater.inflate(R.layout.fragment_ext_gallery, container, false)
+        val binding = FragmentDeviceGalleryBinding.inflate(inflater)
+        // val viewS = inflater.inflate(R.layout.fragment_device_gallery, container, false)
         val toolBar =
             binding.toolBarIdExtGal
         binding.lifecycleOwner = this
@@ -37,11 +39,10 @@ class ExtGalFragment : Fragment() {
         }
 
 
-        val recyler = binding.galleryList
-        val viewModel = ViewModelProviders.of(this).get(ExtViewModel::class.java)
-        binding.extViewModel = viewModel
+        val viewModel: DeviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel::class.java)
+        binding.deviceViewModel = viewModel
         val adapter =
-            ExtPhotoAdapter(ExtPhotoAdapter.OnClickListener { imagePath: ImagePath, view: View ->
+                DevicePhotoAdapter(DevicePhotoAdapter.OnClickListener { imagePath: ImagePath, view: View ->
                 viewModel.onImageClick(imagePath, view)
             })
         binding.galleryList.adapter = adapter
@@ -58,11 +59,12 @@ class ExtGalFragment : Fragment() {
 
 
                 Log.i("ExtGal", "clicked list size ${it.size}")
-                this.findNavController().navigate(
-                    ExtGalFragmentDirections.actionExtGalFragmentToMyGalFragment()
-                        .setSelectedImages(it)
-                )
-
+                this.findNavController().navigate(DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment3().setSelectedImagesInGal(it))
+//                this.findNavController().navigate(
+////                        DeviceGalFragmentDirections.actionExtGalFragmentToMyGalFragment()
+////                        .setSelectedImages(it)
+//
+//                )
 
             })
         }

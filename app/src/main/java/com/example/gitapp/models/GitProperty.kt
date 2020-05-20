@@ -12,14 +12,14 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class GitProperty(
-    @PrimaryKey
+        @PrimaryKey
         val id: Int,
-    val name: String,
-    val full_name: String?,
-    @Embedded
-    val owner: Another?,
-    val html_url: String?,
-    var description: String?//some values are null
+        val name: String,
+        val full_name: String?,
+        @Embedded
+        val owner: Another?,
+        val html_url: String?,
+        var description: String?//some values are null
 
 ) : Parcelable//{
 //

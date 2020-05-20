@@ -72,10 +72,10 @@ class MyGalViewModel(
             _clickedList.value!!.add(_clickedImage.value!!)
             Log.i("AdapterExt", "${_clickedList.value}")
 
-            Toast.makeText(
-                    view.context,
-                    "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                    view.context,
+//                    "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
+//            ).show()
         }
     }
 

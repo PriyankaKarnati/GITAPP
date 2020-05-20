@@ -14,4 +14,3 @@ interface GitApiService {
             Call<List<GitProperty>>
 
 }
-

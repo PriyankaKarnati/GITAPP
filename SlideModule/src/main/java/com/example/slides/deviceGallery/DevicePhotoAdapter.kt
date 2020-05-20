@@ -1,10 +1,11 @@
-package com.example.slides.extGallery
+package com.example.slides.deviceGallery
 
 import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
@@ -14,8 +15,8 @@ import com.example.slides.R
 import com.example.slides.bindImage
 import com.example.slides.models.ImagePath
 
-class ExtPhotoAdapter(val onClickListener: OnClickListener) :
-    ListAdapter<ImagePath, ExtPhotoAdapter.ListItemViewHolder>(DiffCallBack) {
+class DevicePhotoAdapter(val onClickListener: OnClickListener) :
+        ListAdapter<ImagePath, DevicePhotoAdapter.ListItemViewHolder>(DiffCallBack) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
@@ -27,11 +28,11 @@ class ExtPhotoAdapter(val onClickListener: OnClickListener) :
                 R.layout.grid_item_view,
                 parent, false
             )
-//            val size = calculateSizeOfView(view.context, 3)
+//        val size = calculateSizeOfView(view.context, 3)
 //
-//            val margin = 3 * 1 // any vertical spacing margin = your_margin * column_count
-//            val layoutParams = GridLayout.LayoutParams(ViewGroup.LayoutParams(size - margin, size)) // width and height
-//
+//        val margin = 3 * 1 // any vertical spacing margin = your_margin * column_count
+//        val layoutParams = GridLayout.LayoutParams(ViewGroup.LayoutParams(size - margin, size)) // width and height
+
 //            layoutParams.bottomMargin = 3 * 1 / 2 // horizontal spacing if needed
         return ListItemViewHolder(view)
     }

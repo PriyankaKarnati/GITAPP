@@ -12,7 +12,7 @@
     <style name="PopUpMenu" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
         <item name="android:popupBackground">#003C3C3C</item>
         <item name="android:textColor">#FDDCD2</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:layout_weight">0.25</item>
         <item name="android:layout_width">wrap_content</item>
 

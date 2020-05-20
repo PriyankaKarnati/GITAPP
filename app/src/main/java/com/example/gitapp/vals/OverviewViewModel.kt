@@ -15,7 +15,7 @@ import com.example.gitapp.paging.GitBoundaryCallBack
 /////-------------version 3---------------------
 
 class OverviewViewModel(list: PagedList<GitProperty?>?) :
-    ViewModel() {
+        ViewModel() {
 
     //    private lateinit var repository: Listing
 //    init{

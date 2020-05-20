@@ -6,19 +6,19 @@
     <data>
 
         <variable
-            name="extViewModel"
-            type="com.example.slides.extGallery.ExtViewModel" />
+            name="deviceViewModel"
+            type="com.example.slides.deviceGallery.DeviceViewModel" />
 
         <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/extGalFrag"
+        android:id="@+id/deviceGalFrag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#D00C2535"
     android:orientation="vertical"
-    tools:context=".extGallery.ExtGalFragment">
+        tools:context=".deviceGallery.DeviceGalFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -34,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tool_bar_id_ext_gal"
-        app:spanCount="4"
+        app:spanCount="3"
         tools:listitem="@layout/grid_item_view" />
 
     <androidx.appcompat.widget.Toolbar
@@ -83,7 +83,7 @@
                 android:textAllCaps="true"
                 android:textColor="#FBEBE7"
                 android:textStyle="bold"
-                android:visibility="@{extViewModel.set==false?View.INVISIBLE:View.VISIBLE}"
+                android:visibility="@{deviceViewModel.set==false?View.INVISIBLE:View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

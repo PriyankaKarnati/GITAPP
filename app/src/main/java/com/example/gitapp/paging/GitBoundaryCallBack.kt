@@ -23,23 +23,23 @@ class GitBoundaryCallBack(private val db: GitHubdb) : PagedList.BoundaryCallback
         super.onZeroItemsLoaded()
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) { helperCallback ->
             apiService.create(GitApiService::class.java).getProperties(page)
-                .enqueue(object : Callback<List<GitProperty>> {
-                    override fun onFailure(call: Call<List<GitProperty>>, t: Throwable) {
-                        Log.e("GitBoundaryCallback", "Failed to load data!")
-                        helperCallback.recordFailure(t)
-                    }
-
-                    override fun onResponse(
-                        call: Call<List<GitProperty>>,
-                        response: Response<List<GitProperty>>
-                    ) {
-                        val posts = response.body()
-                        executor.execute {
-                            db.postDao().insert(posts ?: listOf())
-                            helperCallback.recordSuccess()
+                    .enqueue(object : Callback<List<GitProperty>> {
+                        override fun onFailure(call: Call<List<GitProperty>>, t: Throwable) {
+                            Log.i("GitBoundaryCallback", "Failed to load data!")
+                            helperCallback.recordFailure(t)
                         }
-                    }
-                })
+
+                        override fun onResponse(
+                                call: Call<List<GitProperty>>,
+                                response: Response<List<GitProperty>>
+                        ) {
+                            val posts = response.body()
+                            executor.execute {
+                                db.postDao().insert(posts ?: listOf())
+                                helperCallback.recordSuccess()
+                            }
+                        }
+                    })
 
         }
 
@@ -50,23 +50,23 @@ class GitBoundaryCallBack(private val db: GitHubdb) : PagedList.BoundaryCallback
         page = page.inc()
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) { helperCallback ->
             apiService.create(GitApiService::class.java).getProperties(page)
-                .enqueue(object : Callback<List<GitProperty>> {
-                    override fun onFailure(call: Call<List<GitProperty>>, t: Throwable) {
-                        Log.e("GitBoundaryCallback", "Failed to load data!")
-                        helperCallback.recordFailure(t)
-                    }
-
-                    override fun onResponse(
-                        call: Call<List<GitProperty>>,
-                        response: Response<List<GitProperty>>
-                    ) {
-                        val posts = response.body()
-                        executor.execute {
-                            db.postDao().insert(posts ?: listOf())
-                            helperCallback.recordSuccess()
+                    .enqueue(object : Callback<List<GitProperty>> {
+                        override fun onFailure(call: Call<List<GitProperty>>, t: Throwable) {
+                            Log.i("GitBoundaryCallback", "Failed to load data!")
+                            helperCallback.recordFailure(t)
                         }
-                    }
-                })
+
+                        override fun onResponse(
+                                call: Call<List<GitProperty>>,
+                                response: Response<List<GitProperty>>
+                        ) {
+                            val posts = response.body()
+                            executor.execute {
+                                db.postDao().insert(posts ?: listOf())
+                                helperCallback.recordSuccess()
+                            }
+                        }
+                    })
 
         }
 

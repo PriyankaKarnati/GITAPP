@@ -10,9 +10,9 @@ import com.squareup.moshi.Moshi
 
 
 @Database(
-    entities = [GitProperty::class],
-    version = 1,
-    exportSchema = false
+        entities = [GitProperty::class],
+        version = 1,
+        exportSchema = false
 )
 
 abstract class GitHubdb : RoomDatabase() {
@@ -31,12 +31,12 @@ abstract class GitHubdb : RoomDatabase() {
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        GitHubdb::class.java,
-                        "gitHubdatabase"
+                            context.applicationContext,
+                            GitHubdb::class.java,
+                            "gitHubdatabase"
                     )
-                        .fallbackToDestructiveMigration()
-                        .build()
+                            .fallbackToDestructiveMigration()
+                            .build()
                     INSTANCE = instance
                 }
                 return instance
@@ -46,4 +46,3 @@ abstract class GitHubdb : RoomDatabase() {
 
     abstract fun postDao(): gitHubDao
 }
-
