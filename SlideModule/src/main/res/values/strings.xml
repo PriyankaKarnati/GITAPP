@@ -9,4 +9,5 @@
     <string name="deleteDB">Delete All</string>
     <string name="add_pics">Add pics</string>
     <string name="device_gallery_image">Device Gallery Image</string>
+    <string name="check_box">check box</string>
 </resources>

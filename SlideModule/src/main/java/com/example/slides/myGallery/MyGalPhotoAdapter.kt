@@ -1,4 +1,4 @@
-package com.example.slides.deviceGallery
+package com.example.slides.myGallery
 
 import android.content.Context
 import android.os.Build
@@ -20,9 +20,10 @@ import kotlinx.android.synthetic.main.fragment_device_gallery.view.*
 import kotlinx.android.synthetic.main.fragment_my_gal.view.*
 import kotlinx.android.synthetic.main.grid_item_view.view.*
 
-class DevicePhotoAdapter(val onClickListener: OnClickListener) :
-        ListAdapter<ImagePath, DevicePhotoAdapter.ListItemViewHolder>(DiffCallBack) {
+class MyGalPhotoAdapter(val onClickListener: OnClickListener) :
+        ListAdapter<ImagePath, MyGalPhotoAdapter.MyListItemViewHolder>(DiffCallBack) {
     var checkVisibleAll = false
+    var checkSelectedAll = false
     fun getAllVisible(x: Boolean) {
         checkVisibleAll = x
         notifyDataSetChanged()
@@ -30,26 +31,26 @@ class DevicePhotoAdapter(val onClickListener: OnClickListener) :
     }
 
     override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
-    ): ListItemViewHolder {
+            parent: ViewGroup, viewType: Int
+    ): MyListItemViewHolder {
         val layoutInflater =
-            LayoutInflater.from(parent.context)
+                LayoutInflater.from(parent.context)
         val view = layoutInflater
-            .inflate(
-                R.layout.grid_item_view,
-                parent, false
-            )
+                .inflate(
+                        R.layout.grid_item_view,
+                        parent, false
+                )
 //        val size = calculateSizeOfView(view.context, 3)
 //
 //        val margin = 3 * 1 // any vertical spacing margin = your_margin * column_count
 //        val layoutParams = GridLayout.LayoutParams(ViewGroup.LayoutParams(size - margin, size)) // width and height
 
 //            layoutParams.bottomMargin = 3 * 1 / 2 // horizontal spacing if needed
-        return ListItemViewHolder(view)
+        return MyListItemViewHolder(view)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onBindViewHolder(holder: ListItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyListItemViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
 
@@ -59,6 +60,7 @@ class DevicePhotoAdapter(val onClickListener: OnClickListener) :
                 Log.i("AdapterCAllled", "${holder.itemView.imageCheckBox.visibility}")
 
             } else holder.itemView.imageCheckBox.visibility = View.GONE
+
             holder.bind(item.path)
             holder.itemView.setOnClickListener {
                 onClickListener.onClick(item, it)
@@ -66,17 +68,12 @@ class DevicePhotoAdapter(val onClickListener: OnClickListener) :
 
             }
 
-            holder.itemView.imageCheckBox.setOnClickListener {
-                onClickListener.onClick(item, holder.itemView)
-            }
-
-
-
 
         }
     }
 
-    class ListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    class MyListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageID = itemView.findViewById<ImageView>(R.id.GalImageView)
 
 

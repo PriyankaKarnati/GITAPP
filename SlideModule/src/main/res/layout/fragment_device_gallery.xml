@@ -21,26 +21,27 @@
         tools:context=".deviceGallery.DeviceGalFragment">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/galleryList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#D00C2535"
-        android:paddingLeft="5sp"
-        android:paddingRight="5sp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tool_bar_id_ext_gal"
-        app:spanCount="3"
-        tools:listitem="@layout/grid_item_view" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/galleryList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#D00C2535"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar_id_ext_gal"
+            app:layout_constraintVertical_bias="0.0"
+            app:spanCount="3"
+            tools:listitem="@layout/grid_item_view" />
 
-    <androidx.appcompat.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar_id_ext_gal"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+            android:layout_height="wrap_content"
         android:background="#F1112032"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -68,6 +69,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <Button
                 android:id="@+id/imageSelectButton"

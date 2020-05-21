@@ -5,7 +5,7 @@
     <color name="LayoutColour">#464747</color>
     <color name="ButtonColour">#DA7422</color>
     <color name="OtherElements">#3BFF9E80</color>#
-    <color name="DbElements">#75811A51</color>
+    <color name="DbElements">#3ED14C50</color>
     <color name="popUpmenuBackground">#5C3C3C3C</color>
     <color name="popUpmenuItemColour">#EAFDDCD2</color>
 </resources>

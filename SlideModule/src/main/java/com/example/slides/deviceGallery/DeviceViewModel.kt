@@ -19,6 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.slides.R
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
+import kotlinx.android.synthetic.main.grid_item_view.view.*
 import kotlinx.coroutines.*
 import java.io.FileDescriptor
 import kotlin.coroutines.CoroutineContext
@@ -36,6 +37,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
 
     private var _set = MutableLiveData<Boolean>()
     var set: LiveData<Boolean> = _set
+
     private var _clickedImage = MutableLiveData<ImagePath>()
     private var clickedImage: LiveData<ImagePath> = _clickedImage
 
@@ -46,7 +48,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
 
     private var _imagesList = MutableLiveData<ImagesPaths>()
     var imagesList: LiveData<ImagesPaths> = _imagesList
-
+    var Appl = application
     init {
         getAllImages(application)
         _clickedList.value = ImagesPaths()
@@ -61,19 +63,27 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
     @RequiresApi(Build.VERSION_CODES.M)
     fun onImageClick(imageID: ImagePath, view: View) {
         _clickedImage.value = imageID
-        if (view.foreground != null) {
-            view.foreground = null
-            _clickedList.value?.remove(imageID)
-            if (_clickedList.value?.size == 0) _set.value = false
-        } else {
-            if (_clickedList.value?.size!! < 5) {
+
+        if (_clickedList.value?.size!! < 5) {
+            if (view.foreground != null || view.imageCheckBox.isSelected) {
+                view.foreground = null
+                view.imageCheckBox.isChecked = false
+                // view.imageCheckBox.visibility = View.GONE
+                _clickedList.value?.remove(imageID)
+
+                if (_clickedList.value?.size == 0) _set.value = false
+            } else if (view.foreground == null || !view.imageCheckBox.isChecked) {
+
                 _set.value = true
                 view.foreground = ColorDrawable(
                         ContextCompat.getColor(
                                 view.context,
-                                R.color.OtherElements
+                                R.color.DbElements
                         )
                 )
+
+
+                view.imageCheckBox.isChecked = true
 
                 _clickedList.value!!.add(_clickedImage.value!!)
                 Log.i("AdapterExt", "${_clickedList.value}")
@@ -82,14 +92,15 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
 //                        view.context,
 //                        "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
 //                ).show()
-            } else {
-                Toast.makeText(
-                        view.context,
-                        "You Clicked 5 items already",
-                        Toast.LENGTH_SHORT
-                ).show()
-
             }
+        } else {
+            view.imageCheckBox.isChecked = false
+            Toast.makeText(
+                    view.context,
+                    "You Clicked 5 items already",
+                    Toast.LENGTH_SHORT
+            ).show()
+
         }
 
 //            if (it.foreground != null) {

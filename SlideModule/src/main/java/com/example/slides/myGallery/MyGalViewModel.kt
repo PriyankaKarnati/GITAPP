@@ -18,6 +18,7 @@ import com.example.slides.database.MyGalDao
 import com.example.slides.database.MyGalDb
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
+import kotlinx.android.synthetic.main.grid_item_view.view.*
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -31,6 +32,8 @@ class MyGalViewModel(
 
     private var _getUpdateList = MutableLiveData<List<ImagePath>>()
     var getUpdateList: LiveData<List<ImagePath>> = _getUpdateList
+    private var _set = MutableLiveData<Boolean>()
+    var set: LiveData<Boolean> = _set
 
 
     private var _clickedImage = MutableLiveData<ImagePath>()
@@ -40,7 +43,7 @@ class MyGalViewModel(
 
     fun getClickedList(): LiveData<ImagesPaths> {
         return clickedList
-
+        _set.value = false
     }
 
 
@@ -48,27 +51,31 @@ class MyGalViewModel(
         Log.i("InsertToDb", "Called")
         initInsertToDb(database, selectedImageList)
         _clickedList.value = ImagesPaths()
-
+        // _set.value = false
 
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun onImageClick(imageID: ImagePath, view: View) {
         _clickedImage.value = imageID
-        if (view.foreground != null) {
+        if (view.foreground != null || view.imageCheckBox.isChecked == true) {
             view.foreground = null
             _clickedList.value?.remove(imageID)
-//            if (_clickedList.value?.size == 0) _set.value = false
-        } else {
+            // Log.i("MyGalViewModelcalled","${view.imageCheckBox.isChecked}")
+            view.imageCheckBox.isChecked = false
+            if (_clickedList.value?.size == 0) _set.value = false
+        } else if (view.foreground == null || !view.imageCheckBox.isChecked) {
 
-//                _set.value = true
+            _set.value = true
+
+            Log.i("MyGalViewModelcalled", "${view.imageCheckBox.isChecked}")
             view.foreground = ColorDrawable(
                     ContextCompat.getColor(
                             view.context,
                             R.color.DbElements
                     )
             )
-
+            view.imageCheckBox.isChecked = true
             _clickedList.value!!.add(_clickedImage.value!!)
             Log.i("AdapterExt", "${_clickedList.value}")
 
@@ -133,7 +140,7 @@ class MyGalViewModel(
 //
 //    suspend fun getFromDb(database: MyGalDao) {
 //        _getUpdateList.value = withContext(Dispatchers.IO) {
-//
+//Z
 //            Log.i("InsertToDB@@", "${database.posts().size}")
 //            return@withContext database.posts()
 //        }

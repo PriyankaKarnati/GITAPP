@@ -8,6 +8,7 @@ import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import com.example.slides.deviceGallery.DevicePhotoAdapter
 import com.example.slides.models.ImagePath
+import com.example.slides.myGallery.MyGalPhotoAdapter
 
 
 @BindingAdapter("imageUrl")
@@ -28,7 +29,7 @@ fun bindImage(imgView: ImageView, imgURL: String?) {
 @BindingAdapter("listImage")
 fun bindList(recyclerView: RecyclerView, data: List<ImagePath>?) {
 
-    val adapter = recyclerView.adapter as DevicePhotoAdapter
+    val adapter = recyclerView.adapter as MyGalPhotoAdapter
     adapter.submitList(data)
 
 }

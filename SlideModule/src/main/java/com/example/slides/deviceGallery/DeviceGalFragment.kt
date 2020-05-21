@@ -16,6 +16,8 @@ import com.example.slides.databinding.FragmentDeviceGalleryBinding
 import com.example.slides.deviceGallery.DevicePhotoAdapter
 import com.example.slides.deviceGallery.DeviceViewModel
 import com.example.slides.models.ImagePath
+import kotlinx.android.synthetic.main.fragment_my_gal.view.*
+import kotlinx.android.synthetic.main.grid_item_view.view.*
 
 
 class DeviceGalFragment : Fragment() {
@@ -41,16 +43,23 @@ class DeviceGalFragment : Fragment() {
 
         val viewModel: DeviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel::class.java)
         binding.deviceViewModel = viewModel
+
         val adapter =
                 DevicePhotoAdapter(DevicePhotoAdapter.OnClickListener { imagePath: ImagePath, view: View ->
                 viewModel.onImageClick(imagePath, view)
+
             })
+
         binding.galleryList.adapter = adapter
-
-
 
         viewModel.getImageList().observe(this.viewLifecycleOwner, Observer {
             adapter.submitList(it)
+        })
+        viewModel.set.observe(viewLifecycleOwner, Observer {
+
+            adapter.getAllVisible(it)
+
+
         })
 
         val buttonSelect = binding.imageSelectButton
@@ -59,6 +68,7 @@ class DeviceGalFragment : Fragment() {
 
 
                 Log.i("ExtGal", "clicked list size ${it.size}")
+
                 this.findNavController().navigate(DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment3().setSelectedImagesInGal(it))
 //                this.findNavController().navigate(
 ////                        DeviceGalFragmentDirections.actionExtGalFragmentToMyGalFragment()
@@ -68,6 +78,7 @@ class DeviceGalFragment : Fragment() {
 
             })
         }
+
 
 //        adapter.getList().observe(this, Observer {
 //            Log.i("extGal","get list : ${it.size}")
