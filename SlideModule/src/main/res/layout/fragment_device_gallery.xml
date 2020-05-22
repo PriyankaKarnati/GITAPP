@@ -41,7 +41,7 @@
         <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar_id_ext_gal"
         android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
         android:background="#F1112032"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -71,6 +71,23 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
+            <TextView
+                android:id="@+id/selectedItemsInDev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="51dp"
+                android:layout_marginTop="19dp"
+                android:layout_marginEnd="269dp"
+                android:layout_marginBottom="18dp"
+                android:fontFamily="@font/averia_sans_libre"
+                android:textAlignment="viewStart"
+                android:textColor="@color/popUpmenuItemColour"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/text_view_Ext_gal_tB"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <Button
                 android:id="@+id/imageSelectButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -85,7 +102,7 @@
                 android:textAllCaps="true"
                 android:textColor="#FBEBE7"
                 android:textStyle="bold"
-                android:visibility="@{deviceViewModel.set==false?View.INVISIBLE:View.VISIBLE}"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

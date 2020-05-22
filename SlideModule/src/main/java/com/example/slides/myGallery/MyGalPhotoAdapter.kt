@@ -76,7 +76,7 @@ class MyGalPhotoAdapter() :
 //            }
             tracker?.let {
                 holder.bind(item, it.isSelected(getItem(position)), position)
-                Log.i("AdapterCalled", "${getItem(position)}")
+                //Log.i("AdapterCalled", "${getItem(position)}")
             }
 
 //            holder.itemView.setOnClickListener {

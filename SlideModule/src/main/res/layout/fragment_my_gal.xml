@@ -22,7 +22,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar_id2"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="#F1112032"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -50,6 +50,23 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/selectedImagesInMyGal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="43dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginEnd="218dp"
+                    android:layout_marginBottom="18dp"
+                    android:fontFamily="@font/averia_sans_libre"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/popUpmenuItemColour"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <CheckBox
                     android:id="@+id/checkBoxinMyGal"
                     android:layout_width="wrap_content"
@@ -63,7 +80,7 @@
                     android:contentDescription="@string/check_box"
                     android:duplicateParentState="false"
                     android:focusable="auto"
-                    android:visibility="@{myViewModel.set==true?View.VISIBLE:View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@+id/deleteSelectedItemsButton"
                     app:layout_constraintStart_toEndOf="@+id/textView"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -77,8 +94,7 @@
                     android:layout_marginEnd="26dp"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/ic_delete_black_24dp"
-
-                    android:visibility="@{myViewModel.set==true?View.VISIBLE:View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.317"

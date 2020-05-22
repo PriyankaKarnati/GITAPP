@@ -23,21 +23,22 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 
+@RequiresApi(Build.VERSION_CODES.M)
 class DeviceViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
 
-    private var _clickedList = MutableLiveData<ImagesPaths>()
-    private var clickedList: LiveData<ImagesPaths> = _clickedList
+//    private var _clickedList = MutableLiveData<ImagesPaths>()
+//    private var clickedList: LiveData<ImagesPaths> = _clickedList
+//
+//    fun getClickedList(): LiveData<ImagesPaths> {
+//        return clickedList
+//
+//    }
+//
+//    private var _set = MutableLiveData<Boolean>()
+//    var set: LiveData<Boolean> = _set
 
-    fun getClickedList(): LiveData<ImagesPaths> {
-        return clickedList
-
-    }
-
-    private var _set = MutableLiveData<Boolean>()
-    var set: LiveData<Boolean> = _set
-
-    private var _clickedImage = MutableLiveData<ImagePath>()
-    private var clickedImage: LiveData<ImagePath> = _clickedImage
+//    private var _clickedImage = MutableLiveData<ImagePath>()
+//    private var clickedImage: LiveData<ImagePath> = _clickedImage
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -47,97 +48,98 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
     private var _imagesList = MutableLiveData<ImagesPaths>()
     var imagesList: LiveData<ImagesPaths> = _imagesList
     var Appl = application
+
     init {
         getAllImages(application)
-        _clickedList.value = ImagesPaths()
+        // _clickedList.value = ImagesPaths()
 
-        _set.value = false
+        //_set.value = false
     }
 
     fun getImageList(): LiveData<ImagesPaths> {
         return imagesList
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun onImageClick(imageID: ImagePath, view: View) {
-        _clickedImage.value = imageID
-
-        if (_clickedList.value?.size!! < 5) {
-            if (view.foreground != null || view.imageCheckBox.isChecked) {
-                view.foreground = null
-                view.imageCheckBox.isChecked = false
-                // view.imageCheckBox.visibility = View.GONE
-                _clickedList.value?.remove(imageID)
-
-                if (_clickedList.value?.size == 0) _set.value = false
-            } else if (view.foreground == null || !view.imageCheckBox.isChecked) {
-
-                _set.value = true
-                view.foreground = ColorDrawable(
-                        ContextCompat.getColor(
-                                view.context,
-                                R.color.DbElements
-                        )
-                )
-
-
-                view.imageCheckBox.isChecked = true
-
-                _clickedList.value!!.add(_clickedImage.value!!)
-                Log.i("AdapterExt", "${_clickedList.value}")
-
-//                Toast.makeText(
-//                        view.context,
-//                        "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
-//                ).show()
-            }
-        } else {
-
-            Toast.makeText(
-                    view.context,
-                    "You Clicked 5 items already",
-                    Toast.LENGTH_SHORT
-            ).show()
-//            view.imageCheckBox.isClickable = true
-//            view.isClickable =true
-
-        }
-
-//            if (it.foreground != null) {
-//                it.foreground = null
+    //   @RequiresApi(Build.VERSION_CODES.M)
+//    fun onImageClick(imageID: ImagePath, view: View) {
+//        _clickedImage.value = imageID
 //
-//            } else {
+//        if (_clickedList.value?.size!! < 5) {
+//            if (view.foreground != null || view.imageCheckBox.isChecked) {
+//                view.foreground = null
+//                view.imageCheckBox.isChecked = false
+//                // view.imageCheckBox.visibility = View.GONE
+//                _clickedList.value?.remove(imageID)
 //
-//                if (set<5) {
+//                if (_clickedList.value?.size == 0) _set.value = false
+//            } else if (view.foreground == null || !view.imageCheckBox.isChecked) {
 //
-//
-//                    it.foreground = ColorDrawable(
+//                _set.value = true
+//                view.foreground = ColorDrawable(
 //                        ContextCompat.getColor(
-//                            it.context,
-//                            R.color.OtherElements
+//                                view.context,
+//                                R.color.DbElements
 //                        )
-//                    )
-//                    _clickedList.value?.add(item)
-//                    set++
-//                    Log.i("AdapterExt","${_clickedList.value}")
+//                )
 //
-//                        Toast.makeText(
-//                            it.context,
-//                            "You clicked on ${item.path.length}!!", Toast.LENGTH_SHORT
-//                        ).show()
 //
-//                } else {
-//                    Toast.makeText(
-//                        it.context,
-//                        "You Clicked 5 items already",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
+//                view.imageCheckBox.isChecked = true
 //
+//                _clickedList.value!!.add(_clickedImage.value!!)
+//                Log.i("AdapterExt", "${_clickedList.value}")
+//
+////                Toast.makeText(
+////                        view.context,
+////                        "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
+////                ).show()
 //            }
-
-
-    }
+//        } else {
+//
+//            Toast.makeText(
+//                    view.context,
+//                    "You Clicked 5 items already",
+//                    Toast.LENGTH_SHORT
+//            ).show()
+////            view.imageCheckBox.isClickable = true
+////            view.isClickable =true
+//
+//        }
+//
+////            if (it.foreground != null) {
+////                it.foreground = null
+////
+////            } else {
+////
+////                if (set<5) {
+////
+////
+////                    it.foreground = ColorDrawable(
+////                        ContextCompat.getColor(
+////                            it.context,
+////                            R.color.OtherElements
+////                        )
+////                    )
+////                    _clickedList.value?.add(item)
+////                    set++
+////                    Log.i("AdapterExt","${_clickedList.value}")
+////
+////                        Toast.makeText(
+////                            it.context,
+////                            "You clicked on ${item.path.length}!!", Toast.LENGTH_SHORT
+////                        ).show()
+////
+////                } else {
+////                    Toast.makeText(
+////                        it.context,
+////                        "You Clicked 5 items already",
+////                        Toast.LENGTH_SHORT
+////                    ).show()
+////                }
+////
+////            }
+//
+//
+//    }
 
     private fun loadImagesFromInternalStorage(context: Context): ImagesPaths {
 

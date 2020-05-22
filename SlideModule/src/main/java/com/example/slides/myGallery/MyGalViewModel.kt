@@ -12,6 +12,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.selection.Selection
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.room.RoomDatabase
 import com.example.slides.R
 import com.example.slides.database.MyGalDao
@@ -43,8 +45,9 @@ class MyGalViewModel(
 
     fun getClickedList(): LiveData<ImagesPaths> {
         return clickedList
-        _set.value = false
+
     }
+
 
 
     init {
@@ -105,15 +108,16 @@ class MyGalViewModel(
 
     }
 
-    fun deleteSelected(database: MyGalDao, list: ImagesPaths) {
+    fun deleteSelected(database: MyGalDao, list: SelectionTracker<ImagePath>) {
         uiScope.launch {
             _getUpdateList.value = withContext((Dispatchers.IO)) {
-                for (i in list) {
+                for (i in list.selection) {
                     database.deleteSelected(i)
                 }
                 return@withContext database.posts()
             }
-            _clickedList.value!!.clear()
+            list.clearSelection()
+
         }
 
 

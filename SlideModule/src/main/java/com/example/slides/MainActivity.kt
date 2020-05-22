@@ -34,19 +34,33 @@ class MainActivity : AppCompatActivity() {
     private fun setPermissions() {
         val permission =
             ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        Log.i("Callllllllllled", "callllllllled")
+        //Log.i("Callllllllllled", "callllllllled")
         if (permission != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                22
-            );
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    22)
 
 
         }
 
 
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            22 -> {
+                if (grantResults[0] === PackageManager.PERMISSION_GRANTED) {
+                    Log.i("continue", "granted Permission")
+
+                } else {
+
+                    setPermissions()
+                }
+                return
+            }
+        }
     }
 
 

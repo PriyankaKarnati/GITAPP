@@ -77,7 +77,7 @@ class DevicePhotoAdapter(val onClickListener: OnClickListener) :
     }
 
     class ListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageID = itemView.findViewById<ImageView>(R.id.GalImageView)
+        private val imageID = itemView.findViewById<ImageView>(R.id.GalImageView)
 
 
         fun bind(imageURL: String) {
