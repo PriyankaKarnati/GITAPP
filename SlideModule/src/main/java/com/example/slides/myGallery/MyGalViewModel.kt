@@ -105,10 +105,10 @@ class MyGalViewModel(
 
     }
 
-    fun deleteSelected(database: MyGalDao) {
+    fun deleteSelected(database: MyGalDao, list: ImagesPaths) {
         uiScope.launch {
             _getUpdateList.value = withContext((Dispatchers.IO)) {
-                for (i in _clickedList.value!!) {
+                for (i in list) {
                     database.deleteSelected(i)
                 }
                 return@withContext database.posts()

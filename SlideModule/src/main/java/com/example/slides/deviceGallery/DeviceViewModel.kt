@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
-import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -21,7 +20,6 @@ import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import kotlinx.android.synthetic.main.grid_item_view.view.*
 import kotlinx.coroutines.*
-import java.io.FileDescriptor
 import kotlin.coroutines.CoroutineContext
 
 
@@ -65,7 +63,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
         _clickedImage.value = imageID
 
         if (_clickedList.value?.size!! < 5) {
-            if (view.foreground != null || view.imageCheckBox.isSelected) {
+            if (view.foreground != null || view.imageCheckBox.isChecked) {
                 view.foreground = null
                 view.imageCheckBox.isChecked = false
                 // view.imageCheckBox.visibility = View.GONE
@@ -94,12 +92,14 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
 //                ).show()
             }
         } else {
-            view.imageCheckBox.isChecked = false
+
             Toast.makeText(
                     view.context,
                     "You Clicked 5 items already",
                     Toast.LENGTH_SHORT
             ).show()
+//            view.imageCheckBox.isClickable = true
+//            view.isClickable =true
 
         }
 

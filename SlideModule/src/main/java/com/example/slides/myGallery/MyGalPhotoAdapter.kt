@@ -4,24 +4,22 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
+import android.view.MotionEvent
 import android.view.ViewGroup
-import android.widget.GridLayout
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.ItemKeyProvider
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.slides.R
 import com.example.slides.bindImage
+import com.example.slides.databinding.GridItemViewBinding
 import com.example.slides.models.ImagePath
-import kotlinx.android.synthetic.main.fragment_device_gallery.view.*
-import kotlinx.android.synthetic.main.fragment_my_gal.view.*
-import kotlinx.android.synthetic.main.grid_item_view.view.*
+import com.example.slides.models.ImagesPaths
 
-class MyGalPhotoAdapter(val onClickListener: OnClickListener) :
-        ListAdapter<ImagePath, MyGalPhotoAdapter.MyListItemViewHolder>(DiffCallBack) {
+class MyGalPhotoAdapter() :
+        ListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemViewHolder>(DiffCallBack) {
     var checkVisibleAll = false
     var checkSelectedAll = false
     fun getAllVisible(x: Boolean) {
@@ -30,64 +28,109 @@ class MyGalPhotoAdapter(val onClickListener: OnClickListener) :
 
     }
 
+    var clickedList = ImagesPaths()
+    var tracker: SelectionTracker<ImagePath>? = null
+
+    init {
+        setHasStableIds(true)
+    }
+
     override fun onCreateViewHolder(
             parent: ViewGroup, viewType: Int
-    ): MyListItemViewHolder {
+    ): MyGridItemViewHolder {
         val layoutInflater =
                 LayoutInflater.from(parent.context)
-        val view = layoutInflater
-                .inflate(
-                        R.layout.grid_item_view,
-                        parent, false
-                )
+        val binding = GridItemViewBinding.inflate(layoutInflater)
 //        val size = calculateSizeOfView(view.context, 3)
 //
 //        val margin = 3 * 1 // any vertical spacing margin = your_margin * column_count
 //        val layoutParams = GridLayout.LayoutParams(ViewGroup.LayoutParams(size - margin, size)) // width and height
 
 //            layoutParams.bottomMargin = 3 * 1 / 2 // horizontal spacing if needed
-        return MyListItemViewHolder(view)
+        return MyGridItemViewHolder(binding)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun onBindViewHolder(holder: MyListItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyGridItemViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-
-            if (checkVisibleAll) {
-                holder.itemView.imageCheckBox.visibility = View.VISIBLE
-
-                Log.i("AdapterCAllled", "${holder.itemView.imageCheckBox.visibility}")
-
-            } else holder.itemView.imageCheckBox.visibility = View.GONE
-
-            holder.bind(item.path)
-            holder.itemView.setOnClickListener {
-                onClickListener.onClick(item, it)
-
-
+//
+//            if (checkVisibleAll) {
+//                holder.itemView.imageCheckBox.visibility = View.VISIBLE
+//
+//                Log.i("AdapterCAllled", "${holder.itemView.imageCheckBox.visibility}")
+//
+//            } else holder.itemView.imageCheckBox.visibility = View.GONE
+//            if(checkSelectedAll){
+//                holder.itemView.imageCheckBox.isChecked=true
+//                holder.itemView.foreground= ColorDrawable(
+//                        ContextCompat.getColor(
+//                                holder.itemView.context,
+//                                R.color.DbElements
+//                        )
+//                )
+//            }
+//            else{
+//                holder.itemView.imageCheckBox.isChecked=false
+//                holder.itemView.foreground= null
+//            }
+            tracker?.let {
+                holder.bind(item, it.isSelected(getItem(position)), position)
+                Log.i("AdapterCalled", "${getItem(position)}")
             }
+
+//            holder.itemView.setOnClickListener {
+//                onClickListener.onClick(item, it)
+//
+//
+//            }
 
 
         }
     }
 
 
-    class MyListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageID = itemView.findViewById<ImageView>(R.id.GalImageView)
+    class MyGridItemViewHolder(private val binding: GridItemViewBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        private val imageID = binding.GalImageView
 
+        companion object {
+            fun create(
+                    inflater: LayoutInflater,
+                    parent: ViewGroup?,
+                    attachToRoot: Boolean
+            ): MyGridItemViewHolder = MyGridItemViewHolder(
+                    GridItemViewBinding.inflate(
+                            inflater,
+                            parent,
+                            attachToRoot
+                    )
+            )
+        }
 
-        fun bind(imageURL: String) {
-            with(imageURL) {
-                bindImage(imageID, this)
+        fun bind(imagePath: ImagePath, isActivated: Boolean, position: Int) {
+            with(imagePath) {
+                bindImage(imageID, this.path)
+                binding.imagePath = imagePath
+                binding.position = position
+                binding.root.isActivated = isActivated
+                binding.executePendingBindings()
 
             }
 
 
         }
 
+        fun getItemDetails(): ItemDetailsLookup.ItemDetails<ImagePath> =
+                object : ItemDetailsLookup.ItemDetails<ImagePath>() {
+
+                    override fun getPosition(): Int = binding.position
+                    override fun getSelectionKey(): ImagePath? = binding.imagePath
+                }
+
 
     }
+
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
@@ -100,11 +143,11 @@ class MyGalPhotoAdapter(val onClickListener: OnClickListener) :
 
     companion object DiffCallBack : DiffUtil.ItemCallback<ImagePath>() {
         override fun areItemsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
-            return oldItem.equals(newItem)
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
-            return oldItem.equals(newItem)
+            return oldItem == newItem
         }
 
         fun calculateSizeOfView(context: Context, cols: Int): Int {
@@ -117,12 +160,34 @@ class MyGalPhotoAdapter(val onClickListener: OnClickListener) :
 
     }
 
-    class OnClickListener(val clickListener: (gitProperty: ImagePath, imageView: View) -> Unit) {
+//    class OnClickListener(val clickListener: (gitProperty: ImagePath, imageView: View) -> Unit) {
+//
+//        fun onClick(gitProperty: ImagePath, itemView: View) {
+//            clickListener(gitProperty, itemView)
+//
+//
+//        }
+//    }
 
-        fun onClick(gitProperty: ImagePath, itemView: View) {
-            clickListener(gitProperty, itemView)
+    class MyItemKeyProvider(private val adapter: MyGalPhotoAdapter) : ItemKeyProvider<ImagePath>(SCOPE_CACHED) {
+        override fun getKey(position: Int): ImagePath =
+                adapter.currentList[position]
 
-
-        }
+        override fun getPosition(key: ImagePath): Int =
+                adapter.currentList.indexOfFirst { it == key }
     }
+
+    class MyItemDetailsLookup(private val recyclerView: RecyclerView) :
+            ItemDetailsLookup<ImagePath>() {
+        override fun getItemDetails(event: MotionEvent): ItemDetails<ImagePath>? {
+            val view = recyclerView.findChildViewUnder(event.x, event.y)
+            if (view != null) {
+                return (recyclerView.getChildViewHolder(view) as MyGridItemViewHolder).getItemDetails()
+            }
+            return null
+        }
+
+
+    }
+
 }
