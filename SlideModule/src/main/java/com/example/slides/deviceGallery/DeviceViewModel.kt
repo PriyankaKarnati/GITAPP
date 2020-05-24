@@ -238,7 +238,7 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
             columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
             while (cursor.moveToNext()) {
                 imageId = cursor.getString(columnIndexID)
-                listOfAllImages.add(ImagePath(imageId))
+                listOfAllImages.add(ImagePath(imageId, System.currentTimeMillis()))
             }
             cursor.close()
         }

@@ -1,5 +1,6 @@
 package com.example.slides.database
 
+import android.provider.ContactsContract
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.*
@@ -11,8 +12,10 @@ interface MyGalDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(imagePath: ImagePath)
 
-    @Query("SELECT * FROM mygallery")
+
+    @Query("SELECT * FROM mygallery order by insertedTime desc")
     fun posts(): List<ImagePath>
+
 
     @Query("Delete from mygallery")
     fun deleteAll()

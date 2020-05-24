@@ -8,7 +8,7 @@ import com.example.slides.models.ImagesPaths
 
 @Database(
     entities = [ImagePath::class],
-    version = 1,
+        version = 3,
     exportSchema = false
 )
 abstract class MyGalDb : RoomDatabase() {
