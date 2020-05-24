@@ -14,10 +14,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/deviceGalFrag"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#D00C2535"
-    android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D00C2535"
+        android:orientation="vertical"
         tools:context=".deviceGallery.DeviceGalFragment">
 
 
@@ -35,83 +35,80 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar_id_ext_gal"
             app:layout_constraintVertical_bias="0.0"
+            app:listImage="@{deviceViewModel.imageList}"
             app:spanCount="3"
             tools:listitem="@layout/grid_item_view" />
 
         <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tool_bar_id_ext_gal"
-        android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-        android:background="#F1112032"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tool_bar_id_ext_gal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="?attr/actionBarSize"
+            android:background="#F1112032"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
-            <TextView
-                android:id="@+id/text_view_Ext_gal_tB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/averia_sans_libre"
-                android:text="@string/gal_art"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="#FBEBE7"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageSelectButton"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <TextView
+                    android:id="@+id/text_view_Ext_gal_tB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/averia_sans_libre"
+                    android:text="@string/gal_art"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#FBEBE7"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imageSelectButton"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/selectedItemsInDev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="51dp"
-                android:layout_marginTop="19dp"
-                android:layout_marginEnd="269dp"
-                android:layout_marginBottom="18dp"
-                android:fontFamily="@font/averia_sans_libre"
-                android:textAlignment="viewStart"
-                android:textColor="@color/popUpmenuItemColour"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/text_view_Ext_gal_tB"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/selectedItemsInDev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="51dp"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginEnd="269dp"
+                    android:layout_marginBottom="18dp"
+                    android:fontFamily="@font/averia_sans_libre"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/popUpmenuItemColour"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/text_view_Ext_gal_tB"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/imageSelectButton"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="306dp"
-                android:layout_marginEnd="1dp"
-                android:fontFamily="@font/averia_sans_libre"
-                android:isScrollContainer="false"
-                android:text="@string/select_ok"
-                android:textAlignment="viewEnd"
-                android:textAllCaps="true"
-                android:textColor="#FBEBE7"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/imageSelectButton"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="306dp"
+                    android:layout_marginEnd="1dp"
+                    android:fontFamily="@font/averia_sans_libre"
+                    android:isScrollContainer="false"
+                    android:text="@string/select_ok"
+                    android:textAlignment="viewEnd"
+                    android:textAllCaps="true"
+                    android:textColor="#FBEBE7"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.appcompat.widget.Toolbar>
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

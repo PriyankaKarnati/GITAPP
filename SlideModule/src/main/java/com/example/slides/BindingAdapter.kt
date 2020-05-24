@@ -4,9 +4,6 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.module.AppGlideModule
-import com.example.slides.deviceGallery.DevicePhotoAdapter
 import com.example.slides.models.ImagePath
 import com.example.slides.myGallery.MyGalPhotoAdapter
 
@@ -14,20 +11,14 @@ import com.example.slides.myGallery.MyGalPhotoAdapter
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgURL: String?) {
     imgURL?.let {
-//        val imgURI = imgURL.toUri().buildUpon().scheme("https").build()
-//        with(imgView.context).load(imgURI).into(imgView)
-
-
         Glide.with(imgView.context).load(imgURL).placeholder(R.drawable.animate_rotate).centerCrop()
-                .into(imgView)
-
-
+                .into(imgView) //loading image from image Path and show placeholder before loading
     }
 
 }
 
 @BindingAdapter("listImage")
-fun bindList(recyclerView: RecyclerView, data: List<ImagePath>?) {
+fun bindList(recyclerView: RecyclerView, data: List<ImagePath>?) {//binding layout to list
 
     val adapter = recyclerView.adapter as MyGalPhotoAdapter
     adapter.submitList(data)

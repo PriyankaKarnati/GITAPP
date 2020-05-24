@@ -14,55 +14,30 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mains)
-//        val permission= ActivityCompat.requestPermissions(this, new String[]{"Manifest.permission.READ_PHONE_STATE"}, 225);
-//        if(permission== PackageManager.PERMISSION_GRANTED) {
-//            print("YES")
-//        }
-//        else{
-//            return
-//        }
-        setPermissions()
-//        val list:ArrayList<String> =loadImagesFromInternalStorage()
-//        var intent = Intent(this, ExtGalFragment::class.java)
-//        intent.putStringArrayListExtra("image_url_data",list)
-//        startActivity(intent)
-//        finish()
-
-
+        setPermissions()//ask permission to read storage
     }
 
     private fun setPermissions() {
         val permission =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        //Log.i("Callllllllllled", "callllllllled")
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)//check if permission is already granted
         if (permission != PackageManager.PERMISSION_GRANTED) {
-
-
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    22)
-
-
+                    22)//if not granted request it
         }
-
-
-
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             22 -> {
-                if (grantResults[0] === PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.i("continue", "granted Permission")
-
                 } else {
-
-                    setPermissions()
+                    setPermissions()//if permission denied request again
                 }
                 return
             }
         }
     }
-
 
 }
 

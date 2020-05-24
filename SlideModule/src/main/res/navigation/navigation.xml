@@ -5,12 +5,10 @@
     android:id="@+id/navigation"
     app:startDestination="@id/myGalFragment"
     tools:ignore="UnusedNavigation">
-
     <fragment
         android:id="@+id/deviceGalFragment"
         android:name="com.example.slides.deviceGallery.DeviceGalFragment"
         android:label="DeviceGalFragment">
-
         <action
             android:id="@+id/action_deviceGalFragment_to_myGalFragment"
             app:destination="@id/myGalFragment"

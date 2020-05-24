@@ -14,10 +14,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/myGalFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#D00C2535"
-    tools:context=".myGallery.MyGalFragment">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#D00C2535"
+        tools:context=".myGallery.MyGalFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tool_bar_id2"
@@ -139,6 +139,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tool_bar_id2"
             app:layout_constraintVertical_bias="0.0"
+            app:listImage="@{myViewModel.getUpdateList}"
             app:spanCount="3"
             tools:listitem="@layout/grid_item_view" />
 

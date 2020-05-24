@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -23,9 +22,9 @@
 
         <ImageView
             android:id="@+id/GalImageView"
-            android:layout_margin="1dp"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="1dp"
             android:clickable="false"
             android:contentDescription="@string/device_gallery_image"
 
@@ -46,6 +45,7 @@
             android:button="@drawable/checkbox_animation"
             android:checked="false"
             android:clickable="true"
+            android:focusable="auto"
             android:contentDescription="@string/check_box"
             android:duplicateParentState="false"
             android:visibility="gone"

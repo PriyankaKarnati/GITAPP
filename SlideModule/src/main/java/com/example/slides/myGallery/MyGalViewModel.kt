@@ -1,114 +1,49 @@
 package com.example.slides.myGallery
 
 import android.app.Application
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.util.Log
-import android.view.View
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.recyclerview.selection.Selection
 import androidx.recyclerview.selection.SelectionTracker
-import androidx.room.RoomDatabase
-import com.example.slides.R
 import com.example.slides.database.MyGalDao
-import com.example.slides.database.MyGalDb
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
-import kotlinx.android.synthetic.main.grid_item_view.view.*
 import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
 
 class MyGalViewModel(
-    database: MyGalDao, selectedImageList: ImagesPaths?, application: Application
-
+        database: MyGalDao, selectedImageList: ImagesPaths?, application: Application
 ) : AndroidViewModel(application) {
 
     private val job = Job()
-    val uiScope = CoroutineScope(Dispatchers.Main + job)
-
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
     private var _getUpdateList = MutableLiveData<List<ImagePath>>()
-    var getUpdateList: LiveData<List<ImagePath>> = _getUpdateList
-    private var _set = MutableLiveData<Boolean>()
-    var set: LiveData<Boolean> = _set
-
-
-    private var _clickedImage = MutableLiveData<ImagePath>()
-    private var clickedImage: LiveData<ImagePath> = _clickedImage
-    private var _clickedList = MutableLiveData<ImagesPaths>()
-    private var clickedList: LiveData<ImagesPaths> = _clickedList
-
-    fun getClickedList(): LiveData<ImagesPaths> {
-        return clickedList
-
-    }
-
+    var getUpdateList: LiveData<List<ImagePath>> = _getUpdateList//to store list from device gal fragment and display in layout
 
 
     init {
         Log.i("InsertToDb", "Called")
         initInsertToDb(database, selectedImageList)
-        _clickedList.value = ImagesPaths()
-        // _set.value = false
-
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    fun onImageClick(imageID: ImagePath, view: View) {
-        _clickedImage.value = imageID
-        if (view.foreground != null || view.imageCheckBox.isChecked == true) {
-            view.foreground = null
-            _clickedList.value?.remove(imageID)
-            // Log.i("MyGalViewModelcalled","${view.imageCheckBox.isChecked}")
-            view.imageCheckBox.isChecked = false
-            if (_clickedList.value?.size == 0) _set.value = false
-        } else if (view.foreground == null || !view.imageCheckBox.isChecked) {
-
-            _set.value = true
-
-            Log.i("MyGalViewModelcalled", "${view.imageCheckBox.isChecked}")
-            view.foreground = ColorDrawable(
-                    ContextCompat.getColor(
-                            view.context,
-                            R.color.DbElements
-                    )
-            )
-            view.imageCheckBox.isChecked = true
-            _clickedList.value!!.add(_clickedImage.value!!)
-            Log.i("AdapterExt", "${_clickedList.value}")
-
-//            Toast.makeText(
-//                    view.context,
-//                    "You clicked on ${imageID.path}!!", Toast.LENGTH_SHORT
-//            ).show()
-        }
-    }
-
-    fun initInsertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
+    private fun initInsertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
         uiScope.launch {
             insertToDb(database, selectedImageList)
         }
-        //initGetFromDb(database)
     }
 
-    suspend fun insertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
+    private suspend fun insertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
         _getUpdateList.value = withContext(Dispatchers.IO) {
             if (selectedImageList != null) {
                 Log.i("InsertToDB", "$selectedImageList")
                 for (i in selectedImageList)
-                    database.insert(i)
+                    database.insert(i)//insert to database on different thread
             }
-            return@withContext database.posts()
+            return@withContext database.posts()//send data only after insertion
         }
-
     }
 
-    fun deleteSelected(database: MyGalDao, list: SelectionTracker<ImagePath>) {
+    fun deleteSelected(database: MyGalDao, list: SelectionTracker<ImagePath>) {//to delete selected images from database
         uiScope.launch {
             _getUpdateList.value = withContext((Dispatchers.IO)) {
                 for (i in list.selection) {
@@ -116,40 +51,19 @@ class MyGalViewModel(
                 }
                 return@withContext database.posts()
             }
-            list.clearSelection()
-
+            list.clearSelection()//then clear selection from tracker
         }
-
-
     }
 
     fun deleteAll(database: MyGalDao) {
         Log.i("MyGalViewModel", "deleteAll called")
         uiScope.launch {
-
             _getUpdateList.value = withContext((Dispatchers.IO)) {
                 Log.i("MyGalViewModel", "deleteAll called 2")
                 database.deleteAll()
                 return@withContext database.posts()
             }
-            _clickedList.value!!.clear()
-
         }
     }
-//    fun initGetFromDb(database: MyGalDao) {
-//        uiScope.launch {
-//            getFromDb(database)
-//        }
-//    }
-//
-//    suspend fun getFromDb(database: MyGalDao) {
-//        _getUpdateList.value = withContext(Dispatchers.IO) {
-//Z
-//            Log.i("InsertToDB@@", "${database.posts().size}")
-//            return@withContext database.posts()
-//        }
-//      //  Log.i("MYGAL","${_getUpdateList.value!!.size}")
-//    }
-
 
 }

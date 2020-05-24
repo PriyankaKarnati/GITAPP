@@ -7,11 +7,11 @@ import com.example.slides.database.MyGalDao
 import com.example.slides.models.ImagesPaths
 
 class MyGalViewModelFactory(
-    private val database: MyGalDao,
-    private val selectedImagesPaths: ImagesPaths?,
-    private val application: Application
+        private val database: MyGalDao,
+        private val selectedImagesPaths: ImagesPaths?,
+        private val application: Application
 ) :
-    ViewModelProvider.Factory {
+        ViewModelProvider.Factory {
 
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

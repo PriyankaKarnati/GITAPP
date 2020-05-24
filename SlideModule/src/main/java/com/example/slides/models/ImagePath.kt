@@ -10,7 +10,6 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "MyGallery")
 @Parcelize
 data class ImagePath(
-
         @PrimaryKey
         val path: String,
         var insertedTime: Long
@@ -24,7 +23,6 @@ data class ImagePath(
 
     companion object : Parceler<ImagePath> {
         override fun ImagePath.write(parcel: Parcel, flags: Int) = with(parcel) {
-
             writeString(path)
         }
 
