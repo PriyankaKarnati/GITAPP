@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.selection.SelectionTracker
 import com.example.slides.R
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
@@ -32,8 +33,17 @@ class DeviceViewModel(application: Application) : AndroidViewModel(application),
     private var _imagesList = MutableLiveData<ImagesPaths>()
     var imagesList: LiveData<ImagesPaths> = _imagesList
 
+    private var _trackerSet = MutableLiveData<Boolean>()
+    var trackerSet: LiveData<Boolean> = _trackerSet
+
     init {
         getAllImages(application)
+        _trackerSet.value = false
+
+    }
+
+    fun setTracker(x: Boolean) {
+        _trackerSet.value = x
     }
 
     fun getImageList(): LiveData<ImagesPaths> {

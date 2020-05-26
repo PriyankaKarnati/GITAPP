@@ -20,12 +20,18 @@ class MyGalViewModel(
     private var _getUpdateList = MutableLiveData<List<ImagePath>>()
     var getUpdateList: LiveData<List<ImagePath>> = _getUpdateList//to store list from device gal fragment and display in layout
 
-
+    private var _trackerSet = MutableLiveData<Boolean>()
+    var trackerSet: LiveData<Boolean> = _trackerSet
     init {
         Log.i("InsertToDb", "Called")
+        _trackerSet.value = false
         initInsertToDb(database, selectedImageList)
+
     }
 
+    fun setTracker(x: Boolean) {
+        _trackerSet.value = x
+    }
     private fun initInsertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
         uiScope.launch {
             insertToDb(database, selectedImageList)

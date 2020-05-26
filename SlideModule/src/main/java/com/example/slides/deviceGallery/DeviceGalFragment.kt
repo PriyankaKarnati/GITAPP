@@ -3,16 +3,16 @@ package com.example.slides.deviceGallery
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
@@ -22,11 +22,10 @@ import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDevice
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import com.example.slides.myGallery.MyGalPhotoAdapter
-import kotlinx.android.synthetic.main.fragment_device_gallery.*
 
 
-class DeviceGalFragment : Fragment() {
-    private lateinit var tracker: SelectionTracker<ImagePath>
+open class DeviceGalFragment : Fragment() {
+    private var tracker: SelectionTracker<ImagePath>? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -42,15 +41,9 @@ class DeviceGalFragment : Fragment() {
             (activity as AppCompatActivity).setSupportActionBar(toolBar)
         }
 
-        val viewModel: DeviceViewModel = ViewModelProviders.of(this).get(DeviceViewModel::class.java)
-        binding.deviceViewModel = viewModel
         val adapter = MyGalPhotoAdapter()
         binding.galleryList.adapter = adapter
 
-
-        if (savedInstanceState != null) {//on resume get the saved state of tracker
-            tracker.onRestoreInstanceState(savedInstanceState)
-        }
         tracker = SelectionTracker.Builder(
                 "DeviceSelection",//selection id
                 binding.galleryList,//recycler view where selection will take place
@@ -63,7 +56,7 @@ class DeviceGalFragment : Fragment() {
             }
 
             override fun canSetStateForKey(key: ImagePath, nextState: Boolean): Boolean {
-                if (nextState && tracker.selection.size() > 4) {//if tracker size exceeds five items stop selection of new items
+                if (nextState && tracker?.selection?.size()!! > 4) {//if tracker size exceeds five items stop selection of new items
                     Toast.makeText(view?.context, "You Clicked 5 items already!", Toast.LENGTH_SHORT).show()
                     return false
                 }
@@ -74,34 +67,45 @@ class DeviceGalFragment : Fragment() {
                 return nextState
             }
         }).build()
+
         adapter.tracker = tracker
 
-        tracker.addObserver(//observer for selection keys
+        val viewModel: DeviceViewModel = ViewModelProvider(this).get(DeviceViewModel::class.java)
+        binding.deviceViewModel = viewModel
+
+        if (savedInstanceState != null) {//on resume get the saved state of tracker
+            tracker!!.onRestoreInstanceState(savedInstanceState)
+
+        }
+
+        tracker?.addObserver(//observer for selection keys
                 object : SelectionTracker.SelectionObserver<ImagePath>() {
+
                     @SuppressLint("SetTextI18n")
                     override fun onSelectionChanged() {
-
-                        val items = tracker.selection.size()
-                        val buttonID = view?.findViewById<Button>(R.id.imageSelectButton)
-                        val selectedText = view?.findViewById<TextView>(R.id.selectedItemsInDev)
+                        val items = tracker!!.selection.size()
+                        val selectedText = binding.selectedItemsInDev
                         if (items > 0) {//if any item is selected
-                            buttonID?.visibility = View.VISIBLE
-                            selectedText?.text = "${tracker.selection.size()}/5"//display number of selected items in toolbar
-                            buttonID?.setOnClickListener {
-                                val listToSend = ImagesPaths()
-                                for (i in tracker.selection) {
-                                    listToSend.add(i)
-                                }
-                                //onclick send to myGalFragment
-                                this@DeviceGalFragment.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
-                            }
+
+                            selectedText.text = "${tracker!!.selection.size()}/5"
+                            viewModel.setTracker(true)
                         } else {
-                            //if no items are selected
-                            buttonID?.visibility = View.GONE
-                            selectedItemsInDev?.text = ""
+                            viewModel.setTracker(false)
                         }
                     }
+
                 })
+
+
+        val buttonID = binding.imageSelectButton
+        buttonID.setOnClickListener {
+            val listToSend = ImagesPaths()
+            for (i in tracker!!.selection) {
+                listToSend.add(i)
+            }
+            //onclick send to myGalFragment
+            this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
+        }
 
         return binding.root
     }
@@ -109,7 +113,8 @@ class DeviceGalFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         //save state on configuration change
         super.onSaveInstanceState(outState)
-        tracker.onSaveInstanceState(outState)
+        tracker!!.onSaveInstanceState(outState)
     }
+
 
 }
