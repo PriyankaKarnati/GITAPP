@@ -30,7 +30,6 @@ import kotlin.coroutines.CoroutineContext
 class DeviceViewModel(application: Application) : AndroidViewModel(application) {
 
 
-    var _imagesList = MediatorLiveData<PagedList<ImagePath>>()
     var imagesList: LiveData<PagedList<ImagePath>>
 
     private var _trackerSet = MutableLiveData<Boolean>()

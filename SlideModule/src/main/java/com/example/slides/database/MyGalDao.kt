@@ -1,5 +1,6 @@
 package com.example.slides.database
 
+import androidx.paging.DataSource
 import androidx.room.*
 import com.example.slides.models.ImagePath
 
@@ -9,7 +10,7 @@ interface MyGalDao {
     fun insert(imagePath: ImagePath)
 
     @Query("SELECT * FROM mygallery order by insertedTime desc")
-    fun posts(): List<ImagePath>
+    fun posts(): DataSource.Factory<Int, ImagePath>
 
     @Query("Delete from mygallery")
     fun deleteAll()

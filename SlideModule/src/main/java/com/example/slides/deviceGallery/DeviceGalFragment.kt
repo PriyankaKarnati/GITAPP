@@ -46,7 +46,6 @@ open class DeviceGalFragment : Fragment() {
         val adapter = MyGalPhotoAdapter()
 
         binding.galleryList.adapter = adapter
-        viewModel.getAllImages(this.requireContext())
         viewModel.imagesList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })

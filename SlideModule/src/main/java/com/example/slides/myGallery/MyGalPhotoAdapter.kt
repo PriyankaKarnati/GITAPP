@@ -120,11 +120,11 @@ class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridIt
 
     class MyItemKeyProvider(private val adapter: MyGalPhotoAdapter) : ItemKeyProvider<ImagePath>(SCOPE_CACHED) {
         //provides key from position
-        override fun getKey(position: Int): ImagePath =
-                adapter.currentList!![position]!!
+        override fun getKey(position: Int): ImagePath? =
+                adapter.currentList?.get(position)
 
         override fun getPosition(key: ImagePath): Int =
-                adapter.currentList!!.indexOfFirst { it == key }
+                adapter.currentList?.indexOfFirst { it == key }!!
     }
 
     class MyItemDetailsLookup(private val recyclerView: RecyclerView) :
