@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.paging.PagedListAdapter
@@ -19,7 +20,7 @@ import com.example.slides.databinding.GridItemViewBinding
 import com.example.slides.models.ImagePath
 
 
-class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemViewHolder>(DiffCallBack) {
+class MyGalPhotoAdapter(val onClickListener: OnClickListener) : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemViewHolder>(DiffCallBack) {
     var tracker: SelectionTracker<ImagePath>? = null//selection key type is parcelable & tracker is the one which tells the
     //library if any item is selected or not
 
@@ -41,6 +42,9 @@ class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridIt
         if (item != null) {
             tracker?.let {
                 holder.bind(item, it.isSelected(getItem(position)), position)//will tell viewHolder the position and if its selected or not
+            }
+            holder.itemView.setOnClickListener {
+                onClickListener.onClick(item)
             }
         }
     }
@@ -110,14 +114,11 @@ class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridIt
 
     }
 
-//    class OnClickListener(val clickListener: (gitProperty: ImagePath, imageView: View) -> Unit) {
-//
-//        fun onClick(gitProperty: ImagePath, itemView: View) {
-//            clickListener(gitProperty, itemView)
-//
-//
-//        }
-//    }
+    class OnClickListener(val clickListener: (image: ImagePath) -> Unit) {
+        fun onClick(x: ImagePath) {
+            clickListener(x)
+        }
+    }
 
     class MyItemKeyProvider(private val adapter: MyGalPhotoAdapter) : ItemKeyProvider<ImagePath>(SCOPE_CACHED) {
         //provides key from position

@@ -17,6 +17,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.slides.databinding.FragmentDeviceGalleryBinding
+import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToGalViewPager
 import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
@@ -43,7 +44,8 @@ open class DeviceGalFragment : Fragment() {
         val viewModel: DeviceViewModel = ViewModelProvider(this).get(DeviceViewModel::class.java)
         binding.deviceViewModel = viewModel
 
-        val adapter = MyGalPhotoAdapter()
+        val adapter = MyGalPhotoAdapter(MyGalPhotoAdapter.OnClickListener {
+        })
 
         binding.galleryList.adapter = adapter
         viewModel.imagesList.observe(viewLifecycleOwner, Observer {

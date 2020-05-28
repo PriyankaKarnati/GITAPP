@@ -11,4 +11,5 @@
     <string name="device_gallery_image">Device Gallery Image</string>
     <string name="check_box">check box</string>
     <string name="custom_gallery_database">custom_gallery_database</string>
+    <string name="viewPagerImage">ViewPagerImage</string>
 </resources>
