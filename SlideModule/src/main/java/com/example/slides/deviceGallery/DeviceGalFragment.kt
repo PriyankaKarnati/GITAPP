@@ -3,25 +3,25 @@ package com.example.slides.deviceGallery
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
-import com.example.slides.R
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.slides.databinding.FragmentDeviceGalleryBinding
 import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import com.example.slides.myGallery.MyGalPhotoAdapter
+import com.example.slides.myGallery.PaginationScrollListener
 
 
 open class DeviceGalFragment : Fragment() {
@@ -40,9 +40,18 @@ open class DeviceGalFragment : Fragment() {
         if (activity is AppCompatActivity) {//display custom toolbar as action bar
             (activity as AppCompatActivity).setSupportActionBar(toolBar)
         }
+        val viewModel: DeviceViewModel = ViewModelProvider(this).get(DeviceViewModel::class.java)
+        binding.deviceViewModel = viewModel
 
         val adapter = MyGalPhotoAdapter()
+
         binding.galleryList.adapter = adapter
+        viewModel.getAllImages(this.requireContext())
+        viewModel.imagesList.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+        })
+
+
 
         tracker = SelectionTracker.Builder(
                 "DeviceSelection",//selection id
@@ -70,8 +79,6 @@ open class DeviceGalFragment : Fragment() {
 
         adapter.tracker = tracker
 
-        val viewModel: DeviceViewModel = ViewModelProvider(this).get(DeviceViewModel::class.java)
-        binding.deviceViewModel = viewModel
 
         if (savedInstanceState != null) {//on resume get the saved state of tracker
             tracker!!.onRestoreInstanceState(savedInstanceState)
@@ -118,3 +125,6 @@ open class DeviceGalFragment : Fragment() {
 
 
 }
+
+
+

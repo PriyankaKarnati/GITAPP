@@ -1,22 +1,24 @@
 package com.example.slides.myGallery
 
-import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slides.bindImage
 import com.example.slides.databinding.GridItemViewBinding
 import com.example.slides.models.ImagePath
 
-class MyGalPhotoAdapter : ListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemViewHolder>(DiffCallBack) {
+
+class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemViewHolder>(DiffCallBack) {
     var tracker: SelectionTracker<ImagePath>? = null//selection key type is parcelable & tracker is the one which tells the
     //library if any item is selected or not
 
@@ -119,10 +121,10 @@ class MyGalPhotoAdapter : ListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemVie
     class MyItemKeyProvider(private val adapter: MyGalPhotoAdapter) : ItemKeyProvider<ImagePath>(SCOPE_CACHED) {
         //provides key from position
         override fun getKey(position: Int): ImagePath =
-                adapter.currentList[position]
+                adapter.currentList!![position]!!
 
         override fun getPosition(key: ImagePath): Int =
-                adapter.currentList.indexOfFirst { it == key }
+                adapter.currentList!!.indexOfFirst { it == key }
     }
 
     class MyItemDetailsLookup(private val recyclerView: RecyclerView) :
@@ -136,5 +138,6 @@ class MyGalPhotoAdapter : ListAdapter<ImagePath, MyGalPhotoAdapter.MyGridItemVie
             return null
         }
     }
+
 }
 
