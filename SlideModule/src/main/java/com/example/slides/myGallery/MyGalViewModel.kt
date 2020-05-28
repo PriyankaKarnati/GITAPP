@@ -60,18 +60,22 @@ class MyGalViewModel(
 
     }
 
+
     fun deleteSelected(database: MyGalDao, list: SelectionTracker<ImagePath>) {//to delete selected images from database
         viewModelScope.launch {
             withContext((Dispatchers.IO)) {
                 for (i in list.selection) {
                     database.deleteSelected(i)
                 }
+                //then clear selection from tracker
 
 
             }
-            list.clearSelection()//then clear selection from tracker
-            //Log.i("updated List size","${getUpdateList.value?.size}")
+            list.clearSelection()
+
+            Log.i("updated List size", "${getUpdateList.value?.size}, ${list.hasSelection()}")
         }
+
     }
 
 //    fun deleteAll(database: MyGalDao) {

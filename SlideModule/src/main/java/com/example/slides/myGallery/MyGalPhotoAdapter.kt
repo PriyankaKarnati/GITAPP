@@ -1,6 +1,7 @@
 package com.example.slides.myGallery
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridIt
     //library if any item is selected or not
 
     init {
-        setHasStableIds(true)//each item in the data set can be represented with a unique identifier of type parcelable
+//        setHasStableIds(true)//each item in the data set can be represented with a unique identifier of type parcelable
     }
 
     override fun onCreateViewHolder(
@@ -92,7 +93,7 @@ class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridIt
     companion object DiffCallBack : DiffUtil.ItemCallback<ImagePath>() {
         //to figure out the differences between current list and old list
         override fun areItemsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
-            return oldItem == newItem
+            return oldItem.insertedTime == newItem.insertedTime
         }
 
         override fun areContentsTheSame(oldItem: ImagePath, newItem: ImagePath): Boolean {
@@ -121,10 +122,12 @@ class MyGalPhotoAdapter : PagedListAdapter<ImagePath, MyGalPhotoAdapter.MyGridIt
     class MyItemKeyProvider(private val adapter: MyGalPhotoAdapter) : ItemKeyProvider<ImagePath>(SCOPE_CACHED) {
         //provides key from position
         override fun getKey(position: Int): ImagePath? =
-                adapter.currentList?.get(position)
+                adapter.getItem(position)
 
-        override fun getPosition(key: ImagePath): Int =
-                adapter.currentList?.indexOfFirst { it == key }!!
+        override fun getPosition(key: ImagePath): Int {
+            Log.i("restoring state", "${adapter.currentList?.size}")
+            return adapter.currentList?.indexOfFirst { it == key }!!
+        }
     }
 
     class MyItemDetailsLookup(private val recyclerView: RecyclerView) :

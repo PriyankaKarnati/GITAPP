@@ -48,6 +48,10 @@ open class DeviceGalFragment : Fragment() {
         binding.galleryList.adapter = adapter
         viewModel.imagesList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            if (savedInstanceState != null) {//on resume get the saved state of tracker
+                tracker!!.onRestoreInstanceState(savedInstanceState)
+
+            }
         })
 
 
@@ -79,10 +83,7 @@ open class DeviceGalFragment : Fragment() {
         adapter.tracker = tracker
 
 
-        if (savedInstanceState != null) {//on resume get the saved state of tracker
-            tracker!!.onRestoreInstanceState(savedInstanceState)
 
-        }
 
         tracker?.addObserver(//observer for selection keys
                 object : SelectionTracker.SelectionObserver<ImagePath>() {

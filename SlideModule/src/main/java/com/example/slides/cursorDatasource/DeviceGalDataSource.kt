@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DeviceGalDataSource(private val contentResolver: ContentResolver, val scope: CoroutineScope) : PositionalDataSource<ImagePath>() {
-    var listOfAllImages = ImagesPaths()
+
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<ImagePath>) {
         scope.launch {
