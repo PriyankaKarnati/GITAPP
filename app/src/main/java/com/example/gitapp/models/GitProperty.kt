@@ -39,7 +39,6 @@ data class GitProperty(
 //}
 
 
-
 @Parcelize
 data class Another(
         val login: String,

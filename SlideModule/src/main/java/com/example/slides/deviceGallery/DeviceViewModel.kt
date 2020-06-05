@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import androidx.recyclerview.selection.SelectionTracker
 import com.example.slides.R
 import com.example.slides.cursorDatasource.DeviceGalDataSource
 import com.example.slides.cursorDatasource.DeviceGalDataSourceFactory

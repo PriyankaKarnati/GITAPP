@@ -22,16 +22,12 @@
             android:id="@+id/viewPagerImage"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:adjustViewBounds="false"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/viewPagerImage"
-            android:scaleType="centerCrop"
-            app:imageUrl="@{viewModel.clickedImage.path}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.452"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:originalImage="@{viewModel.clickedImage.path}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

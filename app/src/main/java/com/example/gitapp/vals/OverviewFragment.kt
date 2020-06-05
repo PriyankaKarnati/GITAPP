@@ -85,10 +85,10 @@ class OverviewFragment : Fragment() {
 //                            for (j in 0..2) {
 //                                if (curLM == layoutManagers[j]) {
 ////                                    private Parcelable recyclerViewState;
-////                                    recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+////                                    recyclerViewState = recyclerView!!.getLayoutManager().onSaveInstanceState();
 ////
 ////// Restore state
-////                                    recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+////                                    recyclerView!!.getLayoutManager().onRestoreInstanceState(recyclerViewState);
 //                                    var recyclerViewState: Parcelable? =
 //                                        (plist?.layoutManager as GridLayoutManager).onSaveInstanceState()
 //                                    plist?.layoutManager = layoutManagers[j + 1]

@@ -5,14 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.PagerAdapter
 import com.example.gitapp.R
 import com.example.gitapp.bindImage
@@ -39,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_detail.view.*
 //
 //    class GitItemViewHolder(itemView: View) :
 //
-//            RecyclerView.ViewHolder(itemView) {
+//            recyclerView!!.ViewHolder(itemView) {
 //        val fullName = itemView.tv1
 //        val userText = itemView.tv2
 //        val htmlUrl = itemView.tv3
@@ -106,7 +99,7 @@ class FragPagerAdapter(private val list: PagedList<GitProperty?>?) : PagerAdapte
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         //_POSIT.value = position
-        val view = LayoutInflater.from(container.context).inflate(R.layout.fragment_detail, container, false)
+        val view = LayoutInflater.from(container!!.context).inflate(R.layout.fragment_detail, container, false)
 
         list?.loadAround(position)
 
@@ -128,22 +121,20 @@ class FragPagerAdapter(private val list: PagedList<GitProperty?>?) : PagerAdapte
 
         val textV4 = view.findViewById<TextView>(R.id.tv4)
         textV4.text = "Description : " + list?.get(position)?.description
-        container.addView(view)
+        container!!.addView(view)
         //_POSIT.value = position
         return view
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
 //        _POSIT.value = position
-        container.removeView(obj as View)
+        container!!.removeView(obj as View)
 
     }
 
     override fun getItemPosition(`object`: Any): Int {
         return POSITION_NONE
     }
-
-
 
 
 }

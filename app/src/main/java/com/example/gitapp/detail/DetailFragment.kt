@@ -30,7 +30,7 @@ class DetailFragment : Fragment() {
         val binding = FragmentDetailBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
-        gitP = DetailFragmentArgs.fromBundle(arguments!!).selectedProperty
+        gitP = DetailFragmentArgs.fromBundle(requireArguments()).selectedProperty
 
         val detailViewModelFactory = DetailViewModelFactory(gitP, application)
 
@@ -41,7 +41,7 @@ class DetailFragment : Fragment() {
 
         sharedModel = activity.run { ViewModelProviders.of(this!!).get(OverviewViewModel::class.java) }
 
-        sharedModel.getPosts().observe(this, Observer {
+        sharedModel.getPosts().observe(viewLifecycleOwner, Observer {
             if (null != it) {
                 detailViewModel.setList(sharedModel.getPosts().value)
             }
@@ -50,7 +50,7 @@ class DetailFragment : Fragment() {
 
 
 
-        detailViewModel.pList.observe(this, Observer {
+        detailViewModel.pList.observe(viewLifecycleOwner, Observer {
             if (null != it) {
 
 

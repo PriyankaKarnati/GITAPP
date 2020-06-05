@@ -15,14 +15,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
-import androidx.recyclerview.widget.GridLayoutManager
+import com.droidninja.imageeditengine.ImageEditor
 import com.example.slides.databinding.FragmentDeviceGalleryBinding
 import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToGalViewPager
 import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import com.example.slides.myGallery.MyGalPhotoAdapter
-import com.example.slides.myGallery.PaginationScrollListener
 
 
 open class DeviceGalFragment : Fragment() {
@@ -108,12 +107,14 @@ open class DeviceGalFragment : Fragment() {
 
         val buttonID = binding.imageSelectButton
         buttonID.setOnClickListener {
-            val listToSend = ImagesPaths()
+            val listToSend = ArrayList<String>()
+
             for (i in tracker!!.selection) {
-                listToSend.add(i)
+                listToSend.add(i.path)
             }
             //onclick send to myGalFragment
-            this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
+            ImageEditor.Builder(this.activity, listToSend[0]).open()
+            //this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
         }
 
         return binding.root

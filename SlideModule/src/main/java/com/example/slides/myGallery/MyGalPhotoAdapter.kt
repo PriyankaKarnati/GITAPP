@@ -4,7 +4,6 @@ import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.paging.PagedListAdapter
@@ -12,8 +11,6 @@ import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.slides.bindImage
 import com.example.slides.databinding.GridItemViewBinding
@@ -135,9 +132,9 @@ class MyGalPhotoAdapter(val onClickListener: OnClickListener) : PagedListAdapter
             ItemDetailsLookup<ImagePath>() {
         //class that will provide the selection library the information about the items associated with the users selection.
         override fun getItemDetails(event: MotionEvent): ItemDetails<ImagePath>? {//based on motion Event we map to viewHolders
-            val view = recyclerView.findChildViewUnder(event.x, event.y)
+            val view = recyclerView!!.findChildViewUnder(event.x, event.y)
             if (view != null) {
-                return (recyclerView.getChildViewHolder(view) as MyGridItemViewHolder).getItemDetails()//we will get details from viewHolder
+                return (recyclerView!!.getChildViewHolder(view) as MyGridItemViewHolder).getItemDetails()//we will get details from viewHolder
             }
             return null
         }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GITAPP.iml" filepath="$PROJECT_DIR$/.idea/modules/GITAPP.iml" group="GITAPP" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GITAPP/GITAPP-GITAPP.iml" filepath="$PROJECT_DIR$/.idea/modules/GITAPP/GITAPP-GITAPP.iml" group="GITAPP/GITAPP" />
+      <module fileurl="file://$PROJECT_DIR$/SlideModule/SlideModule.iml" filepath="$PROJECT_DIR$/SlideModule/SlideModule.iml" group="GITAPP/SlideModule" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="GITAPP/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/filepicker/filepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/filepicker/filepicker.iml" group="GITAPP/filepicker" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/imageeditengine/imageeditengine.iml" filepath="$PROJECT_DIR$/.idea/modules/imageeditengine/imageeditengine.iml" group="GITAPP/imageeditengine" />
+    </modules>
+  </component>
+</project>

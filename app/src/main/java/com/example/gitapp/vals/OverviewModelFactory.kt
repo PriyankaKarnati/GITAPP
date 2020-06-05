@@ -10,7 +10,7 @@ import com.example.gitapp.db.gitHubDao
 import com.example.gitapp.models.GitProperty
 
 class OverviewModelFactory(
-    private val pagedList: PagedList<GitProperty?>?
+        private val pagedList: PagedList<GitProperty?>?
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

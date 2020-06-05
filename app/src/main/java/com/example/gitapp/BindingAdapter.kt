@@ -28,7 +28,7 @@ fun bindImage(imgView: ImageView, imgURL: String?) {
 @BindingAdapter("listImage")
 fun bindList(recyclerView: RecyclerView, data: PagedList<GitProperty>?) {
 
-    val adapter = recyclerView.adapter as PhotoListAdapter
+    val adapter = recyclerView!!.adapter as PhotoListAdapter
     adapter.submitList(data)
 
 }

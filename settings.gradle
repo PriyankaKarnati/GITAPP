@@ -1,2 +1,3 @@
-include ':app', ':SlideModule'
-rootProject.name='GITAPP'
+
+include ':app', ':SlideModule', ':filepicker',':imageeditengine',
+        rootProject.name = 'GITAPP'

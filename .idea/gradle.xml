@@ -11,8 +11,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/GITAPP" />
             <option value="$PROJECT_DIR$/SlideModule" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/filepicker" />
+            <option value="$PROJECT_DIR$/imageeditengine" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

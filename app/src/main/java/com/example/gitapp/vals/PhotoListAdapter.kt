@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gitapp.R
 import com.example.gitapp.bindImage
@@ -20,9 +19,9 @@ import kotlinx.android.synthetic.main.listview_item.view.*
 
 
 class PhotoListAdapter(
-    val cols: Int,
-    val onClickListener: OnClickListener,
-    val onLongPressListener: OnLongPressListener
+        val cols: Int,
+        val onClickListener: OnClickListener,
+        val onLongPressListener: OnLongPressListener
 ) :
         PagedListAdapter<GitProperty, PhotoListAdapter.GitItemViewHolder>(DiffCallBack) {
 
@@ -57,22 +56,22 @@ class PhotoListAdapter(
                 } else {
                     if (clickedList.size < 5) {
                         it.foreground = ColorDrawable(
-                            ContextCompat.getColor(
-                                it.context,
-                                R.color.colorForeGround
-                            )
+                                ContextCompat.getColor(
+                                        it.context,
+                                        R.color.colorForeGround
+                                )
                         )
                         clickedList.add(item)
                         Toast.makeText(
-                            it.context,
-                            "You clicked on ${item.full_name}!!", Toast.LENGTH_SHORT
+                                it.context,
+                                "You clicked on ${item.full_name}!!", Toast.LENGTH_SHORT
                         ).show()
                         onClickListener.onClick(item)
                     } else {
                         Toast.makeText(
-                            it.context,
-                            "You Clicked 5 items already",
-                            Toast.LENGTH_SHORT
+                                it.context,
+                                "You Clicked 5 items already",
+                                Toast.LENGTH_SHORT
                         ).show()
                     }
 
@@ -81,7 +80,7 @@ class PhotoListAdapter(
             }
             holder.itemView.setOnLongClickListener {
                 it.foreground =
-                    ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
+                        ColorDrawable(ContextCompat.getColor(it.context, R.color.colorOnClick))
                 onLongPressListener.onLongClick(item)
                 true
             }

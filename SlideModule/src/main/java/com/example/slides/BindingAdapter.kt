@@ -3,7 +3,6 @@ package com.example.slides
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.slides.models.ImagePath
 import com.example.slides.myGallery.MyGalPhotoAdapter
@@ -20,10 +19,18 @@ fun bindImage(imgView: ImageView, imgURL: String?) {
 
 }
 
-@BindingAdapter("listImage")
-fun bindList(recyclerView: RecyclerView, data: PagedList<ImagePath>?) {//binding layout to list
-
-    val adapter = recyclerView.adapter as MyGalPhotoAdapter
-    adapter.submitList(data)
-
+@BindingAdapter("originalImage")
+fun bindOriImage(imgView: ImageView, imgURL: String?) {
+    imgURL?.let {
+        Glide.with(imgView.context).load(imgURL).placeholder(R.drawable.animate_rotate)
+                .into(imgView) //loading image from image Path and show placeholder & then thumbnail before loading
+    }
 }
+
+//@BindingAdapter("listImage")
+//fun bindList(recyclerView: RecyclerView, data: PagedList<ImagePath>?) {//binding layout to list
+//
+//    val adapter = recyclerView!!.adapter as MyGalPhotoAdapter
+//    adapter.submitList(data)
+//
+//}

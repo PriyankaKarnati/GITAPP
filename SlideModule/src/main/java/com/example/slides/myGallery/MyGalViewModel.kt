@@ -25,6 +25,7 @@ class MyGalViewModel(
 
     private var _trackerSet = MutableLiveData<Boolean>()
     var trackerSet: LiveData<Boolean> = _trackerSet
+
     init {
         Log.i("InsertToDb", "Called")
         _trackerSet.value = false
