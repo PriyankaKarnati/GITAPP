@@ -104,8 +104,8 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
     }
 
     private var mGestureInProgress = false
-    private lateinit var mPrevEvent: MotionEvent
-    private lateinit var mCurrEvent: MotionEvent
+    private var mPrevEvent: MotionEvent? = null
+    private var mCurrEvent: MotionEvent? = null
     private val mCurrSpanVector: Vector2D = Vector2D()
     private var mFocusX = 0f
     private var mFocusY = 0f
@@ -143,7 +143,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
                 MotionEvent.ACTION_POINTER_DOWN -> {
 
                     // We have a new multi-finger gesture
-                    if (mPrevEvent != null) mPrevEvent.recycle()
+                    if (mPrevEvent != null) mPrevEvent!!.recycle()
                     mPrevEvent = MotionEvent.obtain(event)
                     mTimeDelta = 0
                     val index1 = event.actionIndex
@@ -213,7 +213,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
                                 gestureEnded = true
                             }
                         }
-                        mPrevEvent.recycle()
+                        mPrevEvent!!.recycle()
                         mPrevEvent = MotionEvent.obtain(event)
                         setContext(view, event)
                     } else {
@@ -248,7 +248,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
                     if (mCurrPressure / mPrevPressure > PRESSURE_THRESHOLD) {
                         val updatePrevious = mListener.onScale(view, this)
                         if (updatePrevious) {
-                            mPrevEvent.recycle()
+                            mPrevEvent!!.recycle()
                             mPrevEvent = MotionEvent.obtain(event)
                         }
                     }
@@ -275,7 +275,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
 
     private fun setContext(view: View, curr: MotionEvent) {
         if (mCurrEvent != null) {
-            mCurrEvent.recycle()
+            mCurrEvent!!.recycle()
         }
         mCurrEvent = MotionEvent.obtain(curr)
         mCurrLen = -1f
@@ -283,8 +283,8 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
         mScaleFactor = -1f
         mCurrSpanVector.set(0.0f, 0.0f)
         val prev = mPrevEvent
-        val prevIndex0 = prev.findPointerIndex(mActiveId0)
-        val prevIndex1 = prev.findPointerIndex(mActiveId1)
+        val prevIndex0 = prev!!.findPointerIndex(mActiveId0)
+        val prevIndex1 = prev!!.findPointerIndex(mActiveId1)
         val currIndex0 = curr.findPointerIndex(mActiveId0)
         val currIndex1 = curr.findPointerIndex(mActiveId1)
         if (prevIndex0 < 0 || prevIndex1 < 0 || currIndex0 < 0 || currIndex1 < 0) {
@@ -321,10 +321,12 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
 
     private fun reset() {
         if (mPrevEvent != null) {
-            mPrevEvent.recycle()
+            mPrevEvent!!.recycle()
+            mPrevEvent = null
         }
         if (mCurrEvent != null) {
-            mCurrEvent.recycle()
+            mCurrEvent!!.recycle()
+            mCurrEvent = null
         }
         mGestureInProgress = false
         mActiveId0 = -1
@@ -380,7 +382,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
         if (mCurrLen == -1f) {
             val cvx = mCurrFingerDiffX
             val cvy = mCurrFingerDiffY
-            mCurrLen = Math.sqrt(cvx * cvx + cvy * cvy.toDouble()) as Float
+            mCurrLen = Math.sqrt(cvx * cvx + cvy * cvy.toDouble()).toFloat()
         }
         return mCurrLen
     }
@@ -419,7 +421,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
         if (mPrevLen == -1f) {
             val pvx = mPrevFingerDiffX
             val pvy = mPrevFingerDiffY
-            mPrevLen = Math.sqrt(pvx * pvx + pvy * pvy.toDouble()) as Float
+            mPrevLen = Math.sqrt(pvx * pvx + pvy * pvy.toDouble()).toFloat()
         }
         return mPrevLen
     }
@@ -474,7 +476,7 @@ internal class ScaleGestureDetector(private val mListener: OnScaleGestureListene
      * @return Current event time in milliseconds.
      */
     fun getEventTime(): Long {
-        return mCurrEvent.eventTime
+        return mCurrEvent!!.eventTime
     }
 
     companion object {

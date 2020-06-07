@@ -36,7 +36,7 @@ class AutofitHelper private constructor(view: TextView?) {
     private var mPrecision: Float
     private var mEnabled = false
     private var mIsAutofitting = false
-    private lateinit var mListeners: ArrayList<OnTextSizeChangeListener>
+    private var mListeners: ArrayList<OnTextSizeChangeListener>? = null
     private val mTextWatcher: TextWatcher = AutofitTextWatcher()
     private val mOnLayoutChangeListener: View.OnLayoutChangeListener = AutofitOnLayoutChangeListener()
 
@@ -48,7 +48,7 @@ class AutofitHelper private constructor(view: TextView?) {
         if (mListeners == null) {
             mListeners = ArrayList()
         }
-        mListeners.add(listener!!)
+        mListeners!!.add(listener!!)
         return this
     }
 
@@ -58,7 +58,7 @@ class AutofitHelper private constructor(view: TextView?) {
      */
     fun removeOnTextSizeChangeListener(listener: OnTextSizeChangeListener?): AutofitHelper? {
         if (mListeners != null) {
-            mListeners.remove(listener)
+            mListeners!!.remove(listener)
         }
         return this
     }
@@ -278,7 +278,7 @@ class AutofitHelper private constructor(view: TextView?) {
         if (mListeners == null) {
             return
         }
-        for (listener in mListeners) {
+        for (listener in mListeners!!) {
             listener.onTextSizeChange(textSize, oldTextSize)
         }
     }
@@ -415,7 +415,7 @@ class AutofitHelper private constructor(view: TextView?) {
             paint!!.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, mid,
                     displayMetrics)
             if (maxLines != 1) {
-                layout = StaticLayout(text, paint, targetWidth as Int, Layout.Alignment.ALIGN_NORMAL,
+                layout = StaticLayout(text, paint, targetWidth.toInt(), Layout.Alignment.ALIGN_NORMAL,
                         1.0f, 0.0f, true)
                 lineCount = layout.lineCount
             }
@@ -459,7 +459,7 @@ class AutofitHelper private constructor(view: TextView?) {
                                  displayMetrics: DisplayMetrics?): Int {
             paint!!.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, size,
                     displayMetrics)
-            val layout = StaticLayout(text, paint, width as Int,
+            val layout = StaticLayout(text, paint, width.toInt(),
                     Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, true)
             return layout.lineCount
         }

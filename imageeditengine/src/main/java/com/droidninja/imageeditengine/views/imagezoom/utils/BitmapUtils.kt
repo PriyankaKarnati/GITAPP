@@ -84,10 +84,10 @@ class BitmapUtils {
 
         fun getScaledSize(originalWidth: Int,
                           originalHeight: Int, numPixels: Int): BitmapSize? {
-            val ratio = originalWidth as Float / originalHeight
-            val scaledHeight = Math.sqrt(numPixels as Float / ratio.toDouble()) as Int
-            val scaledWidth = (ratio * Math.sqrt((numPixels as Float
-                    / ratio).toDouble())) as Int
+            val ratio = originalWidth.toFloat() / originalHeight
+            val scaledHeight = Math.sqrt(numPixels.toFloat() / ratio.toDouble()).toInt()
+            val scaledWidth = (ratio * Math.sqrt((numPixels.toFloat()
+                    / ratio).toDouble())).toInt()
             return BitmapSize(scaledWidth, scaledHeight)
         }
 
@@ -152,9 +152,9 @@ class BitmapUtils {
             // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
             var be = 1 // be=1表示不缩放
             if (w > h && w > ww) { // 如果宽度大的话根据宽度固定大小缩放
-                be = (newOpts.outWidth / ww) as Int
+                be = (newOpts.outWidth / ww).toInt()
             } else if (w < h && h > hh) { // 如果高度高的话根据宽度固定大小缩放
-                be = (newOpts.outHeight / hh) as Int
+                be = (newOpts.outHeight / hh).toInt()
             }
             if (be <= 0) be = 1
             newOpts.inSampleSize = be // 设置缩放比例
@@ -185,9 +185,9 @@ class BitmapUtils {
             // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
             var be = 1 // be=1表示不缩放
             if (w > h && w > ww) { // 如果宽度大的话根据宽度固定大小缩放
-                be = (newOpts.outWidth / ww) as Int
+                be = (newOpts.outWidth / ww).toInt()
             } else if (w < h && h > hh) { // 如果高度高的话根据宽度固定大小缩放
-                be = (newOpts.outHeight / hh) as Int
+                be = (newOpts.outHeight / hh).toInt()
             }
             if (be <= 0) be = 1
             newOpts.inSampleSize = be // 设置缩放比例
@@ -306,11 +306,11 @@ class BitmapUtils {
             if (srcWidth > dstWidth || srcHeight > dstHeight) {
                 needsResize = true
                 if (srcWidth > srcHeight && srcWidth > dstWidth) {
-                    p = dstWidth as Float / srcWidth as Float
-                    dstHeight = (srcHeight * p) as Int
+                    p = dstWidth.toFloat() / srcWidth.toFloat()
+                    dstHeight = (srcHeight * p).toInt()
                 } else {
-                    p = dstHeight as Float / srcHeight as Float
-                    dstWidth = (srcWidth * p) as Int
+                    p = dstHeight.toFloat() / srcHeight.toFloat()
+                    dstWidth = (srcWidth * p).toInt()
                 }
             } else {
                 dstWidth = srcWidth
@@ -322,7 +322,7 @@ class BitmapUtils {
                     Bitmap.createScaledBitmap(input, dstWidth, dstHeight, true)
                 } else {
                     val matrix = Matrix()
-                    matrix.postScale(dstWidth as Float / srcWidth, dstHeight as Float / srcHeight)
+                    matrix.postScale(dstWidth.toFloat() / srcWidth, dstHeight.toFloat() / srcHeight)
                     matrix.postRotate(rotation.toFloat())
                     Bitmap.createBitmap(input, 0, 0, srcWidth, srcHeight, matrix, true)
                 }

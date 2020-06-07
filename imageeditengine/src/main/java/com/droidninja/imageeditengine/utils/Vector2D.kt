@@ -8,7 +8,7 @@ internal class Vector2D : PointF {
     constructor(x: Float, y: Float) : super(x, y) {}
 
     fun normalize() {
-        val length = Math.sqrt(x * x + y * y.toDouble()) as Float
+        val length = Math.sqrt(x * x + y * y.toDouble()).toFloat()
         x /= length
         y /= length
     }
@@ -18,7 +18,7 @@ internal class Vector2D : PointF {
             vector1.normalize()
             vector2.normalize()
             val degrees = 180.0 / Math.PI * (atan2(vector2.y.toDouble(), vector2.x.toDouble()) - atan2(vector1.y.toDouble(), vector1.x.toDouble()))
-            return degrees as Float
+            return degrees.toFloat()
         }
     }
 }

@@ -94,7 +94,7 @@ class VerticalSlideColorPicker : View {
         var yPos = Math.min(event!!.y, colorPickerBody!!.bottom)
         yPos = Math.max(colorPickerBody!!.top, yPos)
         selectorYPos = yPos
-        defaultColor = bitmap!!.getPixel(viewWidth / 2, selectorYPos as Int)
+        defaultColor = bitmap!!.getPixel(viewWidth / 2, selectorYPos.toInt())
         if (onColorChangeListener != null) {
             onColorChangeListener!!.onColorChange(defaultColor)
         }

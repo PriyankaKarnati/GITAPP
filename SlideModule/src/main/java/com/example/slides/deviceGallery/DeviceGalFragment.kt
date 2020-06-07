@@ -113,7 +113,8 @@ open class DeviceGalFragment : Fragment() {
                 listToSend.add(i.path)
             }
             //onclick send to myGalFragment
-            ImageEditor.Builder(this.activity, listToSend[0]).open()
+            for (i in listToSend)
+                ImageEditor.Builder(this.activity, i).setStickerAssets("stickers")!!.open()
             //this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
         }
 

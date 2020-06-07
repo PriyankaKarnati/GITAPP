@@ -36,8 +36,8 @@ object RectUtil {
                    roatetAngle: Float) {
         val x = rect.centerX()
         val y = rect.centerY()
-        val sinA = Math.sin(Math.toRadians(roatetAngle.toDouble())) as Float
-        val cosA = Math.cos(Math.toRadians(roatetAngle.toDouble())) as Float
+        val sinA = Math.sin(Math.toRadians(roatetAngle.toDouble())).toFloat()
+        val cosA = Math.cos(Math.toRadians(roatetAngle.toDouble())).toFloat()
         val newX = center_x + (x - center_x) * cosA - (y - center_y) * sinA
         val newY = center_y + (y - center_y) * cosA + (x - center_x) * sinA
         val dx = newX - x

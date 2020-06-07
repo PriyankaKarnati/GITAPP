@@ -35,7 +35,7 @@ object DecodeUtils {
             sampleSize = if (maxW < 0 || maxH < 0) {
                 1
             } else {
-                computeSampleSize(imageSize[0], imageSize[1], (maxW * 1.2) as Int, (maxH * 1.2) as Int, orientation)
+                computeSampleSize(imageSize[0], imageSize[1], (maxW * 1.2).toInt(), (maxH * 1.2).toInt(), orientation)
             }
             val options = getDefaultOptions()
             options!!.inSampleSize = sampleSize
@@ -121,7 +121,7 @@ object DecodeUtils {
             w = bitmapH.toDouble()
             h = bitmapW.toDouble()
         }
-        return Math.ceil(Math.max(w / maxW, h / maxH)) as Int
+        return Math.ceil(Math.max(w / maxW, h / maxH)).toInt()
     }
 
     /**

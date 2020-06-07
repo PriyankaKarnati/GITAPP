@@ -136,7 +136,7 @@ object BitmapUtils {
                         fixAspectRatio,
                         aspectRatioX,
                         aspectRatioY,
-                        1 / scale as Float,
+                        1 / scale.toFloat(),
                         flipHorizontally,
                         flipVertically)
                 return BitmapSampled(cropBitmap, scale)
@@ -385,10 +385,10 @@ object BitmapUtils {
                 } else {
                     val width = bitmap.width
                     val height = bitmap.height
-                    val scale = Math.max(width / reqWidth as Float, height / reqHeight as Float)
+                    val scale = Math.max(width / reqWidth.toFloat(), height / reqHeight.toFloat())
                     if (scale > 1 || options == RequestSizeOptions.RESIZE_FIT) {
                         resized = Bitmap.createScaledBitmap(
-                                bitmap, (width / scale) as Int, (height / scale) as Int, false)
+                                bitmap, (width / scale).toInt(), (height / scale).toInt(), false)
                     }
                 }
                 if (resized != null) {
@@ -641,10 +641,10 @@ object BitmapUtils {
             var i = 0
             while (i < points.size) {
                 if (points.get(i) >= compareTo - 1 && points.get(i) <= compareTo + 1) {
-                    adjLeft = Math.abs(Math.sin(rads) * (rect.bottom - points.get(i + 1))) as Int
-                    adjTop = Math.abs(Math.cos(rads) * (points.get(i + 1) - rect.top)) as Int
-                    width = Math.abs((points.get(i + 1) - rect.top) / Math.sin(rads)) as Int
-                    height = Math.abs((rect.bottom - points.get(i + 1)) / Math.cos(rads)) as Int
+                    adjLeft = Math.abs(Math.sin(rads) * (rect.bottom - points.get(i + 1))).toInt()
+                    adjTop = Math.abs(Math.cos(rads) * (points.get(i + 1) - rect.top)).toInt()
+                    width = Math.abs((points.get(i + 1) - rect.top) / Math.sin(rads)).toInt()
+                    height = Math.abs((rect.bottom - points.get(i + 1)) / Math.cos(rads)).toInt()
                     break
                 }
                 i += 2

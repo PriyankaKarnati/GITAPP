@@ -1168,10 +1168,10 @@ class CropImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                     || viewToBitmapHeightRatio != Double.POSITIVE_INFINITY) {
                 if (viewToBitmapWidthRatio <= viewToBitmapHeightRatio) {
                     desiredWidth = widthSize
-                    desiredHeight = (mBitmap.height * viewToBitmapWidthRatio) as Int
+                    desiredHeight = (mBitmap.height * viewToBitmapWidthRatio).toInt()
                 } else {
                     desiredHeight = heightSize
-                    desiredWidth = (mBitmap.width * viewToBitmapHeightRatio) as Int
+                    desiredWidth = (mBitmap.width * viewToBitmapHeightRatio).toInt()
                 }
             } else {
                 // Otherwise, the picture is within frame layout bounds. Desired width is simply picture
@@ -1775,22 +1775,22 @@ class CropImageView @JvmOverloads constructor(context: Context, attrs: Attribute
                             R.styleable.CropImageView_cropBorderCornerThickness,
                             options.borderCornerThickness)
                     options.minCropWindowWidth = ta.getDimension(
-                            R.styleable.CropImageView_cropMinCropWindowWidth, options.minCropWindowWidth.toFloat()) as Int
+                            R.styleable.CropImageView_cropMinCropWindowWidth, options.minCropWindowWidth.toFloat()).toInt()
                     options.minCropWindowHeight = ta.getDimension(
                             R.styleable.CropImageView_cropMinCropWindowHeight,
-                            options.minCropWindowHeight.toFloat()) as Int
+                            options.minCropWindowHeight.toFloat()).toInt()
                     options.minCropResultWidth = ta.getFloat(
                             R.styleable.CropImageView_cropMinCropResultWidthPX,
-                            options.minCropResultWidth.toFloat()) as Int
+                            options.minCropResultWidth.toFloat()).toInt()
                     options.minCropResultHeight = ta.getFloat(
                             R.styleable.CropImageView_cropMinCropResultHeightPX,
-                            options.minCropResultHeight.toFloat()) as Int
+                            options.minCropResultHeight.toFloat()).toInt()
                     options.maxCropResultWidth = ta.getFloat(
                             R.styleable.CropImageView_cropMaxCropResultWidthPX,
-                            options.maxCropResultWidth.toFloat()) as Int
+                            options.maxCropResultWidth.toFloat()).toInt()
                     options.maxCropResultHeight = ta.getFloat(
                             R.styleable.CropImageView_cropMaxCropResultHeightPX,
-                            options.maxCropResultHeight.toFloat()) as Int
+                            options.maxCropResultHeight.toFloat()).toInt()
                     options.flipHorizontally = ta.getBoolean(
                             R.styleable.CropImageView_cropFlipHorizontally, options.flipHorizontally)
                     options.flipVertically = ta.getBoolean(R.styleable.CropImageView_cropFlipHorizontally, options.flipVertically)

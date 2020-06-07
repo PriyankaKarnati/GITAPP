@@ -103,7 +103,7 @@
 //        val currentBitmapHeight = resource.height
 //        val ivWidth: Int = mainImageView!!.width
 //        val newHeight = Math.floor(
-//                currentBitmapHeight as Double * (ivWidth as Double / currentBitmapWidth as Double)) as Int
+//                currentBitmapHeight as Double * (ivWidth as Double / currentBitmapWidth as Double)).toInt()
 //        return Bitmap.createScaledBitmap(resource, ivWidth, newHeight, true)
 //    }
 //
@@ -150,7 +150,7 @@
 //                    val currentBitmapHeight = resource.height
 //                    val ivWidth: Int = mainImageView!!.width
 //                    val newHeight = Math.floor(
-//                            currentBitmapHeight as Double * (ivWidth as Double / currentBitmapWidth as Double)) as Int
+//                            currentBitmapHeight as Double * (ivWidth as Double / currentBitmapWidth as Double)).toInt()
 //                    originalBitmap = Bitmap.createScaledBitmap(resource, ivWidth, newHeight, true)
 //                    mainBitmap = originalBitmap
 //                    setImageBitmap(mainBitmap)

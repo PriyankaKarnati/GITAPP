@@ -234,8 +234,8 @@ class CropImageOptions : Parcelable {
         guidelinesThickness = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, dm)
         guidelinesColor = Color.argb(170, 255, 255, 255)
         backgroundColor = Color.argb(119, 0, 0, 0)
-        minCropWindowWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42f, dm) as Int
-        minCropWindowHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42f, dm) as Int
+        minCropWindowWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42f, dm).toInt()
+        minCropWindowHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42f, dm).toInt()
         minCropResultWidth = 40
         minCropResultHeight = 40
         maxCropResultWidth = 99999

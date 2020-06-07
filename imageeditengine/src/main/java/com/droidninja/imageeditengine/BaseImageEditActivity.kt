@@ -13,8 +13,8 @@ abstract class BaseImageEditActivity : AppCompatActivity() {
             val values = FloatArray(9)
             val m = img.imageMatrix
             m.getValues(values)
-            offset[0] = values[5] as Int
-            offset[1] = values[2] as Int
+            offset[0] = values[5].toInt()
+            offset[1] = values[2].toInt()
             if (includeLayout) {
                 val lp = img.layoutParams as ViewGroup.MarginLayoutParams
                 val paddingTop = img.paddingTop

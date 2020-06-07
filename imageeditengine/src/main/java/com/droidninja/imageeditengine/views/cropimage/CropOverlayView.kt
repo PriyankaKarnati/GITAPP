@@ -108,7 +108,7 @@ class CropOverlayView  // endregion
      * The aspect ratio that the crop area should maintain; this variable is only used when
      * mMaintainAspectRatio is true.
      */
-    private var mTargetAspectRatio = mAspectRatioX as Float / mAspectRatioY
+    private var mTargetAspectRatio = mAspectRatioX.toFloat() / mAspectRatioY
 
     /** Instance variables for customizable attributes  */
     private var mGuidelines: Guidelines? = null
@@ -258,7 +258,7 @@ class CropOverlayView  // endregion
         require(aspectRatioX > 0) { "Cannot set aspect ratio value to a number less than or equal to 0." }
         if (mAspectRatioX != aspectRatioX) {
             mAspectRatioX = aspectRatioX
-            mTargetAspectRatio = mAspectRatioX as Float / mAspectRatioY
+            mTargetAspectRatio = mAspectRatioX.toFloat() / mAspectRatioY
             if (initializedCropWindow) {
                 initCropWindow()
                 invalidate()
@@ -280,7 +280,7 @@ class CropOverlayView  // endregion
         require(aspectRatioY > 0) { "Cannot set aspect ratio value to a number less than or equal to 0." }
         if (mAspectRatioY != aspectRatioY) {
             mAspectRatioY = aspectRatioY
-            mTargetAspectRatio = mAspectRatioX as Float / mAspectRatioY
+            mTargetAspectRatio = mAspectRatioX.toFloat() / mAspectRatioY
             if (initializedCropWindow) {
                 initCropWindow()
                 invalidate()
@@ -424,7 +424,7 @@ class CropOverlayView  // endregion
                 val centerX = width / 2f
 
                 // dirty fix for wrong crop overlay aspect ratio when using fixed aspect ratio
-                mTargetAspectRatio = mAspectRatioX as Float / mAspectRatioY
+                mTargetAspectRatio = mAspectRatioX.toFloat() / mAspectRatioY
 
                 // Limits the aspect ratio to no less than 40 wide or 40 tall
                 val cropWidth = Math.max(mCropWindowHandler!!.getMinCropWidth(), rect.height() * mTargetAspectRatio)
@@ -588,14 +588,14 @@ class CropOverlayView  // endregion
                 // Draw vertical guidelines.
                 val x1 = rect.left + oneThirdCropWidth
                 val x2 = rect.right - oneThirdCropWidth
-                val yv = (h * Math.sin(Math.acos((w - oneThirdCropWidth) / w.toDouble()))) as Float
+                val yv = (h * Math.sin(Math.acos((w - oneThirdCropWidth) / w.toDouble()))).toFloat()
                 canvas!!.drawLine(x1, rect.top + h - yv, x1, rect.bottom - h + yv, mGuidelinePaint!!)
                 canvas.drawLine(x2, rect.top + h - yv, x2, rect.bottom - h + yv, mGuidelinePaint!!)
 
                 // Draw horizontal guidelines.
                 val y1 = rect.top + oneThirdCropHeight
                 val y2 = rect.bottom - oneThirdCropHeight
-                val xv = (w * Math.cos(Math.asin((h - oneThirdCropHeight) / h.toDouble()))) as Float
+                val xv = (w * Math.cos(Math.asin((h - oneThirdCropHeight) / h.toDouble()))).toFloat()
                 canvas.drawLine(rect.left + w - xv, y1, rect.right - w + xv, y1, mGuidelinePaint!!)
                 canvas.drawLine(rect.left + w - xv, y2, rect.right - w + xv, y2, mGuidelinePaint!!)
             } else {

@@ -41,12 +41,12 @@ class MultiTouchListener(parentView: RelativeLayout, deletedView: ImageView,
         currentView = view
         mScaleGestureDetector.onTouchEvent(view, event)
         mGestureListener.onTouchEvent(event)
-        if (!isTranslateEnabled) {
-            return true
-        }
+//        if (!isTranslateEnabled) {
+//            return true
+//        }
         val action = event.action
-        val x = event.rawX as Int
-        val y = event.rawY as Int
+        val x = event.rawX.toInt()
+        val y = event.rawY.toInt()
         when (action and event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 mPrevX = event.x
@@ -69,14 +69,14 @@ class MultiTouchListener(parentView: RelativeLayout, deletedView: ImageView,
                         adjustTranslation(view, currX - mPrevX, currY - mPrevY)
                     }
                     if (deleteView != null) {
-                        deleteView.isSelected = isViewInBounds(deleteView, view.x as Int, view.y as Int, false)
+                        deleteView.isSelected = isViewInBounds(deleteView, view.x.toInt(), view.y.toInt(), false)
                     }
                 }
             }
             MotionEvent.ACTION_CANCEL -> mActivePointerId = INVALID_POINTER_ID
             MotionEvent.ACTION_UP -> {
                 mActivePointerId = INVALID_POINTER_ID
-                if (deleteView != null && isViewInBounds(deleteView, view.x as Int, view.y as Int,
+                if (deleteView != null && isViewInBounds(deleteView, view.x.toInt(), view.y.toInt(),
                                 false)) {
                     if (onMultiTouchListener != null) {
                         onMultiTouchListener.onRemoveViewListener(view)

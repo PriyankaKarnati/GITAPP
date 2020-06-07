@@ -126,7 +126,7 @@ class BitmapLoadingWorkerTask(cropImageView: CropImageView,
         } else {
             1.toDouble()
         }
-        mWidth = (metrics.widthPixels * densityAdj) as Int
-        mHeight = (metrics.heightPixels * densityAdj) as Int
+        mWidth = (metrics.widthPixels * densityAdj).toInt()
+        mHeight = (metrics.heightPixels * densityAdj).toInt()
     }
 }
