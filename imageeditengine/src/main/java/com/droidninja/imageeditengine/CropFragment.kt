@@ -72,7 +72,7 @@ class CropFragment : BaseFragment(), View.OnClickListener {
     }
 
     companion object {
-        fun newInstance(bitmap: Bitmap, cropRect: Rect): CropFragment? {
+        fun newInstance(bitmap: Bitmap, cropRect: Rect?): CropFragment? {
             val cropFragment = CropFragment()
             val bundle = Bundle()
             bundle.putParcelable(ImageEditor.EXTRA_ORIGINAL, bitmap)

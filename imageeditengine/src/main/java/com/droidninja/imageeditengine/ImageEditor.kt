@@ -28,7 +28,7 @@ object ImageEditor {
         private var enabledEditorText = true
         private var enabledEditorPaint = true
         private var enabledEditorSticker = false
-        private var enableEditorCrop = false
+        private var enableEditorCrop = true
         private var enableFilters = true
         fun setStickerAssets(folderName: String?): Builder? {
             stickerFolderName = folderName
@@ -37,16 +37,22 @@ object ImageEditor {
         }
 
         fun disable(editorType: Int): Builder? {
-            if (editorType == EDITOR_TEXT) {
-                enabledEditorText = false
-            } else if (editorType == EDITOR_PAINT) {
-                enabledEditorPaint = false
-            } else if (editorType == EDITOR_STICKER) {
-                enabledEditorSticker = false
-            } else if (editorType == EDITOR_CROP) {
-                enableEditorCrop = false
-            } else if (editorType == EDITOR_FILTERS) {
-                enableFilters = false
+            when (editorType) {
+                EDITOR_TEXT -> {
+                    enabledEditorText = false
+                }
+                EDITOR_PAINT -> {
+                    enabledEditorPaint = false
+                }
+                EDITOR_STICKER -> {
+                    enabledEditorSticker = false
+                }
+                EDITOR_CROP -> {
+                    enableEditorCrop = false
+                }
+                EDITOR_FILTERS -> {
+                    enableFilters = false
+                }
             }
             return this
         }

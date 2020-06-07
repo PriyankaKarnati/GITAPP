@@ -5,24 +5,30 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
-import com.droidninja.imageeditengine.utils.FragmentUtil
+import androidx.annotation.Nullable
+import com.droidninja.imageeditengine.ImageEditor.EXTRA_IMAGE_PATH
+import com.droidninja.imageeditengine.utils.FragmentUtil.addFragment
+import com.droidninja.imageeditengine.utils.FragmentUtil.getFragmentByTag
+import com.droidninja.imageeditengine.utils.FragmentUtil.removeFragment
+import com.droidninja.imageeditengine.utils.FragmentUtil.replaceFragment
 
 class ImageEditActivity : BaseImageEditActivity(), PhotoEditorFragment.OnFragmentInteractionListener, CropFragment.OnFragmentInteractionListener {
     private var cropRect: Rect? = null
 
     //private View touchView;
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_edit)
-        val imagePath: String = intent.getStringExtra(ImageEditor.EXTRA_IMAGE_PATH)!!
-        FragmentUtil.addFragment(this, R.id.fragment_container,
-                PhotoEditorFragment.newInstance(imagePath))
+        val imagePath = intent.getStringExtra(EXTRA_IMAGE_PATH)
+        if (imagePath != null) {
+            addFragment(this, R.id.fragment_container,
+                    PhotoEditorFragment.newInstance(imagePath))
+        }
     }
 
     override fun onCropClicked(bitmap: Bitmap?) {
-        FragmentUtil.replaceFragment(this, R.id.fragment_container,
-                CropFragment.Companion.newInstance(bitmap!!, cropRect!!)!!)
+        replaceFragment(this, R.id.fragment_container,
+                CropFragment.newInstance(bitmap!!, cropRect!!)!!)
     }
 
     override fun onDoneClicked(imagePath: String?) {
@@ -34,19 +40,19 @@ class ImageEditActivity : BaseImageEditActivity(), PhotoEditorFragment.OnFragmen
 
     override fun onImageCropped(bitmap: Bitmap?, cropRect: Rect?) {
         this.cropRect = cropRect
-        val photoEditorFragment = FragmentUtil.getFragmentByTag(this,
-                PhotoEditorFragment::class.java.simpleName) as PhotoEditorFragment
+        val photoEditorFragment = getFragmentByTag(this,
+                PhotoEditorFragment::class.java.simpleName) as PhotoEditorFragment?
         if (photoEditorFragment != null) {
             photoEditorFragment.setImageWithRect(cropRect!!)
             photoEditorFragment.reset()
-            FragmentUtil.removeFragment(this,
-                    FragmentUtil.getFragmentByTag(this, CropFragment::class.java.simpleName) as BaseFragment)
+            removeFragment(this,
+                    (getFragmentByTag(this, CropFragment::class.java.simpleName) as BaseFragment?)!!)
         }
     }
 
     override fun onCancelCrop() {
-        FragmentUtil.removeFragment(this,
-                FragmentUtil.getFragmentByTag(this, CropFragment::class.java.simpleName) as BaseFragment)
+        removeFragment(this,
+                (getFragmentByTag(this, CropFragment::class.java.simpleName) as BaseFragment?)!!)
     }
 
     override fun onBackPressed() {

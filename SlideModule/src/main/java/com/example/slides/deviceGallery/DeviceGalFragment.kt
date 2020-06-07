@@ -1,8 +1,11 @@
 package com.example.slides.deviceGallery
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,8 +116,10 @@ open class DeviceGalFragment : Fragment() {
                 listToSend.add(i.path)
             }
             //onclick send to myGalFragment
-            for (i in listToSend)
-                ImageEditor.Builder(this.activity, i).setStickerAssets("stickers")!!.open()
+            //for (i in listToSend)
+            ImageEditor.Builder(this.activity, listToSend[0]).setStickerAssets("stickers")!!.open()
+
+            //activity.startActivityForResult()
             //this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
         }
 
@@ -126,6 +131,24 @@ open class DeviceGalFragment : Fragment() {
         super.onSaveInstanceState(outState)
         tracker!!.onSaveInstanceState(outState)
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        when(requestCode){
+//            ImageEditor.RC_IMAGE_EDITOR ->
+//            if (resultCode == Activity.RESULT_OK && data != null) {
+//                val imagePath: String = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)!!
+//
+//                var listToSend = ImagesPaths()
+//                val x = ImagePath(imagePath, System.currentTimeMillis())
+//                listToSend.add(x)
+//                Log.i("Edited Imagessssss", imagePath)
+//                //this.startActivityForResult(data,requestCode)
+//                this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
+//            }
+//        }
+//
+//    }
 
 
 }

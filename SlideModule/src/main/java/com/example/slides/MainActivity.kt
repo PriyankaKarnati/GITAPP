@@ -2,13 +2,17 @@ package com.example.slides
 
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import kotlin.system.exitProcess
+import com.droidninja.imageeditengine.ImageEditor
+import com.example.slides.models.ImagePath
+import com.example.slides.models.ImagesPaths
+import com.example.slides.myGallery.MyGalFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +43,44 @@ class MainActivity : AppCompatActivity() {
                 return
             }
         }
+    }
+
+    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        for (fragment in supportFragmentManager.fragments) {
+//            fragment.onActivityResult(requestCode, resultCode, data)
+//        }
+//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        for(frag)
+//        fragmentsuper.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            ImageEditor.RC_IMAGE_EDITOR ->
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    val imagePath: String = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)!!
+
+                    var listToSend = ImagesPaths()
+                    val x = ImagePath(imagePath, System.currentTimeMillis())
+                    listToSend.add(x)
+                    Log.i("Edited Imagessssss", imagePath)
+                    //this.startActivityForResult(data,requestCode)
+                    //this@De.findNavController().navigate(DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
+                    sendToMyGal(listToSend)
+                }
+        }
+
+    }
+
+    private fun sendToMyGal(paths: ImagesPaths) {
+        val bundle = Bundle()
+        bundle.putParcelable("DataFromImageEditor", paths)
+        val fragMyGal = MyGalFragment()
+        fragMyGal.arguments = bundle
+        Log.i("sendList", paths.size.toString())
+        val transaction = this.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragmentSlide, fragMyGal)
+        transaction.commit()
     }
 
 }

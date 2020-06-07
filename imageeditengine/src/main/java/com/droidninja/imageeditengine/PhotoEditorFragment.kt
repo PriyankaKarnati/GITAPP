@@ -405,6 +405,7 @@
 
 package com.droidninja.imageeditengine
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -534,6 +535,7 @@ class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouchListe
         photoEditorView!!.reset()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView(view: View?) {
         mainImageView = view!!.findViewById(R.id.image_iv)
         cropButton = view.findViewById(R.id.crop_btn)
