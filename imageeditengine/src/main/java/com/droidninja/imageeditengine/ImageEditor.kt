@@ -23,7 +23,7 @@ object ImageEditor {
     val EXTRA_EDITED_PATH: String? = "EXTRA_EDITED_PATH"
     const val RC_IMAGE_EDITOR = 0x34
 
-    class Builder(private val context: Activity?, private val imagePath: String?) {
+    class Builder(private val context: Activity?, private val imagePath: ArrayList<String>?) {
         private var stickerFolderName: String? = null
         private var enabledEditorText = true
         private var enabledEditorPaint = true
@@ -58,7 +58,7 @@ object ImageEditor {
         }
 
         fun open() {
-            if (imagePath != null && File(imagePath).exists()) {
+            if (imagePath!!.isNotEmpty()) {
                 val intent = Intent(context, ImageEditActivity::class.java)
                 intent.putExtra(EXTRA_STICKER_FOLDER_NAME, stickerFolderName)
                 intent.putExtra(EXTRA_IS_PAINT_MODE, enabledEditorPaint)

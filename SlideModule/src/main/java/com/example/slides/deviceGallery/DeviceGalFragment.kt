@@ -25,6 +25,7 @@ import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDevice
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import com.example.slides.myGallery.MyGalPhotoAdapter
+import droidninja.filepicker.FilePickerBuilder
 
 
 open class DeviceGalFragment : Fragment() {
@@ -117,7 +118,8 @@ open class DeviceGalFragment : Fragment() {
             }
             //onclick send to myGalFragment
             //for (i in listToSend)
-            ImageEditor.Builder(this.activity, listToSend[0]).setStickerAssets("stickers")!!.open()
+            //FilePickerBuilder.instance.setMaxCount(5).pic
+            ImageEditor.Builder(this.activity, listToSend).setStickerAssets("stickers")!!.open()
 
             //activity.startActivityForResult()
             //this.findNavController().navigate(actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))

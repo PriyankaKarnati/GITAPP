@@ -58,12 +58,15 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             ImageEditor.RC_IMAGE_EDITOR ->
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    val imagePath: String = data.getStringExtra(ImageEditor.EXTRA_EDITED_PATH)!!
+                    val imagePath = data.getStringArrayListExtra(ImageEditor.EXTRA_EDITED_PATH)
 
                     var listToSend = ImagesPaths()
-                    val x = ImagePath(imagePath, System.currentTimeMillis())
-                    listToSend.add(x)
-                    Log.i("Edited Imagessssss", imagePath)
+                    for (i in imagePath) {
+                        val x = ImagePath(i, System.currentTimeMillis())
+                        listToSend.add(x)
+                        Log.i("Edited Imagessssss", "$imagePath")
+                    }
+
                     //this.startActivityForResult(data,requestCode)
                     //this@De.findNavController().navigate(DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment().setSelectedImagesInGal(listToSend))
                     sendToMyGal(listToSend)

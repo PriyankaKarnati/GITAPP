@@ -20,10 +20,10 @@ class GalViewPager : Fragment() {
         val binding = GalViewPagerFragmentBinding.inflate(inflater)
 
         val selectedImage = GalViewPagerArgs.fromBundle(requireArguments()).enlargeImageInDeviceGal
-        ImageEditor.Builder(this.activity, selectedImage.path).open()
-//        val viewModelFactory = GalViewPagerFactory(selectedImage)
-//        val viewModel = ViewModelProvider(this, viewModelFactory).get(GalViewPagerViewModel::class.java)
-//        binding.viewModel = viewModel
+        //      ImageEditor.Builder(this.activity, selectedImage.path).open()
+        val viewModelFactory = GalViewPagerFactory(selectedImage)
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(GalViewPagerViewModel::class.java)
+        binding.viewModel = viewModel
 
         return binding.root
     }
