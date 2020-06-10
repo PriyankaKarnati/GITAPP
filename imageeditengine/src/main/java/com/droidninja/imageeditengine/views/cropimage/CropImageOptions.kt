@@ -20,6 +20,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.TypedValue
+import android.util.TypedValue.*
 import com.droidninja.imageeditengine.views.cropimage.CropImageView
 import com.droidninja.imageeditengine.views.cropimage.CropImageView.*
 
@@ -212,8 +213,8 @@ class CropImageOptions : Parcelable {
     constructor() {
         val dm = Resources.getSystem().displayMetrics
         cropShape = CropShape.RECTANGLE
-        snapRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3f, dm)
-        touchRadius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24f, dm)
+        snapRadius = applyDimension(COMPLEX_UNIT_DIP, 3f, dm)
+        touchRadius = applyDimension(COMPLEX_UNIT_DIP, 24f, dm)
         guidelines = Guidelines.ON_TOUCH
         scaleType = ScaleType.FIT_CENTER
         showCropOverlay = true
@@ -225,17 +226,17 @@ class CropImageOptions : Parcelable {
         fixAspectRatio = false
         aspectRatioX = 1
         aspectRatioY = 1
-        borderLineThickness = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3f, dm)
+        borderLineThickness = applyDimension(COMPLEX_UNIT_DIP, 3f, dm)
         borderLineColor = Color.argb(170, 255, 255, 255)
-        borderCornerThickness = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2f, dm)
-        borderCornerOffset = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, dm)
-        borderCornerLength = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14f, dm)
+        borderCornerThickness = applyDimension(COMPLEX_UNIT_DIP, 2f, dm)
+        borderCornerOffset = applyDimension(COMPLEX_UNIT_DIP, 5f, dm)
+        borderCornerLength = applyDimension(COMPLEX_UNIT_DIP, 14f, dm)
         borderCornerColor = Color.WHITE
-        guidelinesThickness = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, dm)
+        guidelinesThickness = applyDimension(COMPLEX_UNIT_DIP, 1f, dm)
         guidelinesColor = Color.argb(170, 255, 255, 255)
         backgroundColor = Color.argb(119, 0, 0, 0)
-        minCropWindowWidth = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42f, dm).toInt()
-        minCropWindowHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 42f, dm).toInt()
+        minCropWindowWidth = applyDimension(COMPLEX_UNIT_DIP, 42f, dm).toInt()
+        minCropWindowHeight = applyDimension(COMPLEX_UNIT_DIP, 42f, dm).toInt()
         minCropResultWidth = 40
         minCropResultHeight = 40
         maxCropResultWidth = 99999

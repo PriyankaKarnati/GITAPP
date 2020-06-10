@@ -3,7 +3,7 @@ package com.droidninja.imageeditengine
 
 object Constants {
     val FILTER_ORIGINAL: String? = "None"
-    val FILTER_INSTAFIX: String? = "Instafix"
+    //val FILTER_INSTAFIX: String? = "Instafix"
     val FILTER_ANSEL: String? = "Ansel"
     val FILTER_TESTINO: String? = "Testino"
     val FILTER_XPRO: String? = "XPro"

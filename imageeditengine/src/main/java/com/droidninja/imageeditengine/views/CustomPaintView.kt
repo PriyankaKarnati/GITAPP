@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi
  * Created by panyi on 17/2/11.
  */
 class CustomPaintView : View {
-    private lateinit var mPaint: Paint
+    private var mPaint: Paint? = null
     private var mDrawBit: Bitmap? = null
     private lateinit var mEraserPaint: Paint
     private var mPaintCanvas: Canvas? = null
@@ -57,20 +57,20 @@ class CustomPaintView : View {
         mColor = Color.RED
         bounds = RectF(0F, 0F, measuredWidth!!.toFloat(), measuredHeight!!.toFloat())
         mPaint = Paint()
-        mPaint!!.setAntiAlias(true)
-        mPaint.setColor(mColor)
-        mPaint.setStrokeJoin(Paint.Join.ROUND)
-        mPaint.setStrokeCap(Paint.Cap.ROUND)
-        mPaint.setStrokeWidth(15f)
+        mPaint!!.isAntiAlias = true
+        mPaint?.color = mColor
+        mPaint?.strokeJoin = Paint.Join.ROUND
+        mPaint?.strokeCap = Paint.Cap.ROUND
+        mPaint?.strokeWidth = 15f
         mEraserPaint = Paint()
-        mEraserPaint.setAlpha(0)
-        mEraserPaint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.DST_IN))
-        mEraserPaint.setAntiAlias(true)
-        mEraserPaint.setDither(true)
-        mEraserPaint.setStyle(Paint.Style.STROKE)
-        mEraserPaint.setStrokeJoin(Paint.Join.ROUND)
-        mEraserPaint.setStrokeCap(Paint.Cap.ROUND)
-        mEraserPaint.setStrokeWidth(40f)
+        mEraserPaint.alpha = 0
+        mEraserPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        mEraserPaint.isAntiAlias = true
+        mEraserPaint.isDither = true
+        mEraserPaint.style = Paint.Style.STROKE
+        mEraserPaint.strokeJoin = Paint.Join.ROUND
+        mEraserPaint.strokeCap = Paint.Cap.ROUND
+        mEraserPaint.strokeWidth = 40f
     }
 
     fun getColor(): Int {
@@ -90,6 +90,7 @@ class CustomPaintView : View {
         super.onDraw(canvas)
         if (mDrawBit != null) {
             canvas!!.drawBitmap(mDrawBit!!, 0f, 0f, null)
+            mDrawBit = null
         }
     }
 
@@ -121,6 +122,7 @@ class CustomPaintView : View {
         super.onDetachedFromWindow()
         if (mDrawBit != null && !mDrawBit!!.isRecycled) {
             mDrawBit!!.recycle()
+            mDrawBit = null
         }
     }
 
@@ -136,6 +138,7 @@ class CustomPaintView : View {
     fun reset() {
         if (mDrawBit != null && !mDrawBit!!.isRecycled) {
             mDrawBit!!.recycle()
+            mDrawBit = null
         }
         generatorBit()
     }

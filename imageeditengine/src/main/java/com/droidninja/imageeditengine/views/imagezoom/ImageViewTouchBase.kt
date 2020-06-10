@@ -296,6 +296,7 @@ abstract class ImageViewTouchBase : AppCompatImageView, IDisposable {
      */
     fun setImageBitmap(bitmap: Bitmap?, matrix: Matrix?,
                        min_zoom: Float, max_zoom: Float) {
+        //Log.i("ImageBitmap","${bitmap!!.width}")
         if (bitmap != null) setImageDrawable(FastBitmapDrawable(bitmap), matrix, min_zoom,
                 max_zoom) else setImageDrawable(null, matrix, min_zoom, max_zoom)
     }

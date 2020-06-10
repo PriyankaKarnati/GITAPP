@@ -1,6 +1,7 @@
 package com.droidninja.imageeditengine.utils
 
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -13,6 +14,7 @@ object FragmentUtil {
 
     fun replaceFragment(activity: AppCompatActivity, contentId: Int, fragment: BaseFragment) {
         val transaction: FragmentTransaction = activity.supportFragmentManager.beginTransaction()
+        //Log.i("Replacing Fragmetn","$contentId")
         transaction.replace(contentId, fragment, fragment.javaClass.simpleName)
         transaction.addToBackStack(null)
         transaction.commit()

@@ -13,7 +13,7 @@ class FilterHelper {
         imageFilters.add(ImageFilter(Constants.FILTER_CYANO))
         imageFilters.add(ImageFilter(Constants.FILTER_GEORGIA))
         imageFilters.add(ImageFilter(Constants.FILTER_HDR))
-        imageFilters.add(ImageFilter(Constants.FILTER_INSTAFIX))
+       // imageFilters.add(ImageFilter(Constants.FILTER_INSTAFIX))
         imageFilters.add(ImageFilter(Constants.FILTER_RETRO))
         imageFilters.add(ImageFilter(Constants.FILTER_SAHARA))
         imageFilters.add(ImageFilter(Constants.FILTER_SEPIA))

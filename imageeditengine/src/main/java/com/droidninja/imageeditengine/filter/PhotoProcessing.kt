@@ -20,7 +20,7 @@ object PhotoProcessing {
         when (filterConfig.filterName) {
             Constants.FILTER_ORIGINAL -> {
             }
-            Constants.FILTER_INSTAFIX -> nativeApplyInstafix()
+            //Constants.FILTER_INSTAFIX -> nativeApplyInstafix()
             Constants.FILTER_ANSEL -> nativeApplyAnsel()
             Constants.FILTER_TESTINO -> nativeApplyTestino()
             Constants.FILTER_XPRO -> nativeApplyXPro()

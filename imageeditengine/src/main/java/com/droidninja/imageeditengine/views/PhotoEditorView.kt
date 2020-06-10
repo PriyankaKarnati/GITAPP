@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.annotation.Dimension
+import androidx.core.view.contains
 import androidx.recyclerview.widget.GridLayoutManager
 
 
@@ -84,6 +85,11 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
         view.post { keyboardHeightProvider!!.start() }
         inputTextET!!.post(Runnable { initialY = inputTextET!!.y })
         addView(view)
+
+    }
+
+    fun getAddedStickerImageView(): View? {
+        return stickerImageView
     }
 
     fun showPaintView() {
@@ -94,6 +100,7 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
     }
 
     fun setBounds(bitmapRect: RectF?) {
+        Log.i("CustomPaintView", "${bitmapRect!!.width()}")
         customPaintView!!.setBounds(bitmapRect)
     }
 
@@ -241,6 +248,7 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
         folderName = stickersFolder
         val stickerListAdapter = recyclerView!!.adapter as StickerListAdapter
         stickerListAdapter.setData(getStickersList(stickersFolder))
+
     }
 
     fun hideStickers() {
@@ -257,11 +265,11 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
         }
         return null
     }
-
+    var stickerImageView = LayoutInflater.from(context).inflate(R.layout.sticker_view, null) as ImageView
     @SuppressLint("ClickableViewAccessibility")
     fun onItemClick(bitmap: Bitmap?) {
         recyclerView!!.visibility = View.GONE
-        val stickerImageView = LayoutInflater.from(context).inflate(R.layout.sticker_view, null) as ImageView
+
         stickerImageView.setImageBitmap(bitmap)
         stickerImageView.id = container!!.childCount
         val multiTouchListener = MultiTouchListener(container!!, deleteView!!, imageView!!, true, this)
@@ -289,6 +297,7 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
                 ViewGroup.LayoutParams.WRAP_CONTENT)
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
         container!!.addView(stickerImageView, params)
+        // Log.i("Adding Sticker","${container!!.contains(stickerImageView)}")
     }
 
     fun reset() {
@@ -331,7 +340,10 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val path = stickers!!.get(position)
-            holder.itemView.setOnClickListener(OnClickListener { onItemClick(getImageFromAssetsFile(path)) })
+            holder.itemView.setOnClickListener(OnClickListener {
+                onItemClick(getImageFromAssetsFile(path))
+                //              (holder.itemView as ImageView?)!!.setImageBitmap(getImageFromAssetsFile(path))
+            })
             (holder.itemView as ImageView?)!!.setImageBitmap(getImageFromAssetsFile(path))
         }
 

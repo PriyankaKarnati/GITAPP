@@ -23,6 +23,8 @@ object Utility {
     //  }
     //  return drawable;
     //}
+
+
     fun tintDrawable(context: Context, @DrawableRes drawableRes: Int, colorCode: Int): Drawable? {
         val drawable: Drawable = ContextCompat.getDrawable(context, drawableRes)!!
         if (drawable != null) {

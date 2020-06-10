@@ -181,9 +181,11 @@ object BitmapUtils {
 
         // crop and rotate the cropped image in one operation
         val matrix = Matrix()
-        matrix.setRotate(degreesRotated.toFloat(), bitmap.width / 2.toFloat(), bitmap.height / 2.toFloat())
+        matrix.setRotate(degreesRotated.toFloat(), (bitmap.width / 2).toFloat(), (bitmap.height / 2).toFloat())
         matrix.postScale(if (flipHorizontally) -scale else scale, if (flipVertically) -scale else scale)
+        //Log.i("REct", "${rect.width()} ${rect.height()}")
         var result = Bitmap.createBitmap(bitmap, rect.left, rect.top, rect.width(), rect.height(), matrix, true)
+        //Log.i("REsylt","${result.width} ${result.height}")
         if (result == bitmap) {
             // corner case when all bitmap is selected, no worth optimizing for it
             result = bitmap.copy(bitmap.config, false)
@@ -253,6 +255,7 @@ object BitmapUtils {
         }
     }
 
+
     /** Get left value of the bounding rectangle of the given points.  */
     fun getRectLeft(points: FloatArray): Float {
         return Math.min(Math.min(Math.min(points.get(0), points.get(2)), points.get(4)), points.get(6))
@@ -306,12 +309,16 @@ object BitmapUtils {
             aspectRatioY: Int): Rect? {
         val left = Math.round(Math.max(0f, getRectLeft(points)))
         val top = Math.round(Math.max(0f, getRectTop(points)))
-        val right = Math.round(Math.min(imageWidth.toFloat(), getRectRight(points)))
-        val bottom = Math.round(Math.min(imageHeight.toFloat(), getRectBottom(points)))
+        val right = Math.round(Math.min(imageWidth.toFloat(), getRectRight(points))).toInt()
+        val bottom = Math.round(Math.min(imageHeight.toFloat(), getRectBottom(points))).toInt()
+        //Log.i("REcttt","${bottom} ${right} ${left} ${top} }")
         val rect = Rect(left, top, right, bottom)
         if (fixAspectRatio) {
             fixRectForAspectRatio(rect, aspectRatioX, aspectRatioY)
         }
+        ///rect.width() = imageWidth
+        //Log.i("RectW", "${imageWidth.toFloat()} ${getRectRight(points)}")
+        //Log.i("REcttt","${rect.bottom} ${rect.right} ${rect.left} ${rect.top} ${rect.width()} ${rect.height()}")
         return rect
     }
 
@@ -337,14 +344,14 @@ object BitmapUtils {
      * @return the uri where the image was saved in, either the given uri or new pointing to temp
      * file.
      */
-    fun writeTempStateStoreBitmap(context: Context, bitmap: Bitmap, uri: Uri): Uri? {
-        var uri = uri
+    fun writeTempStateStoreBitmap(context: Context, bitmap: Bitmap, uriA: Uri): Uri? {
+        var uri = uriA
         return try {
             var needSave = true
             if (uri == null) {
                 uri = Uri.fromFile(
                         File.createTempFile("aic_state_store_temp", ".jpg", context.cacheDir))
-            } else if (File(uri.path).exists()) {
+            } else if (File(uri.path!!).exists()) {
                 needSave = false
             }
             if (needSave) {
