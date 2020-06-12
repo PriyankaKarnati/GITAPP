@@ -9,21 +9,22 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.roundToInt
 
 object Utility {
-    //public static Drawable tintDrawable(Context context, @DrawableRes int drawableRes, @ColorRes int colorRes){
-    //  Drawable drawable = ContextCompat.getDrawable(context,drawableRes);
-    //  if(drawable!=null) {
-    //    drawable.mutate();
-    //    DrawableCompat.setTint(drawable, ContextCompat.getColor(context, colorRes));
-    //  }
-    //  return drawable;
-    //}
-
+//    fun tintDrawable(Context context, @DrawableRes int drawableRes, @ColorRes int colorRes):Drawable{
+//        Drawable drawable = ContextCompat.getDrawable(context,drawableRes);
+//        if(drawable!=null) {
+//            drawable.mutate();
+//            DrawableCompat.setTint(drawable, ContextCompat.getColor(context, colorRes));
+//        }
+//        return drawable;
+//    }
+//
 
     fun tintDrawable(context: Context, @DrawableRes drawableRes: Int, colorCode: Int): Drawable? {
         val drawable: Drawable = ContextCompat.getDrawable(context, drawableRes)!!

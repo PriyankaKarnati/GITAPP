@@ -8,8 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.droidninja.imageeditengine.filter.ProcessingImage
+import com.droidninja.imageeditengine.utils.Matrix3
+import com.droidninja.imageeditengine.utils.TaskCallback
+import com.droidninja.imageeditengine.utils.Utility
 import com.droidninja.imageeditengine.views.cropimage.CropImageView
 import com.droidninja.imageeditengine.views.cropimage.CropImageView.Guidelines
+
 
 class CropFragment : BaseFragment(), View.OnClickListener {
     private var mListener: OnFragmentInteractionListener? = null
@@ -39,7 +44,7 @@ class CropFragment : BaseFragment(), View.OnClickListener {
     }
 
     interface OnFragmentInteractionListener {
-        fun onImageCropped(bitmap: Bitmap?, cropRect: Rect?)
+        fun onImageCropped(imagePath: String)
         fun onCancelCrop()
     }
 
@@ -67,14 +72,19 @@ class CropFragment : BaseFragment(), View.OnClickListener {
             mListener?.onCancelCrop()
         } else if (view.id == R.id.done_tv) {
             val original: Bitmap = arguments!!.getParcelable(ImageEditor.EXTRA_ORIGINAL)!!
-            //Log.i("CropImageView","${cropImageView.width} ${cropImageView.height}")
+            ProcessingImage(cropImageView.getCroppedImage(cropImageView.width, cropImageView.height), Utility.getCacheFilePath(view!!.context),
+                    object : TaskCallback<String?> {
+                        override fun onTaskDone(data: String?) {
+                            mListener?.onImageCropped(data!!)
+                        }
+                    }).execute()
 
-            mListener?.onImageCropped(cropImageView.getCroppedImage(), cropImageView.getCropRect())
 
         } else if (view.id == R.id.done_tv) {
             activity?.onBackPressed()
         }
     }
+
 
     companion object {
         fun newInstance(bitmap: Bitmap, cropRect: Rect?): CropFragment? {

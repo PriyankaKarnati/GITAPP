@@ -76,7 +76,7 @@ class VerticalSlideColorPicker : View {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         path!!.addCircle(centerX.toFloat(), borderWidth + colorPickerRadius, colorPickerRadius, Path.Direction.CW)
-        path!!.addRect(colorPickerBody, Path.Direction.CW)
+        path!!.addRect(colorPickerBody!!, Path.Direction.CW)
         path!!.addCircle(centerX.toFloat(), viewHeight - (borderWidth + colorPickerRadius), colorPickerRadius,
                 Path.Direction.CW)
         canvas!!.drawPath(path!!, strokePaint!!)
@@ -86,7 +86,7 @@ class VerticalSlideColorPicker : View {
             cacheBitmap = false
             invalidate()
         } else {
-            //canvas.drawLine(colorPickerBody.left, selectorYPos, colorPickerBody.right, selectorYPos, strokePaint);
+            canvas.drawLine(colorPickerBody?.left!!, selectorYPos, colorPickerBody?.right!!, selectorYPos, strokePaint!!);
         }
     }
 

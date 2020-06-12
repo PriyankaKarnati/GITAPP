@@ -31,11 +31,11 @@ class EditorViewPagerAdapter(val list: ArrayList<String>, fragmentActivity: Frag
         // if(imagesPaths.contains(frag.))
     }
 
-    fun onDestroy(): ArrayList<String> {
-        val listEditedPaths = ArrayList<String>()
-        Log.i("CreatedFrag", "${fragments.size}")
-        for (i in fragments) {
-            listEditedPaths.add(i.getEditedPath())
+//    fun onDestroy(): ArrayList<String> {
+//        val listEditedPaths = ArrayList<String>()
+//        Log.i("CreatedFrag", "${fragments.size}")
+//        for (i in fragments) {
+    //    listEditedPaths.add(i.getEditedPath())
 //            if (i.selectedFilter != null) {
 //                ApplyFilterTask(object : TaskCallback<Bitmap?> {
 //                    override fun onTaskDone(data: Bitmap?) {
@@ -58,11 +58,11 @@ class EditorViewPagerAdapter(val list: ArrayList<String>, fragmentActivity: Frag
 //                            }
 //                        }).execute()
 //            }
-        }
-
-        Log.i("listEdited", "$listEditedPaths")
-        return listEditedPaths
-    }
+//        }
+//
+//        Log.i("listEdited", "$listEditedPaths")
+//        return listEditedPaths
+//    }
 
 
 }

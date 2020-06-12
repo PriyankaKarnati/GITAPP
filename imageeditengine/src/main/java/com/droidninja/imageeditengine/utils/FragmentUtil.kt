@@ -16,6 +16,7 @@ object FragmentUtil {
         val transaction: FragmentTransaction = activity.supportFragmentManager.beginTransaction()
         //Log.i("Replacing Fragmetn","$contentId")
         transaction.replace(contentId, fragment, fragment.javaClass.simpleName)
+
         transaction.addToBackStack(null)
         transaction.commit()
     }

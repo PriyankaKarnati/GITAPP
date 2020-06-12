@@ -61,7 +61,7 @@ object ImageEditor {
             if (imagePath!!.isNotEmpty()) {
                 val intent = Intent(context, ImageEditActivity::class.java)
                 intent.putExtra(EXTRA_STICKER_FOLDER_NAME, stickerFolderName)
-                intent.putExtra(EXTRA_IS_PAINT_MODE, enabledEditorPaint)
+                intent.putExtra(EXTRA_IS_PAINT_MODE, true)
                 intent.putExtra(EXTRA_IS_STICKER_MODE, enabledEditorSticker)
                 intent.putExtra(EXTRA_IS_TEXT_MODE, enabledEditorText)
                 intent.putExtra(EXTRA_IS_CROP_MODE, enableEditorCrop)

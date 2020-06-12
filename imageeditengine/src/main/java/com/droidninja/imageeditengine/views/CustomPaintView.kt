@@ -14,8 +14,9 @@ import androidx.annotation.RequiresApi
  */
 class CustomPaintView : View {
     private var mPaint: Paint? = null
-    private var mDrawBit: Bitmap? = null
-    private lateinit var mEraserPaint: Paint
+    var paintBit: Bitmap? = null
+        private set
+    private var mEraserPaint: Paint? = null
     private var mPaintCanvas: Canvas? = null
     private var last_x = 0f
     private var last_y = 0f
@@ -23,80 +24,77 @@ class CustomPaintView : View {
     private var mColor = 0
     private var bounds: RectF? = null
 
-    constructor(context: Context?) : super(context) {
+    constructor(context: Context) : super(context) {
         init(context)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(context)
     }
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init(context)
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
         init(context)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         //System.out.println("width = "+getMeasuredWidth()+"     height = "+getMeasuredHeight());
-        if (mDrawBit == null) {
+        if (paintBit == null) {
             generatorBit()
         }
     }
 
     private fun generatorBit() {
-        mDrawBit = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
-        mPaintCanvas = Canvas(mDrawBit!!)
+        paintBit = Bitmap.createBitmap(measuredWidth, measuredHeight, Bitmap.Config.ARGB_8888)
+        mPaintCanvas = Canvas(paintBit!!)
     }
 
-    private fun init(context: Context?) {
+    private fun init(context: Context) {
         mColor = Color.RED
-        bounds = RectF(0F, 0F, measuredWidth!!.toFloat(), measuredHeight!!.toFloat())
+        bounds = RectF(0F, 0F, measuredWidth.toFloat(), measuredHeight.toFloat())
         mPaint = Paint()
         mPaint!!.isAntiAlias = true
-        mPaint?.color = mColor
-        mPaint?.strokeJoin = Paint.Join.ROUND
-        mPaint?.strokeCap = Paint.Cap.ROUND
-        mPaint?.strokeWidth = 15f
-        mEraserPaint = Paint()
-        mEraserPaint.alpha = 0
-        mEraserPaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
-        mEraserPaint.isAntiAlias = true
-        mEraserPaint.isDither = true
-        mEraserPaint.style = Paint.Style.STROKE
-        mEraserPaint.strokeJoin = Paint.Join.ROUND
-        mEraserPaint.strokeCap = Paint.Cap.ROUND
-        mEraserPaint.strokeWidth = 40f
-    }
-
-    fun getColor(): Int {
-        return mColor
-    }
-
-    fun setColor(color: Int) {
-        mColor = color
         mPaint!!.color = mColor
+        mPaint!!.strokeJoin = Paint.Join.ROUND
+        mPaint!!.strokeCap = Paint.Cap.ROUND
+        mPaint!!.strokeWidth = 15f
+        mEraserPaint = Paint()
+        mEraserPaint!!.alpha = 0
+        mEraserPaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        mEraserPaint!!.isAntiAlias = true
+        mEraserPaint!!.isDither = true
+        mEraserPaint!!.style = Paint.Style.STROKE
+        mEraserPaint!!.strokeJoin = Paint.Join.ROUND
+        mEraserPaint!!.strokeCap = Paint.Cap.ROUND
+        mEraserPaint!!.strokeWidth = 40f
     }
+
+    var color: Int
+        get() = mColor
+        set(color) {
+            mColor = color
+            mPaint!!.color = mColor
+        }
 
     fun setWidth(width: Float) {
         mPaint!!.strokeWidth = width
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (mDrawBit != null) {
-            canvas!!.drawBitmap(mDrawBit!!, 0f, 0f, null)
-            mDrawBit = null
+        if (paintBit != null) {
+            canvas.drawBitmap(paintBit!!, 0f, 0f, null)
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean {
         var ret = super.onTouchEvent(event)
-        val x = event!!.x
+        val x = event.x
         val y = event.y
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -120,9 +118,8 @@ class CustomPaintView : View {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (mDrawBit != null && !mDrawBit!!.isRecycled) {
-            mDrawBit!!.recycle()
-            mDrawBit = null
+        if (paintBit != null && !paintBit!!.isRecycled) {
+            paintBit!!.recycle()
         }
     }
 
@@ -131,14 +128,9 @@ class CustomPaintView : View {
         mPaint!!.color = if (eraser) Color.TRANSPARENT else mColor
     }
 
-    fun getPaintBit(): Bitmap? {
-        return mDrawBit
-    }
-
     fun reset() {
-        if (mDrawBit != null && !mDrawBit!!.isRecycled) {
-            mDrawBit!!.recycle()
-            mDrawBit = null
+        if (paintBit != null && !paintBit!!.isRecycled) {
+            paintBit!!.recycle()
         }
         generatorBit()
     }

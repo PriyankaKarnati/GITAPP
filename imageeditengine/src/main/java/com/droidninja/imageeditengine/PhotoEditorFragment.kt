@@ -41,6 +41,8 @@ import com.droidninja.imageeditengine.views.ViewTouchListener
 import com.droidninja.imageeditengine.views.imagezoom.ImageViewTouch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.photo_editor_view.*
+import kotlinx.android.synthetic.main.photo_editor_view.view.*
+import kotlinx.coroutines.*
 import java.util.*
 
 open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouchListener, FilterImageAdapterListener {
@@ -63,7 +65,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     private val cacheStack: LruCache<Int, Bitmap>? = null
     private var filterLayoutHeight = 0
     private var mListener: OnFragmentInteractionListener? = null
-    protected var currentMode = 0
+    protected var currentMode = 4
     var selectedFilter: ImageFilter? = null
     private var originalBitmap: Bitmap? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -80,6 +82,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
             throw RuntimeException(
                     "$context must implement OnFragmentInteractionListener")
         }
+
     }
 
     override fun onDetach() {
@@ -90,11 +93,13 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     interface OnFragmentInteractionListener {
         fun onCropClicked(bitmap: Bitmap?)
         fun onDoneClicked(imagePath: String?)
+
+        fun sendPath(imagePath: String?)
+
     }
 
     fun setImageBitmap(bitmap: Bitmap?) {
         mainImageView!!.setImageBitmap(bitmap)
-        photoEditorView?.setImageView(mainImageView, deleteButton, this)
         mainImageView.run {
             Log.i("startefPost", "startedPost")
             photoEditorView!!.setBounds(mainImageView!!.bitmapRect)
@@ -106,10 +111,12 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     }
 
     fun setImageWithRect(rect: Rect) {
-        mainBitmap = getScaledBitmap(getCroppedBitmap(getBitmapCache(originalBitmap), rect))
+        mainBitmap = getScaledBitmap(getCroppedBitmap(getBitmapCache(mainBitmap), rect))
         originalBitmap = mainBitmap
-        currentMode = 0
+
         setImageBitmap(mainBitmap)
+        currentMode = 4
+
         // Log.i("SetImaggeWithRect","${mainBitmap!!.width}")
         //  if(selectedFilter!=null) {
         GetFiltersTask(object : TaskCallback<ArrayList<ImageFilter?>?> {
@@ -252,19 +259,29 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     override fun onClick(view: View) {
         val id = view.id
         if (id == R.id.crop_btn) {
+//            photoEditorView!!.hidePaintView()
+//            photoEditorView!!.hideStickers()
+//            photoEditorView!!.hideTextMode()
+            photoEditorView!!.showAddedViews()
             if (selectedFilter != null) {
+                //photoEditorView?.hidePaintView()
                 ApplyFilterTask(object : TaskCallback<Bitmap?> {
                     override fun onTaskDone(data: Bitmap?) {
                         if (data != null) {
+
                             mListener!!.onCropClicked(getBitmapCache(data))
-                            photoEditorView!!.hidePaintView()
+                            photoEditorView!!.container_view.bringToFront()
                         }
                     }
-                }, Bitmap.createBitmap(originalBitmap!!)).execute(selectedFilter)
+                }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
+
             } else {
-                mListener!!.onCropClicked(getBitmapCache(originalBitmap))
-                photoEditorView!!.hidePaintView()
+
+                mListener!!.onCropClicked(getBitmapCache(mainBitmap))
+                photoEditorView!!.container_view.bringToFront()
+                //photoEditorView!!.hide
             }
+            photoEditorView?.reset()
         } else if (id == R.id.stickers_btn) {
             setMode(MODE_STICKER)
         } else if (id == R.id.add_text_btn) {
@@ -296,6 +313,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                             }
                         }).execute()
             }
+
         }
         if (currentMode != MODE_NONE) {
             filterLabel!!.alpha = 0f
@@ -314,7 +332,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     private fun onAddTextMode(status: Boolean) {
         if (status) {
             addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.getColor())
-            //photoEditorView.setTextColor(photoEditorView.getColor());
+            photoEditorView!!.setTextColor(photoEditorView!!.getColor());
             photoEditorView!!.addText()
         } else {
             addTextButton!!.background = null
@@ -337,6 +355,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
 
     private fun onStickerMode(status: Boolean) {
         if (status) {
+
             stickerButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.getColor())
             if (activity != null && activity!!.intent != null) {
                 val folderName = activity!!.intent.getStringExtra(ImageEditor.EXTRA_STICKER_FOLDER_NAME)
@@ -365,7 +384,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         val resultBit = Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(resultBit)
         val data = FloatArray(9)
-        touchMatrix!!.getValues(data)
+        touchMatrix.getValues(data)
         val cal = Matrix3(data)
         val inverseMatrix = cal.inverseMatrix()
         val m = Matrix()
@@ -386,6 +405,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         if (photoEditorView!!.getPaintBit() != null) {
             canvas.drawBitmap(photoEditorView!!.getPaintBit()!!, 0f, 0f, null)
         }
+        //canvas.get
         canvas.restore()
         return resultBit
     }
@@ -399,8 +419,8 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         }, Bitmap.createBitmap(mainBitmap!!)).execute(imageFilter)
     }
 
-    protected fun setMode(mode: Int) {
-        var mode = mode
+    protected fun setMode(modes: Int) {
+        var mode = modes
         if (currentMode != mode) {
             onModeChanged(mode)
         } else {
@@ -410,36 +430,47 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         currentMode = mode
     }
 
-    fun getEditedPath(): String {
+    fun getEditedPath() {
         var path = String()
+
+
         if (selectedFilter != null) {
             ApplyFilterTask(object : TaskCallback<Bitmap?> {
                 override fun onTaskDone(data: Bitmap?) {
                     if (data != null) {
-                        ProcessingImage(getBitmapCache(data), getCacheFilePath(requireContext()),
+
+                        ProcessingImage(getBitmapCache(data), getCacheFilePath(view!!.context),
                                 object : TaskCallback<String?> {
                                     override fun onTaskDone(data: String?) {
                                         Log.i("editedIMagessss", data)
                                         path = data!!
+                                        mListener!!.sendPath(data)
                                     }
-                                }).execute()
+                                })
+
                     }
                 }
             }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
         } else {
-            ProcessingImage(getBitmapCache(mainBitmap), getCacheFilePath(requireContext()),
+
+
+            ProcessingImage(getBitmapCache(mainBitmap), getCacheFilePath(view!!.context),
                     object : TaskCallback<String?> {
                         override fun onTaskDone(data: String?) {
-                            Log.i("editedIMagessss", data)
+                            mListener!!.sendPath(data)
                             path = data!!
                         }
                     }).execute()
+
+
         }
-        return path
+
+
     }
 
+
     companion object {
-        const val MODE_NONE = 0
+        const val MODE_NONE = 4
         const val MODE_PAINT = 1
         const val MODE_ADD_TEXT = 2
         const val MODE_STICKER = 3

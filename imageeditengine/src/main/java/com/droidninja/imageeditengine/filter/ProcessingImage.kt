@@ -2,6 +2,7 @@ package com.droidninja.imageeditengine.filter
 
 import android.graphics.Bitmap
 import android.os.AsyncTask
+import android.util.Log
 import com.droidninja.imageeditengine.utils.Utility
 import com.droidninja.imageeditengine.utils.TaskCallback
 
@@ -16,6 +17,7 @@ class ProcessingImage(private val srcBitmap: Bitmap?, private val imagePath: Str
 
     override fun onPostExecute(s: String?) {
         super.onPostExecute(s)
+        Log.i("when I am done", " $s")
         callback?.onTaskDone(s)
     }
 

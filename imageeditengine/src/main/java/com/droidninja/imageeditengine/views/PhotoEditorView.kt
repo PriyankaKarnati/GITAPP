@@ -105,19 +105,23 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
     }
 
     fun setColor(selectedColor: Int) {
-        customPaintView!!.setColor(selectedColor)
+        customPaintView!!.color = (selectedColor)
     }
 
     fun getColor(): Int {
-        return customPaintView!!.getColor()
+        return customPaintView!!.color
     }
 
     fun getPaintBit(): Bitmap? {
-        return customPaintView!!.getPaintBit()
+        return customPaintView!!.paintBit
     }
 
     fun hidePaintView() {
-        containerView!!.bringToFront()
+        containerView!!.invalidate()
+    }
+
+    fun showAddedViews() {
+        container!!.bringToFront()
     }
 
     //text mode methods
@@ -301,16 +305,18 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightProvider.K
     }
 
     fun reset() {
-        container!!.removeAllViews()
+        container?.removeAllViews()
         customPaintView!!.reset()
         invalidate()
-    }
 
-    fun crop(cropRect: Rect?) {
-        container!!.removeAllViews()
-        customPaintView!!.reset()
-        invalidate()
+
     }
+//
+//    fun crop(cropRect: Rect?) {
+//        container!!.removeAllViews()
+//        customPaintView!!.reset()
+//        invalidate()
+//    }
 
     inner class StickerListAdapter(list: ArrayList<String?>?) : RecyclerView.Adapter<StickerListAdapter.ViewHolder?>() {
         private var stickers: MutableList<String?>?
