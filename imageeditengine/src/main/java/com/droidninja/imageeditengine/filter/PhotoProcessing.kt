@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.Log
 import com.droidninja.imageeditengine.Constants
 import com.droidninja.imageeditengine.model.ImageFilter
+import com.droidninja.imageeditengine.views.PhotoEditorView
 
 /**
  * 图片处理类

@@ -3,6 +3,7 @@ package com.droidninja.imageeditengine
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -42,7 +43,7 @@ class ImageEditActivity : BaseImageEditActivity(), PhotoEditorFragment.OnFragmen
         addFragment(
                 this,
                 R.id.fragment_container,
-                CropFragment.newInstance(bitmap!!, cropRect!!)!!
+                CropFragment.newInstance(bitmap!!, cropRect)!!
         )
     }
 
@@ -60,9 +61,9 @@ class ImageEditActivity : BaseImageEditActivity(), PhotoEditorFragment.OnFragmen
     }
 
     override fun sendPath(imagePath: String?) {
-        val photoEditorFragment = FragmentUtil.getFragmentByTag(this,
-                PhotoEditorFragment::class.java.simpleName) as PhotoEditorFragment
-        removeFragment(this, photoEditorFragment)
+//        val photoEditorFragment = FragmentUtil.getFragmentByTag(this,
+//                PhotoEditorFragment::class.java.simpleName) as PhotoEditorFragment
+//        removeFragment(this, photoEditorFragment)
         addFragment(this, R.id.fragment_container, PhotoEditorFragment.newInstance(imagePath))
 
     }
@@ -90,9 +91,18 @@ class ImageEditActivity : BaseImageEditActivity(), PhotoEditorFragment.OnFragmen
 
     // }
 
-    override fun onImageCropped(imagePath: String) {
+    override fun onImageCropped(cropRect: Rect?) {
+        if (cropRect != null) {
+            this.cropRect = cropRect
+        }
+        val photoEditorFragment = FragmentUtil.getFragmentByTag(this,
+                PhotoEditorFragment::class.java.simpleName) as PhotoEditorFragment
 
-        addFragment(this, R.id.fragment_container, PhotoEditorFragment.newInstance(imagePath))
+
+        photoEditorFragment.setImageWithRect(cropRect!!)
+        photoEditorFragment.reset()
+
+        //addFragment(this, R.id.fragment_container, )
         FragmentUtil.removeFragment(this,
                 FragmentUtil.getFragmentByTag(this, CropFragment::class.java.simpleName) as BaseFragment)
     }

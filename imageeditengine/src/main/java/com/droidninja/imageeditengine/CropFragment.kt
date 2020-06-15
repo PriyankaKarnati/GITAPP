@@ -44,7 +44,7 @@ class CropFragment : BaseFragment(), View.OnClickListener {
     }
 
     interface OnFragmentInteractionListener {
-        fun onImageCropped(imagePath: String)
+        fun onImageCropped(cropRect: Rect?)
         fun onCancelCrop()
     }
 
@@ -72,15 +72,15 @@ class CropFragment : BaseFragment(), View.OnClickListener {
             mListener?.onCancelCrop()
         } else if (view.id == R.id.done_tv) {
             val original: Bitmap = arguments!!.getParcelable(ImageEditor.EXTRA_ORIGINAL)!!
-            ProcessingImage(cropImageView.getCroppedImage(cropImageView.width, cropImageView.height), Utility.getCacheFilePath(view!!.context),
-                    object : TaskCallback<String?> {
-                        override fun onTaskDone(data: String?) {
-                            mListener?.onImageCropped(data!!)
-                        }
-                    }).execute()
+//            ProcessingImage(cropImageView.getCroppedImage(cropImageView.width, cropImageView.height), Utility.getCacheFilePath(view!!.context),
+//                    object : TaskCallback<String?> {
+//                        override fun onTaskDone(data: String?) {
+//                            mListener?.onImageCropped(data!!)
+//                        }
+//                    }).execute()
+            mListener?.onImageCropped(cropImageView.getCropRect())
 
-
-        } else if (view.id == R.id.done_tv) {
+        } else if (view.id == R.id.back_iv) {
             activity?.onBackPressed()
         }
     }

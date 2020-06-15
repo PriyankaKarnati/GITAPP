@@ -60,7 +60,7 @@ class FilterImageAdapter(list: ArrayList<ImageFilter?>?, listener: FilterImageAd
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imageFilter = imageFilters!!.get(position)
-        Log.i("filter", imageFilter!!.filterName)
+        Log.i("filter", imageFilter!!.filterName!!)
         if (imageFilter.filterImage != null) {
             holder.filterIV!!.setImageBitmap(imageFilter.filterImage)
         }

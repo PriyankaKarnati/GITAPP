@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import com.droidninja.imageeditengine.model.ImageFilter
 import com.droidninja.imageeditengine.utils.FilterHelper
 import com.droidninja.imageeditengine.utils.TaskCallback
+import com.droidninja.imageeditengine.views.PhotoEditorView
 import kotlin.collections.ArrayList
 
 class GetFiltersTask(private val listenerRef: TaskCallback<ArrayList<ImageFilter?>?>, private val srcBitmap: Bitmap) : AsyncTask<Void?, Void?, ArrayList<ImageFilter?>?>() {

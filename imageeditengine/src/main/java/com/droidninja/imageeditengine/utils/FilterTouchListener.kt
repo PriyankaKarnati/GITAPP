@@ -1,5 +1,4 @@
 package com.droidninja.imageeditengine.utils
-
 import android.app.Activity
 import android.util.DisplayMetrics
 import android.util.Log

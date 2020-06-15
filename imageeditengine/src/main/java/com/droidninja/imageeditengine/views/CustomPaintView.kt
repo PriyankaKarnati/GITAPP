@@ -130,7 +130,11 @@ class CustomPaintView : View {
 
     fun reset() {
         if (paintBit != null && !paintBit!!.isRecycled) {
+            //mPaintCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
             paintBit!!.recycle()
+            //paintBit = null
+            // mPaint!!.reset()
+            invalidate()
         }
         generatorBit()
     }

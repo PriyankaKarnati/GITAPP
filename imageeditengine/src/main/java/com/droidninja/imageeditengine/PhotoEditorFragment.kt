@@ -27,6 +27,7 @@ import com.droidninja.imageeditengine.adapters.FilterImageAdapter.FilterImageAda
 import com.droidninja.imageeditengine.filter.ApplyFilterTask
 import com.droidninja.imageeditengine.filter.GetFiltersTask
 import com.droidninja.imageeditengine.filter.ProcessingImage
+import com.droidninja.imageeditengine.filter.ProcessingImageBeforeCrop
 import com.droidninja.imageeditengine.model.ImageFilter
 import com.droidninja.imageeditengine.utils.FilterHelper
 import com.droidninja.imageeditengine.utils.FilterTouchListener
@@ -111,11 +112,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     }
 
     fun setImageWithRect(rect: Rect) {
-        mainBitmap = getScaledBitmap(getCroppedBitmap(getBitmapCache(mainBitmap), rect))
-        originalBitmap = mainBitmap
 
-        setImageBitmap(mainBitmap)
-        currentMode = 4
 
         // Log.i("SetImaggeWithRect","${mainBitmap!!.width}")
         //  if(selectedFilter!=null) {
@@ -126,6 +123,12 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                 filterImageAdapter.notifyDataSetChanged()
             }
         }, mainBitmap!!).execute()
+        mainBitmap = getScaledBitmap(getCroppedBitmap(getBitmapCache(mainBitmap!!), rect))
+        //originalBitmap = mainBitmap
+        if (selectedFilter != null) selectedFilter = null
+        setImageBitmap(mainBitmap)
+        //photoEditorView!!.hidePaintView()
+        currentMode = 4
         // }
     }
 
@@ -217,14 +220,14 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                         override fun onColorChange(selectedColor: Int) {
                             if (currentMode == MODE_PAINT) {
                                 paintButton!!.background = tintDrawable(context!!, R.drawable.circle, selectedColor)
-                                photoEditorView!!.setColor(selectedColor)
+                                photoEditorView!!.color = (selectedColor)
                             } else if (currentMode == MODE_ADD_TEXT) {
                                 addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, selectedColor)
                                 photoEditorView!!.setTextColor(selectedColor)
                             }
                         }
                     })
-            photoEditorView!!.setColor(colorPickerView!!.getDefaultColor())
+            photoEditorView!!.color = (colorPickerView!!.getDefaultColor())
             photoEditorView!!.setTextColor(colorPickerView!!.getDefaultColor())
             if (intent.getBooleanExtra(ImageEditor.EXTRA_HAS_FILTERS, false)) {
                 filterLayout!!.post {
@@ -256,32 +259,51 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         }
     }
 
+    fun takeScreenshotOfView(view: View, height: Int, width: Int): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+//        val bgDrawable = view.background
+//        if (bgDrawable != null) {
+//            bgDrawable.draw(canvas)
+//        } else {
+//            canvas.drawColor(Color.WHITE)
+//        }
+        view.draw(canvas)
+        return bitmap
+    }
+
     override fun onClick(view: View) {
         val id = view.id
         if (id == R.id.crop_btn) {
 //            photoEditorView!!.hidePaintView()
 //            photoEditorView!!.hideStickers()
 //            photoEditorView!!.hideTextMode()
-            photoEditorView!!.showAddedViews()
+            //  photoEditorView!!.hidePaintView()
             if (selectedFilter != null) {
                 //photoEditorView?.hidePaintView()
                 ApplyFilterTask(object : TaskCallback<Bitmap?> {
                     override fun onTaskDone(data: Bitmap?) {
-                        if (data != null) {
-
-                            mListener!!.onCropClicked(getBitmapCache(data))
-                            photoEditorView!!.container_view.bringToFront()
-                        }
+                        //if (data != null) {
+                        ProcessingImageBeforeCrop(getBitmapCache(data), object : TaskCallback<Bitmap?> {
+                            override fun onTaskDone(data: Bitmap?) {
+                                mListener!!.onCropClicked(data)
+                            }
+                        }).execute()
+//                            //data.let { getBitmapCache(it)  }
+//                            mListener!!.onCropClicked(data)
+//                            //photoEditorView!!.container_view.bringToFront()
+                        //}
                     }
-                }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
-
+                }, mainBitmap!!).execute(selectedFilter)
+                //val resultBitmap = takeScreenshotOfView(,mainImageView!!.width,mainImageView!!.height)
+                //mListener!!.onCropClicked(resultBitmap)
             } else {
 
                 mListener!!.onCropClicked(getBitmapCache(mainBitmap))
-                photoEditorView!!.container_view.bringToFront()
+                //photoEditorView!!.container_view.bringToFront()
                 //photoEditorView!!.hide
             }
-            photoEditorView?.reset()
+            //photoEditorView?.reset()
         } else if (id == R.id.stickers_btn) {
             setMode(MODE_STICKER)
         } else if (id == R.id.add_text_btn) {
@@ -304,6 +326,8 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                         }
                     }
                 }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
+
+
             } else {
 
                 ProcessingImage(getBitmapCache(mainBitmap), getCacheFilePath(view.context),
@@ -331,8 +355,8 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
 
     private fun onAddTextMode(status: Boolean) {
         if (status) {
-            addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.getColor())
-            photoEditorView!!.setTextColor(photoEditorView!!.getColor());
+            addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
+            photoEditorView!!.setTextColor(photoEditorView!!.color);
             photoEditorView!!.addText()
         } else {
             addTextButton!!.background = null
@@ -342,12 +366,14 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
 
     private fun onPaintMode(status: Boolean) {
         if (status) {
-            paintButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.getColor())
+            paintButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
             photoEditorView!!.showPaintView()
             //paintEditView.setVisibility(View.VISIBLE);
         } else {
             paintButton!!.background = null
-            photoEditorView!!.hidePaintView()
+            //photoEditorView!!.hidePaintView()
+            animate(context!!, colorPickerView!!, R.anim.slide_out_right, View.INVISIBLE,
+                    null)
             //photoEditorView.enableTouch(true);
             //paintEditView.setVisibility(View.GONE);
         }
@@ -356,7 +382,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     private fun onStickerMode(status: Boolean) {
         if (status) {
 
-            stickerButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.getColor())
+            stickerButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
             if (activity != null && activity!!.intent != null) {
                 val folderName = activity!!.intent.getStringExtra(ImageEditor.EXTRA_STICKER_FOLDER_NAME)
                 photoEditorView!!.showStickers(folderName)
@@ -379,6 +405,13 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         animate(context!!, toolbarLayout!!, R.anim.fade_in_medium, View.VISIBLE, null)
     }
 
+    //    fun getBitmapFromView(bitmap: Bitmap?): Bitmap? {
+//        var bitmap =
+//                Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
+//        val canvas = Canvas(bitmap)
+//        view!!.draw(canvas)
+//        return bitmap
+//    }
     fun getBitmapCache(bitmap: Bitmap?): Bitmap {
         val touchMatrix = mainImageView!!.imageViewMatrix
         val resultBit = Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
@@ -398,15 +431,18 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         canvas.save()
         canvas.translate(dx.toFloat(), dy.toFloat())
         canvas.scale(scaleX, scaleY)
-        photoEditorView!!.isDrawingCacheEnabled = true
-        if (photoEditorView!!.drawingCache != null) {
-            canvas.drawBitmap(photoEditorView!!.drawingCache, 0f, 0f, null)
-        }
-        if (photoEditorView!!.getPaintBit() != null) {
-            canvas.drawBitmap(photoEditorView!!.getPaintBit()!!, 0f, 0f, null)
-        }
+//        photoEditorView!!.isDrawingCacheEnabled = true
+//        if (photoEditorView!!.drawingCache != null) {
+//            canvas.drawBitmap(photoEditorView!!.drawingCache, 0f, 0f, null)
+//        }
+//        if (photoEditorView!!.paintBit != null) {
+//            canvas.drawBitmap(photoEditorView!!.paintBit!!, 0f, 0f, null)
+//        }
         //canvas.get
+        Log.i("photoEdutorfrag", "adding views")
+        photoEditorView!!.draw(canvas)
         canvas.restore()
+
         return resultBit
     }
 
@@ -415,6 +451,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         ApplyFilterTask(object : TaskCallback<Bitmap?> {
             override fun onTaskDone(data: Bitmap?) {
                 data?.let { setImageBitmap(it) }
+
             }
         }, Bitmap.createBitmap(mainBitmap!!)).execute(imageFilter)
     }
