@@ -4,10 +4,7 @@ package com.droidninja.imageeditengine
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.Rect
+import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.util.LruCache
@@ -15,9 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -41,34 +41,43 @@ import com.droidninja.imageeditengine.views.VerticalSlideColorPicker.OnColorChan
 import com.droidninja.imageeditengine.views.ViewTouchListener
 import com.droidninja.imageeditengine.views.imagezoom.ImageViewTouch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_photo_editor.*
 import kotlinx.android.synthetic.main.photo_editor_view.*
 import kotlinx.android.synthetic.main.photo_editor_view.view.*
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouchListener, FilterImageAdapterListener {
+open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
     var mainImageView: ImageViewTouch? = null
-    var cropButton: ImageView? = null
-    var stickerButton: ImageView? = null
-    var addTextButton: ImageView? = null
+
+    //    var cropButton: ImageView? = null
+//    var stickerButton: ImageView? = null
+//    var addTextButton: ImageView? = null
     var photoEditorView: PhotoEditorView? = null
-    var paintButton: ImageView? = null
-    var deleteButton: ImageView? = null
-    var colorPickerView: VerticalSlideColorPicker? = null
+//    var paintButton: ImageView? = null
+//var deleteButton: ImageView? = null
+//    var colorPickerView: VerticalSlideColorPicker? = null
 
     //CustomPaintView paintEditView;
-    var toolbarLayout: View? = null
+    //   var toolbarLayout: View? = null
     var filterRecylerview: RecyclerView? = null
     var filterLayout: View? = null
     var filterLabel: View? = null
-    var doneBtn: FloatingActionButton? = null
+
+    //    var doneBtn: FloatingActionButton? = null
     var mainBitmap: Bitmap? = null
     private val cacheStack: LruCache<Int, Bitmap>? = null
-    private var filterLayoutHeight = 0
-    private var mListener: OnFragmentInteractionListener? = null
-    protected var currentMode = 4
+    var filterLayoutHeight = 0
+    var mListener: OnFragmentInteractionListener? = null
+
+    //    protected var currentMode = 4
     var selectedFilter: ImageFilter? = null
     private var originalBitmap: Bitmap? = null
+    private lateinit var viewPager: ViewPager
+    private lateinit var pagerAdapter: EditorViewPagerAdapter
+    private lateinit var imagePath: String
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -99,6 +108,7 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
 
     }
 
+
     fun setImageBitmap(bitmap: Bitmap?) {
         mainImageView!!.setImageBitmap(bitmap)
         mainImageView.run {
@@ -106,9 +116,6 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
             photoEditorView!!.setBounds(mainImageView!!.bitmapRect)
             Log.i("endedPost", "endedPost")
         }
-//        mainImageView!!.post {
-//
-//        }
     }
 
     fun setImageWithRect(rect: Rect) {
@@ -116,19 +123,22 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
 
         // Log.i("SetImaggeWithRect","${mainBitmap!!.width}")
         //  if(selectedFilter!=null) {
-        GetFiltersTask(object : TaskCallback<ArrayList<ImageFilter?>?> {
-            override fun onTaskDone(data: ArrayList<ImageFilter?>?) {
-                val filterImageAdapter = filterRecylerview!!.adapter as FilterImageAdapter
-                filterImageAdapter.setData(data)
-                filterImageAdapter.notifyDataSetChanged()
-            }
-        }, mainBitmap!!).execute()
         mainBitmap = getScaledBitmap(getCroppedBitmap(getBitmapCache(mainBitmap!!), rect))
-        //originalBitmap = mainBitmap
         if (selectedFilter != null) selectedFilter = null
         setImageBitmap(mainBitmap)
+        GetFiltersTask(object : TaskCallback<ArrayList<ImageFilter?>?> {
+            override fun onTaskDone(data: ArrayList<ImageFilter?>?) {
+                val filterImageAdapter = filterRecylerview!!.adapter as? FilterImageAdapter
+                filterImageAdapter!!.setData(data)
+                filterImageAdapter!!.notifyDataSetChanged()
+            }
+        }, mainBitmap!!).execute()
+
+        //originalBitmap = mainBitmap
+
+
         //photoEditorView!!.hidePaintView()
-        currentMode = 4
+        (activity as ImageEditActivity).currentMode = 4
         // }
     }
 
@@ -157,21 +167,23 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
     @SuppressLint("ClickableViewAccessibility")
     override fun initView(view: View?) {
         mainImageView = view!!.findViewById(R.id.image_iv)
-        cropButton = view.findViewById(R.id.crop_btn)
-        stickerButton = view.findViewById(R.id.stickers_btn)
-        addTextButton = view.findViewById(R.id.add_text_btn)
-        deleteButton = view.findViewById(R.id.delete_view)
+//        cropButton = view.findViewById(R.id.crop_btn)
+//        stickerButton = view.findViewById(R.id.stickers_btn)
+//        addTextButton = view.findViewById(R.id.add_text_btn)
+//        deleteButton = view.findViewById(R.id.delete_view)
         photoEditorView = view.findViewById(R.id.photo_editor_view)
-        paintButton = view.findViewById(R.id.paint_btn)
-        colorPickerView = view.findViewById(R.id.color_picker_view)
-        //paintEditView = findViewById(R.id.paint_edit_view);
-        toolbarLayout = view.findViewById(R.id.toolbar_layout)
+//        paintButton = view.findViewById(R.id.paint_btn)
+//        colorPickerView = view.findViewById(R.id.color_picker_view)
+//        //paintEditView = findViewById(R.id.paint_edit_view);
+//        toolbarLayout = view.findViewById(R.id.toolbar_layout)
         filterRecylerview = view.findViewById<RecyclerView>(R.id.filter_list_rv)
         filterLayout = view.findViewById(R.id.filter_list_layout)
         filterLabel = view.findViewById(R.id.filter_label)
-        doneBtn = view.findViewById(R.id.done_btn)
+//        doneBtn = view.findViewById(R.id.done_btn)
+
         if (arguments != null && activity != null && activity!!.intent != null) {
-            val imagePath = arguments!!.getString(ImageEditor.EXTRA_IMAGE_PATH)
+            imagePath = arguments!!.getString(ImageEditor.EXTRA_IMAGE_PATH)!!
+
             //mainImageView.post(new Runnable() {
             //  @Override public void run() {
             //    mainBitmap = Utility.decodeBitmap(imagePath,mainImageView.getWidth(),mainImageView.getHeight());
@@ -189,6 +201,27 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                     originalBitmap = Bitmap.createScaledBitmap(resource, ivWidth, newHeight, true)
                     mainBitmap = originalBitmap
                     setImageBitmap(mainBitmap)
+//
+                    Log.i("Before viewPager", "asds")
+//            viewPager = view.findViewById<ViewPager>(R.id.editorViewPagerInFrag)
+//            pagerAdapter = EditorViewPagerAdapter(this.context!!,imagePath as ArrayList<String>)
+//            viewPager.adapter = pagerAdapter
+//                    mainImageView.run {
+//                        Log.i("startefPost", "startedPost")
+//                        photoEditorView!!.setBounds(mainImageView!!.bitmapRect)
+//                        Log.i("endedPost", "endedPost")
+//                    }
+                    //frag.mainBitmap = mainBitmap
+
+
+                    //Log.i("PagerAdapterSIze","${pagerAdapter.count}")
+////
+//                    mainImageView.run {
+//                        Log.i("startefPost", "startedPost")
+//                        photoEditorView!!.setBounds(mainImageView!!.bitmapRect)
+//                        Log.i("endedPost", "endedPost")
+//                    }
+//            mainBitmap = BitmapFactory.decodeFile(imagePath[viewPager.currentItem])
                     GetFiltersTask(object : TaskCallback<ArrayList<ImageFilter?>?> {
                         override fun onTaskDone(data: ArrayList<ImageFilter?>?) {
                             val filterImageAdapter = filterRecylerview!!.adapter as FilterImageAdapter
@@ -200,42 +233,57 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                     }, mainBitmap!!).execute()
                 }
             })
+
+//            viewPager.addOnPageChangeListener(object :ViewPager.OnPageChangeListener{
+//                override fun onPageScrollStateChanged(state: Int) {
+//                    TODO("Not yet implemented")
+//                }
+//
+//                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+//                    TODO("Not yet implemented")
+//                }
+//
+//                override fun onPageSelected(position: Int) {
+//                    TODO("Not yet implemented")
+//                }
+//            })
             val intent = activity!!.intent
-            setVisibility(addTextButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_TEXT_MODE, false))
-            setVisibility(cropButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_CROP_MODE, false))
-            setVisibility(stickerButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_STICKER_MODE, false))
-            setVisibility(paintButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_PAINT_MODE, false))
+
+//            setVisibility(addTextButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_TEXT_MODE, false))
+//            setVisibility(cropButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_CROP_MODE, false))
+//            setVisibility(stickerButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_STICKER_MODE, false))
+//            setVisibility(paintButton!!, intent.getBooleanExtra(ImageEditor.EXTRA_IS_PAINT_MODE, false))
             setVisibility(filterLayout!!, intent.getBooleanExtra(ImageEditor.EXTRA_HAS_FILTERS, false))
-            photoEditorView!!.setImageView(mainImageView, deleteButton, this)
+            photoEditorView!!.setImageView(mainImageView, (activity as ImageEditActivity).deleteButton, (activity as ImageEditActivity))
             //stickerEditorView.setImageView(mainImageView, deleteButton,this);
-            cropButton!!.setOnClickListener(this)
-            stickerButton!!.setOnClickListener(this)
-            addTextButton!!.setOnClickListener(this)
-            paintButton!!.setOnClickListener(this)
-            doneBtn!!.setOnClickListener(this)
-            deleteButton!!.setOnClickListener(this)
-            view.findViewById<View>(R.id.back_iv).setOnClickListener(this)
-            colorPickerView!!.setOnColorChangeListener(
-                    object : OnColorChangeListener {
-                        override fun onColorChange(selectedColor: Int) {
-                            if (currentMode == MODE_PAINT) {
-                                paintButton!!.background = tintDrawable(context!!, R.drawable.circle, selectedColor)
-                                photoEditorView!!.color = (selectedColor)
-                            } else if (currentMode == MODE_ADD_TEXT) {
-                                addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, selectedColor)
-                                photoEditorView!!.setTextColor(selectedColor)
-                            }
-                        }
-                    })
-            photoEditorView!!.color = (colorPickerView!!.getDefaultColor())
-            photoEditorView!!.setTextColor(colorPickerView!!.getDefaultColor())
+//            cropButton!!.setOnClickListener(this)
+//            stickerButton!!.setOnClickListener(this)
+//            addTextButton!!.setOnClickListener(this)
+//            paintButton!!.setOnClickListener(this)
+//            doneBtn!!.setOnClickListener(this)
+//            deleteButton!!.setOnClickListener(this)
+//            view.findViewById<View>(R.id.back_iv).setOnClickListener(this)
+//            colorPickerView!!.setOnColorChangeListener(
+//                    object : OnColorChangeListener {
+//                        override fun onColorChange(selectedColor: Int) {
+//                            if (currentMode == MODE_PAINT) {
+//                                paintButton!!.background = tintDrawable(context!!, R.drawable.circle, selectedColor)
+//                                photoEditorView!!.color = (selectedColor)
+//                            } else if (currentMode == MODE_ADD_TEXT) {
+//                                addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, selectedColor)
+//                                photoEditorView!!.setTextColor(selectedColor)
+//                            }
+//                        }
+//                    })
+            photoEditorView!!.color = ((activity as ImageEditActivity).colorPickerView!!.getDefaultColor())
+            photoEditorView!!.setTextColor((activity as ImageEditActivity).colorPickerView!!.getDefaultColor())
             if (intent.getBooleanExtra(ImageEditor.EXTRA_HAS_FILTERS, false)) {
                 filterLayout!!.post {
                     filterLayoutHeight = filterLayout!!.height
                     filterLayout!!.translationY = filterLayoutHeight.toFloat()
                     photoEditorView!!.setOnTouchListener(
                             FilterTouchListener(filterLayout!!, filterLayoutHeight.toFloat(), mainImageView!!,
-                                    photoEditorView!!, filterLabel!!, doneBtn!!))
+                                    photoEditorView!!, filterLabel!!, (activity as ImageEditActivity).doneBtn!!))
                 }
                 val filterHelper = FilterHelper()
                 filterRecylerview!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -243,175 +291,140 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                 filterRecylerview!!.adapter = filterImageAdapter
             }
         }
+
+        //mainImageView!!.setSwipeListener(imageSwipeListener)
     }
 
-    protected fun onModeChanged(currentMode: Int) {
-        Log.i(ImageEditActivity::class.java.simpleName, "CM: $currentMode")
-        onStickerMode(currentMode == MODE_STICKER)
-        onAddTextMode(currentMode == MODE_ADD_TEXT)
-        onPaintMode(currentMode == MODE_PAINT)
-        if (currentMode == MODE_PAINT || currentMode == MODE_ADD_TEXT) {
-            animate(context!!, colorPickerView!!, R.anim.slide_in_right, View.VISIBLE,
-                    null)
-        } else {
-            animate(context!!, colorPickerView!!, R.anim.slide_out_right, View.INVISIBLE,
-                    null)
-        }
-    }
-
-    fun takeScreenshotOfView(view: View, height: Int, width: Int): Bitmap {
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-//        val bgDrawable = view.background
-//        if (bgDrawable != null) {
-//            bgDrawable.draw(canvas)
+//    protected fun onModeChanged(currentMode: Int) {
+//        Log.i(ImageEditActivity::class.java.simpleName, "CM: $currentMode")
+//        onStickerMode(currentMode == MODE_STICKER)
+//        onAddTextMode(currentMode == MODE_ADD_TEXT)
+//        onPaintMode(currentMode == MODE_PAINT)
+//        if (currentMode == MODE_PAINT || currentMode == MODE_ADD_TEXT) {
+//            animate(context!!, colorPickerView!!, R.anim.slide_in_right, View.VISIBLE,
+//                    null)
 //        } else {
-//            canvas.drawColor(Color.WHITE)
+//            animate(context!!, colorPickerView!!, R.anim.slide_out_right, View.INVISIBLE,
+//                    null)
 //        }
-        view.draw(canvas)
-        return bitmap
-    }
-
-    override fun onClick(view: View) {
-        val id = view.id
-        if (id == R.id.crop_btn) {
-//            photoEditorView!!.hidePaintView()
-//            photoEditorView!!.hideStickers()
-//            photoEditorView!!.hideTextMode()
-            //  photoEditorView!!.hidePaintView()
-            if (selectedFilter != null) {
-                //photoEditorView?.hidePaintView()
-                ApplyFilterTask(object : TaskCallback<Bitmap?> {
-                    override fun onTaskDone(data: Bitmap?) {
-                        //if (data != null) {
-                        ProcessingImageBeforeCrop(getBitmapCache(data), object : TaskCallback<Bitmap?> {
-                            override fun onTaskDone(data: Bitmap?) {
-                                mListener!!.onCropClicked(data)
-                            }
-                        }).execute()
-//                            //data.let { getBitmapCache(it)  }
-//                            mListener!!.onCropClicked(data)
-//                            //photoEditorView!!.container_view.bringToFront()
-                        //}
-                    }
-                }, mainBitmap!!).execute(selectedFilter)
-                //val resultBitmap = takeScreenshotOfView(,mainImageView!!.width,mainImageView!!.height)
-                //mListener!!.onCropClicked(resultBitmap)
-            } else {
-
-                mListener!!.onCropClicked(getBitmapCache(mainBitmap))
-                //photoEditorView!!.container_view.bringToFront()
-                //photoEditorView!!.hide
-            }
-            //photoEditorView?.reset()
-        } else if (id == R.id.stickers_btn) {
-            setMode(MODE_STICKER)
-        } else if (id == R.id.add_text_btn) {
-            setMode(MODE_ADD_TEXT)
-        } else if (id == R.id.paint_btn) {
-            setMode(MODE_PAINT)
-        } else if (id == R.id.back_iv) {
-            activity!!.onBackPressed()
-        } else if (id == R.id.done_btn) {
-            if (selectedFilter != null) {
-                ApplyFilterTask(object : TaskCallback<Bitmap?> {
-                    override fun onTaskDone(data: Bitmap?) {
-                        if (data != null) {
-                            ProcessingImage(getBitmapCache(data), getCacheFilePath(view.context),
-                                    object : TaskCallback<String?> {
-                                        override fun onTaskDone(data: String?) {
-                                            mListener!!.onDoneClicked(data)
-                                        }
-                                    }).execute()
-                        }
-                    }
-                }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
-
-
-            } else {
-
-                ProcessingImage(getBitmapCache(mainBitmap), getCacheFilePath(view.context),
-                        object : TaskCallback<String?> {
-                            override fun onTaskDone(data: String?) {
-                                mListener!!.onDoneClicked(data)
-                            }
-                        }).execute()
-            }
-
-        }
-        if (currentMode != MODE_NONE) {
-            filterLabel!!.alpha = 0f
-            mainImageView!!.animate().scaleX(1f)
-            photoEditorView!!.animate().scaleX(1f)
-            mainImageView!!.animate().scaleY(1f)
-            photoEditorView!!.animate().scaleY(1f)
-            filterLayout!!.animate().translationY(filterLayoutHeight.toFloat())
-            //touchView.setVisibility(View.GONE);
-        } else {
-            filterLabel!!.alpha = 1f
-            //touchView.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private fun onAddTextMode(status: Boolean) {
-        if (status) {
-            addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
-            photoEditorView!!.setTextColor(photoEditorView!!.color);
-            photoEditorView!!.addText()
-        } else {
-            addTextButton!!.background = null
-            photoEditorView!!.hideTextMode()
-        }
-    }
-
-    private fun onPaintMode(status: Boolean) {
-        if (status) {
-            paintButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
-            photoEditorView!!.showPaintView()
-            //paintEditView.setVisibility(View.VISIBLE);
-        } else {
-            paintButton!!.background = null
-            //photoEditorView!!.hidePaintView()
-            animate(context!!, colorPickerView!!, R.anim.slide_out_right, View.INVISIBLE,
-                    null)
-            //photoEditorView.enableTouch(true);
-            //paintEditView.setVisibility(View.GONE);
-        }
-    }
-
-    private fun onStickerMode(status: Boolean) {
-        if (status) {
-
-            stickerButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
-            if (activity != null && activity!!.intent != null) {
-                val folderName = activity!!.intent.getStringExtra(ImageEditor.EXTRA_STICKER_FOLDER_NAME)
-                photoEditorView!!.showStickers(folderName)
-            }
-        } else {
-            stickerButton!!.background = null
-            photoEditorView!!.hideStickers()
-        }
-    }
-
-    override fun onStartViewChangeListener(view: View?) {
-        Log.i(ImageEditActivity::class.java.simpleName, "onStartViewChangeListener" + "" + view!!.id)
-        toolbarLayout!!.visibility = View.GONE
-        animate(context!!, deleteButton!!, R.anim.fade_in_medium, View.VISIBLE, null)
-    }
-
-    override fun onStopViewChangeListener(view: View?) {
-        Log.i(ImageEditActivity::class.java.simpleName, "onStopViewChangeListener" + "" + view!!.id)
-        deleteButton!!.visibility = View.GONE
-        animate(context!!, toolbarLayout!!, R.anim.fade_in_medium, View.VISIBLE, null)
-    }
-
-    //    fun getBitmapFromView(bitmap: Bitmap?): Bitmap? {
-//        var bitmap =
-//                Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
-//        val canvas = Canvas(bitmap)
-//        view!!.draw(canvas)
-//        return bitmap
 //    }
+
+
+//    override fun onClick(view: View) {
+//        val id = view.id
+//        if (id == R.id.crop_btn) {
+//            if (selectedFilter != null) {
+//                ApplyFilterTask(object : TaskCallback<Bitmap?> {
+//                    override fun onTaskDone(data: Bitmap?) {
+//                        ProcessingImageBeforeCrop(getBitmapCache(data), object : TaskCallback<Bitmap?> {
+//                            override fun onTaskDone(data: Bitmap?) {
+//                                mListener!!.onCropClicked(data)
+//                            }
+//                        }).execute()
+////
+//                    }
+//                },mainBitmap).execute(selectedFilter)
+//            } else {
+//                mListener!!.onCropClicked(getBitmapCache(mainBitmap))
+//            }
+//        } else if (id == R.id.stickers_btn) {
+//            setMode(MODE_STICKER)
+//        } else if (id == R.id.add_text_btn) {
+//            setMode(MODE_ADD_TEXT)
+//        } else if (id == R.id.paint_btn) {
+//            setMode(MODE_PAINT)
+//        } else if (id == R.id.back_iv) {
+//            activity!!.onBackPressed()
+//        } else if (id == R.id.done_btn) {
+//            if (selectedFilter != null) {
+//                ApplyFilterTask(object : TaskCallback<Bitmap?> {
+//                    override fun onTaskDone(data: Bitmap?) {
+//                        if (data != null) {
+//                            ProcessingImage(getBitmapCache(data), getCacheFilePath(view.context),
+//                                    object : TaskCallback<String?> {
+//                                        override fun onTaskDone(data: String?) {
+//                                            mListener!!.onDoneClicked(data)
+//                                        }
+//                                    }).execute()
+//                        }
+//                    }
+//                }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
+//
+//
+//            } else {
+//                ProcessingImage(getBitmapCache(mainBitmap), getCacheFilePath(view.context),
+//                        object : TaskCallback<String?> {
+//                            override fun onTaskDone(data: String?) {
+//                                mListener!!.onDoneClicked(data)
+//                            }
+//                        }).execute()
+//            }
+//
+//        }
+//        if (currentMode != MODE_NONE) {
+//            filterLabel!!.alpha = 0f
+//            mainImageView!!.animate().scaleX(1f)
+//            photoEditorView!!.animate().scaleX(1f)
+//            mainImageView!!.animate().scaleY(1f)
+//            photoEditorView!!.animate().scaleY(1f)
+//            filterLayout!!.animate().translationY(filterLayoutHeight.toFloat())
+//            //touchView.setVisibility(View.GONE);
+//        } else {
+//            filterLabel!!.alpha = 1f
+//            //touchView.setVisibility(View.VISIBLE);
+//        }
+//    }
+
+//    private fun onAddTextMode(status: Boolean) {
+//        if (status) {
+//            addTextButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
+//            photoEditorView!!.setTextColor(photoEditorView!!.color);
+//            photoEditorView!!.addText()
+//        } else {
+//            addTextButton!!.background = null
+//            photoEditorView!!.hideTextMode()
+//        }
+//    }
+//
+//    private fun onPaintMode(status: Boolean) {
+//        if (status) {
+//            paintButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
+//            photoEditorView!!.showPaintView()
+//            //paintEditView.setVisibility(View.VISIBLE);
+//        } else {
+//            paintButton!!.background = null
+//            //photoEditorView!!.hidePaintView()
+//            animate(context!!, colorPickerView!!, R.anim.slide_out_right, View.INVISIBLE,
+//                    null)
+//        }
+//    }
+//
+//    private fun onStickerMode(status: Boolean) {
+//        if (status) {
+//
+//            stickerButton!!.background = tintDrawable(context!!, R.drawable.circle, photoEditorView!!.color)
+//            if (activity != null && activity!!.intent != null) {
+//                val folderName = activity!!.intent.getStringExtra(ImageEditor.EXTRA_STICKER_FOLDER_NAME)
+//                photoEditorView!!.showStickers(folderName)
+//            }
+//        } else {
+//            stickerButton!!.background = null
+//            photoEditorView!!.hideStickers()
+//        }
+//    }
+
+//    override fun onStartViewChangeListener(view: View?) {
+//        Log.i(ImageEditActivity::class.java.simpleName, "onStartViewChangeListener" + "" + view!!.id)
+//        toolbarLayout!!.visibility = View.GONE
+//        animate(context!!, deleteButton!!, R.anim.fade_in_medium, View.VISIBLE, null)
+//    }
+//
+//    override fun onStopViewChangeListener(view: View?) {
+//        Log.i(ImageEditActivity::class.java.simpleName, "onStopViewChangeListener" + "" + view!!.id)
+//        deleteButton!!.visibility = View.GONE
+//        animate(context!!, toolbarLayout!!, R.anim.fade_in_medium, View.VISIBLE, null)
+//    }
+
     fun getBitmapCache(bitmap: Bitmap?): Bitmap {
         val touchMatrix = mainImageView!!.imageViewMatrix
         val resultBit = Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
@@ -456,21 +469,19 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
         }, Bitmap.createBitmap(mainBitmap!!)).execute(imageFilter)
     }
 
-    protected fun setMode(modes: Int) {
-        var mode = modes
-        if (currentMode != mode) {
-            onModeChanged(mode)
-        } else {
-            mode = MODE_NONE
-            onModeChanged(mode)
-        }
-        currentMode = mode
-    }
+//    protected fun setMode(modes: Int) {
+//        var mode = modes
+//        if (currentMode != mode) {
+//            onModeChanged(mode)
+//        } else {
+//            mode = MODE_NONE
+//            onModeChanged(mode)
+//        }
+//        currentMode = mode
+//    }
 
     fun getEditedPath() {
-        var path = String()
-
-
+        //var path=String()
         if (selectedFilter != null) {
             ApplyFilterTask(object : TaskCallback<Bitmap?> {
                 override fun onTaskDone(data: Bitmap?) {
@@ -480,10 +491,10 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                                 object : TaskCallback<String?> {
                                     override fun onTaskDone(data: String?) {
                                         Log.i("editedIMagessss", data)
-                                        path = data!!
+
                                         mListener!!.sendPath(data)
                                     }
-                                })
+                                }).execute()
 
                     }
                 }
@@ -495,7 +506,6 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
                     object : TaskCallback<String?> {
                         override fun onTaskDone(data: String?) {
                             mListener!!.sendPath(data)
-                            path = data!!
                         }
                     }).execute()
 
@@ -505,13 +515,37 @@ open class PhotoEditorFragment : BaseFragment(), View.OnClickListener, ViewTouch
 
     }
 
+//    override fun onLeftSwiped(){
+//        if(currentIndex>0){
+//
+//            imagePath[currentIndex] = getCacheFilePath(this.context!!)!!
+//            currentIndex--
+//            mainBitmap = BitmapFactory.decodeFile(imagePath[currentIndex])
+//            setImageBitmap(mainBitmap)
+//            photoEditorView!!.reset()
+//        }
+//
+//
+//    }
+//    override fun onRightSwiped(){
+//        if(currentIndex<imagePath.size-1){
+//
+//            imagePath[currentIndex] = getCacheFilePath(this.context!!)!!
+//            currentIndex++
+//            mainBitmap = BitmapFactory.decodeFile(imagePath[currentIndex])
+//            setImageBitmap(mainBitmap)
+//            photoEditorView!!.reset()
+//        }
+
+    //   }
+
 
     companion object {
-        const val MODE_NONE = 4
-        const val MODE_PAINT = 1
-        const val MODE_ADD_TEXT = 2
-        const val MODE_STICKER = 3
-        fun newInstance(imagePath: String?): PhotoEditorFragment {
+        //        const val MODE_NONE = 4
+//        const val MODE_PAINT = 1
+//        const val MODE_ADD_TEXT = 2
+//        const val MODE_STICKER = 3
+        fun newInstance(imagePath: String): PhotoEditorFragment {
             val bundle = Bundle()
             bundle.putString(ImageEditor.EXTRA_IMAGE_PATH, imagePath)
             val photoEditorFragment = PhotoEditorFragment()

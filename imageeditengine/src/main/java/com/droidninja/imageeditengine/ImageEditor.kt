@@ -23,7 +23,7 @@ object ImageEditor {
     val EXTRA_EDITED_PATH: String? = "EXTRA_EDITED_PATH"
     const val RC_IMAGE_EDITOR = 0x34
 
-    class Builder(private val context: Activity?, private val imagePath: String?) {
+    class Builder(private val context: Activity?, private val imagePath: ArrayList<String?>) {
         private var stickerFolderName: String? = null
         private var enabledEditorText = true
         private var enabledEditorPaint = true

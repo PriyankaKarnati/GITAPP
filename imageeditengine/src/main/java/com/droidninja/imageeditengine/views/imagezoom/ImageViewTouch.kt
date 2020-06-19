@@ -39,6 +39,7 @@ class ImageViewTouch(context: Context?, val attrs: AttributeSet?) : ImageViewTou
         mDoubleTapDirection = 1
     }
 
+
     fun setDoubleTapListener(listener: OnImageViewTouchDoubleTapListener?) {
         mDoubleTapListener = listener
     }

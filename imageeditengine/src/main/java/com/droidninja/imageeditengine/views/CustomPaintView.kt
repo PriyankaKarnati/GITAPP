@@ -118,9 +118,9 @@ class CustomPaintView : View {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        if (paintBit != null && !paintBit!!.isRecycled) {
-            paintBit!!.recycle()
-        }
+//        if (paintBit != null && !paintBit!!.isRecycled) {
+//            paintBit!!.recycle()
+//        }
     }
 
     fun setEraser(eraser: Boolean) {
