@@ -92,26 +92,32 @@ class CustomPaintView : View {
         }
     }
 
+    var isUserDrawing: Boolean = false
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         var ret = super.onTouchEvent(event)
         val x = event.x
         val y = event.y
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-                ret = true
-                last_x = x
-                last_y = y
-            }
-            MotionEvent.ACTION_MOVE -> {
-                ret = true
-                if (bounds!!.contains(x, y) && bounds!!.contains(last_x, last_y)) {
-                    mPaintCanvas!!.drawLine(last_x, last_y, x, y, (if (eraser) mEraserPaint else mPaint)!!)
+        if (isUserDrawing) {
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    ret = true
+                    last_x = x
+                    last_y = y
                 }
-                last_x = x
-                last_y = y
-                this.postInvalidate()
+                MotionEvent.ACTION_MOVE -> {
+                    ret = true
+                    if (bounds!!.contains(x, y) && bounds!!.contains(last_x, last_y)) {
+                        mPaintCanvas!!.drawLine(last_x, last_y, x, y, (if (eraser) mEraserPaint else mPaint)!!)
+                    }
+                    last_x = x
+                    last_y = y
+                    this.postInvalidate()
+                }
+                MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> ret = false
             }
-            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> ret = false
+        } else {
+            ret = false
         }
         return ret
     }

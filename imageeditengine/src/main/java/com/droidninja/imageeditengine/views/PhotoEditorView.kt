@@ -21,6 +21,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.annotation.Dimension
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.droidninja.imageeditengine.ImageEditActivity
 import com.droidninja.imageeditengine.R
 import com.droidninja.imageeditengine.utils.KeyboardHeightProvider
 import com.droidninja.imageeditengine.utils.KeyboardHeightProvider.KeyboardHeightObserver
@@ -97,6 +98,7 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightObserver {
         recyclerView?.setVisibility(View.GONE)
         inputTextET!!.visibility = View.GONE
         hideSoftKeyboard((context as Activity))
+        customPaintView!!.isUserDrawing = true
         customPaintView?.bringToFront()
     }
 
@@ -114,8 +116,9 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightObserver {
         get() = customPaintView?.paintBit!!
 
     fun hidePaintView() {
-
-        customPaintView!!.reset()
+        //customPaintView!!.paintBit = null
+        customPaintView!!.isUserDrawing = false
+        //containerView!!.bringToFront()
     }
 
     //text mode methods
@@ -171,6 +174,7 @@ class PhotoEditorView : FrameLayout, ViewTouchListener, KeyboardHeightObserver {
         val multiTouchListener = MultiTouchListener(container!!, deleteView!!, imageView!!, true, this)
         multiTouchListener.setOnMultiTouchListener(object : OnMultiTouchListener {
             override fun onRemoveViewListener(removedView: View?) {
+
                 container!!.removeView(removedView)
                 inputTextET!!.setText(null)
                 inputTextET!!.visibility = View.INVISIBLE

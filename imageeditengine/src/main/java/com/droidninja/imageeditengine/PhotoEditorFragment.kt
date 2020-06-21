@@ -111,7 +111,7 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
 
     fun setImageBitmap(bitmap: Bitmap?) {
         mainImageView!!.setImageBitmap(bitmap)
-        mainImageView.run {
+        mainImageView!!.post {
             Log.i("startefPost", "startedPost")
             photoEditorView!!.setBounds(mainImageView!!.bitmapRect)
             Log.i("endedPost", "endedPost")
@@ -426,7 +426,9 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
 //    }
 
     fun getBitmapCache(bitmap: Bitmap?): Bitmap {
+//        Log.i("TOuchMatrix","${mainImageView!!.imageViewMatrix}")
         val touchMatrix = mainImageView!!.imageViewMatrix
+
         val resultBit = Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(resultBit)
         val data = FloatArray(9)

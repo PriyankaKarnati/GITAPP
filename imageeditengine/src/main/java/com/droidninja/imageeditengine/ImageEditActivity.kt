@@ -29,7 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEditorFragment.OnFragmentInteractionListener, CropFragment.OnFragmentInteractionListener, ViewTouchListener {
     private var cropRect = Rect()
-    private lateinit var viewPager: ViewPager2
+    lateinit var viewPager: ViewPager2
     private lateinit var pagerAdapter: EditorViewPagerAdapter
     private var EditedPaths = ArrayList<String>()
 
@@ -96,10 +96,11 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
                 })
 
         val imagePath = intent.getStringArrayListExtra(EXTRA_IMAGE_PATH)
-        if (!imagePath.isEmpty()) {
+        if (imagePath.isNotEmpty()) {
             viewPager = findViewById(R.id.viewPagerInAct)
             pagerAdapter = EditorViewPagerAdapter(this, imagePath)
             viewPager.adapter = pagerAdapter
+
         }
     }
 
@@ -134,13 +135,12 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
 
     private fun onAddTextMode(status: Boolean) {
         if (status) {
-            viewPager.beginFakeDrag()
+            Log.i("viewPagerStatus", "${viewPager.isUserInputEnabled}")
             addTextButton!!.background = Utility.tintDrawable(applicationContext, R.drawable.circle, photoEditorView().color)
             photoEditorView().setTextColor(photoEditorView().color);
             photoEditorView().addText()
 
         } else {
-            viewPager.endFakeDrag()
             addTextButton!!.background = null
             photoEditorView().hideTextMode()
         }
@@ -148,44 +148,48 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
 
     private fun onPaintMode(status: Boolean) {
         if (status) {
+            Log.i("viewPagerStatus", "${viewPager.isUserInputEnabled}")
+            viewPager.isUserInputEnabled = false
             paintButton!!.background = Utility.tintDrawable(applicationContext, R.drawable.circle, photoEditorView().color)
             photoEditorView().showPaintView()
             //paintEditView.setVisibility(View.VISIBLE);
-            viewPager.beginFakeDrag()
         } else {
             paintButton!!.background = null
-            //photoEditorView!!.hidePaintView()
-            viewPager.endFakeDrag()
+            photoEditorView().hidePaintView()
+
             AnimationHelper.animate(applicationContext, colorPickerView!!, R.anim.slide_out_right, View.INVISIBLE,
                     null)
+            viewPager.isUserInputEnabled = true
         }
     }
 
     private fun onStickerMode(status: Boolean) {
         if (status) {
-            viewPager.beginFakeDrag()
+            Log.i("viewPagerStatus", "${viewPager.isUserInputEnabled}")
             stickerButton!!.background = Utility.tintDrawable(applicationContext, R.drawable.circle, photoEditorView().color)
             if (this.intent != null) {
                 val folderName = this.intent.getStringExtra(ImageEditor.EXTRA_STICKER_FOLDER_NAME)
                 photoEditorView().showStickers(folderName)
             }
+
         } else {
-            viewPager.endFakeDrag()
             stickerButton!!.background = null
             photoEditorView().hideStickers()
+            //photoEditorView().hidePaintView()
+            // viewPager.isUserInputEnabled = true
         }
     }
 
     override fun onStartViewChangeListener(view: View?) {
         Log.i(ImageEditActivity::class.java.simpleName, "onStartViewChangeListener" + "" + view!!.id)
         toolbarLayout!!.visibility = View.GONE
-        viewPager.beginFakeDrag()
+        viewPager.isUserInputEnabled = false
         AnimationHelper.animate(applicationContext, deleteButton!!, R.anim.fade_in_medium, View.VISIBLE, null)
     }
 
     override fun onStopViewChangeListener(view: View?) {
         Log.i(ImageEditActivity::class.java.simpleName, "onStopViewChangeListener" + "" + view!!.id)
-        viewPager.endFakeDrag()
+        viewPager.isUserInputEnabled = true
         deleteButton!!.visibility = View.GONE
         AnimationHelper.animate(applicationContext, toolbarLayout!!, R.anim.fade_in_medium, View.VISIBLE, null)
     }
