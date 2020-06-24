@@ -88,8 +88,6 @@
 
 
     <!--    </RelativeLayout>-->
-
-
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -98,10 +96,25 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPagerInAct"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
+
+        </androidx.viewpager2.widget.ViewPager2>
 
     </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/done_btn"
+        android:layout_width="380dp"
+        android:layout_height="380dp"
+        android:layout_marginStart="340dp"
+        android:layout_marginLeft="340dp"
+        android:layout_marginTop="561dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="115dp"
+        app:srcCompat="@drawable/ic_done" />
+
 
     <ImageView
         android:id="@+id/delete_view"
@@ -182,16 +195,8 @@
             app:defaultColor="@color/checkbox_color" />
 
 
+
     </RelativeLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/done_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/done_btn_margin"
-        app:srcCompat="@drawable/ic_done" />
 
 </RelativeLayout>

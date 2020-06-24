@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.Nullable
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.droidninja.imageeditengine.ImageEditor.EXTRA_IMAGE_PATH
 import com.droidninja.imageeditengine.filter.ApplyFilterTask
@@ -26,6 +27,7 @@ import com.droidninja.imageeditengine.views.PhotoEditorView
 import com.droidninja.imageeditengine.views.VerticalSlideColorPicker
 import com.droidninja.imageeditengine.views.ViewTouchListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.NullPointerException
 
 class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEditorFragment.OnFragmentInteractionListener, CropFragment.OnFragmentInteractionListener, ViewTouchListener {
     private var cropRect = Rect()
@@ -101,6 +103,14 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
             pagerAdapter = EditorViewPagerAdapter(this, imagePath)
             viewPager.adapter = pagerAdapter
 
+            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                    super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                    currentMode = 4
+                    onModeChanged(currentMode)
+                }
+            })
+
         }
     }
 
@@ -175,8 +185,6 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
         } else {
             stickerButton!!.background = null
             photoEditorView().hideStickers()
-            //photoEditorView().hidePaintView()
-            // viewPager.isUserInputEnabled = true
         }
     }
 
@@ -213,6 +221,7 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
 //        var newPath = photoEditorFragment.getThePath()
 
         //Log.i("onDoneClicked","$imagePath #########   $newPath")
+        Log.i("ONDONECLICKED", "${EditedPaths.size}")
         if (EditedPaths.size != pagerAdapter.fragmentList.size) {
             EditedPaths.add(imagePath!!)
         }
@@ -318,31 +327,40 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
         } else if (id == R.id.back_iv) {
             onBackPressed()
         } else if (id == R.id.done_btn) {
+            var count = 0
             for (frag in pagerAdapter.fragmentList) {
-                if (frag.selectedFilter != null) {
-                    ApplyFilterTask(object : TaskCallback<Bitmap?> {
-                        override fun onTaskDone(data: Bitmap?) {
-                            if (data != null) {
-                                ProcessingImage(frag.getBitmapCache(data), Utility.getCacheFilePath(view.context),
-                                        object : TaskCallback<String?> {
-                                            override fun onTaskDone(data: String?) {
-                                                frag.mListener!!.onDoneClicked(data)
-                                            }
-                                        }).execute()
-                            }
-                        }
-                    }, Bitmap.createBitmap(frag.mainBitmap!!)).execute(frag.selectedFilter)
+                Log.i("ONDONECLICKED", "$count")
 
-
-                } else {
-                    ProcessingImage(frag.getBitmapCache(frag.mainBitmap), Utility.getCacheFilePath(view.context),
-                            object : TaskCallback<String?> {
-                                override fun onTaskDone(data: String?) {
-                                    frag.mListener!!.onDoneClicked(data)
+                //Log.i("Imageview","${frag.mainImageView.mDisplay}")
+                try {
+                    if (frag.selectedFilter != null) {
+                        ApplyFilterTask(object : TaskCallback<Bitmap?> {
+                            override fun onTaskDone(data: Bitmap?) {
+                                if (data != null) {
+                                    ProcessingImage(frag.getBitmapCache(data), Utility.getCacheFilePath(view.context),
+                                            object : TaskCallback<String?> {
+                                                override fun onTaskDone(data: String?) {
+                                                    frag.mListener!!.onDoneClicked(data)
+                                                }
+                                            }).execute()
                                 }
-                            }).execute()
-                }
+                            }
+                        }, Bitmap.createBitmap(frag.mainBitmap!!)).execute(frag.selectedFilter)
 
+
+                    } else {
+                        ProcessingImage(frag.getBitmapCache(frag.mainBitmap), Utility.getCacheFilePath(view.context),
+                                object : TaskCallback<String?> {
+                                    override fun onTaskDone(data: String?) {
+                                        frag.mListener!!.onDoneClicked(data)
+                                    }
+                                }).execute()
+                    }
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
+                    onDoneClicked(pagerAdapter.list[count])
+                }
+                count++
             }
             if (currentMode != MODE_NONE) {
                 photoEditorFrag().filterLabel!!.alpha = 0f

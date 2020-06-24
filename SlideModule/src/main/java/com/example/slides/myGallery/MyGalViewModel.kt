@@ -31,6 +31,7 @@ class MyGalViewModel(
         _trackerSet.value = false
         getUpdateList = initInsertToDb(database, selectedImageList)
 
+//        Log.i("initViewModel","${getUpdateList.value!!.size}")
 
     }
 
@@ -42,17 +43,21 @@ class MyGalViewModel(
 
         insertToDb(database, selectedImageList)
 
-        return database.posts().toLiveData(20)
+        return database.posts().toLiveData(1)
 
     }
 
     private fun insertToDb(database: MyGalDao, selectedImageList: ImagesPaths?) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                //database.deleteAll()
                 if (selectedImageList != null) {
-                    Log.i("InsertToDB", "$selectedImageList")
-                    for (i in selectedImageList)
+                    Log.i("InsertToDB", "${selectedImageList.size}")
+                    for (i in selectedImageList) {
+                        Log.i("Insetiggg", "$i")
                         database.insert(i)//insert to database on different thread
+                    }
+
                 }
                 //Log.i("MyGalView","${database.posts().toLiveData(100).value}")
                 //send data only after insertion
@@ -65,16 +70,19 @@ class MyGalViewModel(
     fun deleteSelected(database: MyGalDao, list: SelectionTracker<ImagePath>) {//to delete selected images from database
         viewModelScope.launch {
             withContext((Dispatchers.IO)) {
-                for (i in list.selection) {
-                    database.deleteSelected(i)
+                if (list.selection.size() == getUpdateList.value?.size) database.deleteAll()
+                else {
+                    for (i in list.selection) {
+                        database.deleteSelected(i)
+                    }
                 }
                 //then clear selection from tracker
 
 
             }
             list.clearSelection()
-
-            Log.i("updated List size", "${getUpdateList.value?.size}, ${list.hasSelection()}")
+            getUpdateList.value!!.clear()
+            // Log.i("updated List size", "${getUpdateList.value?.size}, ${list.hasSelection()}")
         }
 
     }

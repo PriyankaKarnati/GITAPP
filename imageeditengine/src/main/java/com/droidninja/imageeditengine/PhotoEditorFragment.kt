@@ -5,6 +5,7 @@ package com.droidninja.imageeditengine
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.util.LruCache
@@ -74,9 +75,8 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
     //    protected var currentMode = 4
     var selectedFilter: ImageFilter? = null
     private var originalBitmap: Bitmap? = null
-    private lateinit var viewPager: ViewPager
-    private lateinit var pagerAdapter: EditorViewPagerAdapter
-    private lateinit var imagePath: String
+    lateinit var imagePath: String
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -111,7 +111,7 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
 
     fun setImageBitmap(bitmap: Bitmap?) {
         mainImageView!!.setImageBitmap(bitmap)
-        mainImageView!!.post {
+        mainImageView!!.run {
             Log.i("startefPost", "startedPost")
             photoEditorView!!.setBounds(mainImageView!!.bitmapRect)
             Log.i("endedPost", "endedPost")
@@ -183,6 +183,7 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
 
         if (arguments != null && activity != null && activity!!.intent != null) {
             imagePath = arguments!!.getString(ImageEditor.EXTRA_IMAGE_PATH)!!
+
 
             //mainImageView.post(new Runnable() {
             //  @Override public void run() {
@@ -428,11 +429,10 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
     fun getBitmapCache(bitmap: Bitmap?): Bitmap {
 //        Log.i("TOuchMatrix","${mainImageView!!.imageViewMatrix}")
         val touchMatrix = mainImageView!!.imageViewMatrix
-
         val resultBit = Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(resultBit)
         val data = FloatArray(9)
-        touchMatrix.getValues(data)
+        touchMatrix!!.getValues(data)
         val cal = Matrix3(data)
         val inverseMatrix = cal.inverseMatrix()
         val m = Matrix()
@@ -469,6 +469,7 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
 
             }
         }, Bitmap.createBitmap(mainBitmap!!)).execute(imageFilter)
+
     }
 
 //    protected fun setMode(modes: Int) {

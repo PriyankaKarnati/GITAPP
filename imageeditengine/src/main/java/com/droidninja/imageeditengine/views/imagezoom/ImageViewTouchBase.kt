@@ -46,7 +46,7 @@ abstract class ImageViewTouchBase : AppCompatImageView, IDisposable {
     }
 
     /**
-     * Use this to change the
+     * Use this to change them
      * [ImageViewTouchBase.setDisplayType] of this View
      *
      * @author alessandro
@@ -490,12 +490,13 @@ abstract class ImageViewTouchBase : AppCompatImageView, IDisposable {
      *
      * @return
      */
-    val imageViewMatrix: Matrix
+    val imageViewMatrix
         get() = getImageViewMatrix(mSuppMatrix)
 
     fun getImageViewMatrix(supportMatrix: Matrix?): Matrix {
         mDisplayMatrix.set(mBaseMatrix)
         mDisplayMatrix.postConcat(supportMatrix)
+        Log.i("ImageViewTOuchBase", "$mDisplayMatrix")
         return mDisplayMatrix
     }
 
