@@ -44,14 +44,14 @@ class CropFragment : BaseFragment(), View.OnClickListener {
     }
 
     interface OnFragmentInteractionListener {
-        fun onImageCropped(cropRect: Rect?)
+        fun onImageCropped(cropRect: Rect?, degreesRotated: Int)
         fun onCancelCrop()
     }
 
     override fun initView(view: View?) {
         cropImageView = view!!.findViewById(R.id.image_iv)
         view.findViewById<View>(R.id.cancel_tv).setOnClickListener(this)
-        view.findViewById<View>(R.id.back_iv).setOnClickListener(this)
+        view.findViewById<View>(R.id.back_iv_crop).setOnClickListener(this)
         view.findViewById<View>(R.id.rotate_iv).setOnClickListener(this)
         view.findViewById<View>(R.id.done_tv).setOnClickListener(this)
         if (arguments != null) {
@@ -78,9 +78,9 @@ class CropFragment : BaseFragment(), View.OnClickListener {
 //                            mListener?.onImageCropped(data!!)
 //                        }
 //                    }).execute()
-            mListener?.onImageCropped(cropImageView.getCropRect())
+            mListener?.onImageCropped(cropImageView.getCropRect(), cropImageView.getRotatedDegrees())
 
-        } else if (view.id == R.id.back_iv) {
+        } else if (view.id == R.id.back_iv_crop) {
             activity?.onBackPressed()
         }
     }

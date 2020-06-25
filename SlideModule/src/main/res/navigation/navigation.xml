@@ -5,19 +5,20 @@
     android:id="@+id/navigation"
     app:startDestination="@id/myGalFragment"
     tools:ignore="UnusedNavigation">
+
     <fragment
         android:id="@+id/deviceGalFragment"
         android:name="com.example.slides.deviceGallery.DeviceGalFragment"
         android:label="DeviceGalFragment">
-        <action
-            android:id="@+id/action_deviceGalFragment_to_myGalFragment"
-            app:destination="@id/myGalFragment"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_close_exit"
-            app:popEnterAnim="@anim/fragment_open_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
-            app:popUpTo="@id/myGalFragment"
-            app:popUpToInclusive="true" />
+        <!--        <action-->
+        <!--            android:id="@+id/action_deviceGalFragment_to_myGalFragment"-->
+        <!--            app:destination="@id/myGalFragment"-->
+        <!--            app:enterAnim="@anim/fragment_open_enter"-->
+        <!--            app:exitAnim="@anim/fragment_close_exit"-->
+        <!--            app:popEnterAnim="@anim/fragment_open_enter"-->
+        <!--            app:popExitAnim="@anim/fragment_close_exit"-->
+        <!--            app:popUpTo="@id/myGalFragment"-->
+        <!--            app:popUpToInclusive="true" />-->
         <action
             android:id="@+id/action_deviceGalFragment_to_galViewPager"
             app:destination="@id/galViewPager"

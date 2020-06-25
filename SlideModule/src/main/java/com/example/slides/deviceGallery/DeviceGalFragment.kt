@@ -21,7 +21,6 @@ import androidx.recyclerview.selection.StorageStrategy
 import com.droidninja.imageeditengine.ImageEditor
 import com.example.slides.databinding.FragmentDeviceGalleryBinding
 import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToGalViewPager
-import com.example.slides.deviceGallery.DeviceGalFragmentDirections.actionDeviceGalFragmentToMyGalFragment
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import com.example.slides.myGallery.MyGalPhotoAdapter
@@ -134,6 +133,11 @@ open class DeviceGalFragment : Fragment() {
         tracker!!.onSaveInstanceState(outState)
     }
 
+    fun onBackPressed() {
+        if (tracker!!.hasSelection()) {
+            tracker!!.clearSelection()
+        }
+    }
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
 //        when(requestCode){

@@ -27,6 +27,7 @@ import com.droidninja.imageeditengine.views.PhotoEditorView
 import com.droidninja.imageeditengine.views.VerticalSlideColorPicker
 import com.droidninja.imageeditengine.views.ViewTouchListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.Exception
 import java.lang.NullPointerException
 
 class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEditorFragment.OnFragmentInteractionListener, CropFragment.OnFragmentInteractionListener, ViewTouchListener {
@@ -109,6 +110,7 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
                     currentMode = 4
                     onModeChanged(currentMode)
                 }
+
             })
 
         }
@@ -266,7 +268,7 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
 
     // }
 
-    override fun onImageCropped(cropRect: Rect?) {
+    override fun onImageCropped(cropRect: Rect?, degreesRotated: Int) {
         if (cropRect != null) {
             this.cropRect = cropRect
         }
@@ -275,7 +277,7 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
         val photoEditorFragment = photoEditorFrag()
 
 
-        photoEditorFragment.setImageWithRect(cropRect!!)
+        photoEditorFragment.setImageWithRect(cropRect!!, degreesRotated)
         photoEditorFragment.reset()
 
         //addFragment(this, R.id.fragment_container, )
@@ -286,6 +288,8 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
     override fun onCancelCrop() {
         removeFragment(this,
                 (getFragmentByTag(this, CropFragment::class.java.simpleName) as BaseFragment?)!!)
+        toolbarLayout!!.visibility = View.VISIBLE
+        doneBtn!!.visibility = View.VISIBLE
     }
 
     override fun onBackPressed() {
@@ -340,7 +344,12 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
                                     ProcessingImage(frag.getBitmapCache(data), Utility.getCacheFilePath(view.context),
                                             object : TaskCallback<String?> {
                                                 override fun onTaskDone(data: String?) {
-                                                    frag.mListener!!.onDoneClicked(data)
+                                                    try {
+                                                        Log.i("inside filter task done", "frag count : $count")
+                                                        onDoneClicked(data)
+                                                    } catch (e: Exception) {
+                                                        e.printStackTrace()
+                                                    }
                                                 }
                                             }).execute()
                                 }
@@ -352,12 +361,18 @@ class ImageEditActivity : BaseImageEditActivity(), View.OnClickListener, PhotoEd
                         ProcessingImage(frag.getBitmapCache(frag.mainBitmap), Utility.getCacheFilePath(view.context),
                                 object : TaskCallback<String?> {
                                     override fun onTaskDone(data: String?) {
-                                        frag.mListener!!.onDoneClicked(data)
+                                        try {
+                                            onDoneClicked(data)
+                                        } catch (e: Exception) {
+                                            Log.i("inside task done", "frag count : $count")
+                                            e.printStackTrace()
+                                        }
                                     }
                                 }).execute()
                     }
                 } catch (e: NullPointerException) {
                     e.printStackTrace()
+                    Log.i("when image not inflated", "frag count : $count")
                     onDoneClicked(pagerAdapter.list[count])
                 }
                 count++

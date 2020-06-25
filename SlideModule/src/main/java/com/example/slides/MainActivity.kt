@@ -9,10 +9,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.navigation.findNavController
 import com.droidninja.imageeditengine.ImageEditor
 import com.example.slides.models.ImagePath
 import com.example.slides.models.ImagesPaths
 import com.example.slides.myGallery.MyGalFragment
+import kotlinx.android.synthetic.main.activity_mains.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -78,13 +80,17 @@ class MainActivity : AppCompatActivity() {
     private fun sendToMyGal(paths: ImagesPaths) {
         val bundle = Bundle()
         bundle.putParcelable("DataFromImageEditor", paths)
-        val fragMyGal = MyGalFragment()
-        fragMyGal.arguments = bundle
-        Log.i("sendList", paths.size.toString())
-        val transaction = this.supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.nav_host_fragmentSlide, fragMyGal)
-        transaction.commit()
+
+        val navController = findNavController(R.id.nav_host_fragmentSlide)
+        navController.setGraph(navController.graph, bundle)
+//        val fragMyGal = MyGalFragment()
+//        fragMyGal.arguments = bundle
+//        Log.i("sendList", paths.size.toString())
+//        val transaction = this.supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.nav_host_fragmentSlide, fragMyGal)
+//        transaction.commit()
     }
+
 
 }
 

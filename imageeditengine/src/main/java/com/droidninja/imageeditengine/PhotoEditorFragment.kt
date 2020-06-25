@@ -4,50 +4,36 @@ package com.droidninja.imageeditengine
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
-import android.media.Image
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.util.LruCache
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.droidninja.imageeditengine.AnimationHelper.animate
 import com.droidninja.imageeditengine.adapters.FilterImageAdapter
 import com.droidninja.imageeditengine.adapters.FilterImageAdapter.FilterImageAdapterListener
 import com.droidninja.imageeditengine.filter.ApplyFilterTask
 import com.droidninja.imageeditengine.filter.GetFiltersTask
 import com.droidninja.imageeditengine.filter.ProcessingImage
-import com.droidninja.imageeditengine.filter.ProcessingImageBeforeCrop
 import com.droidninja.imageeditengine.model.ImageFilter
 import com.droidninja.imageeditengine.utils.FilterHelper
 import com.droidninja.imageeditengine.utils.FilterTouchListener
 import com.droidninja.imageeditengine.utils.Matrix3
 import com.droidninja.imageeditengine.utils.TaskCallback
 import com.droidninja.imageeditengine.utils.Utility.getCacheFilePath
-import com.droidninja.imageeditengine.utils.Utility.tintDrawable
 import com.droidninja.imageeditengine.views.PhotoEditorView
-import com.droidninja.imageeditengine.views.VerticalSlideColorPicker
-import com.droidninja.imageeditengine.views.VerticalSlideColorPicker.OnColorChangeListener
-import com.droidninja.imageeditengine.views.ViewTouchListener
 import com.droidninja.imageeditengine.views.imagezoom.ImageViewTouch
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_photo_editor.*
-import kotlinx.android.synthetic.main.photo_editor_view.*
-import kotlinx.android.synthetic.main.photo_editor_view.view.*
-import kotlinx.coroutines.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
     var mainImageView: ImageViewTouch? = null
@@ -118,19 +104,27 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
         }
     }
 
-    fun setImageWithRect(rect: Rect) {
+    //var degreesToRotate = 0
+    fun setImageWithRect(rect: Rect, degreesRotated: Int) {
 
-
+        // degreesToRotate = degreesRotated
         // Log.i("SetImaggeWithRect","${mainBitmap!!.width}")
         //  if(selectedFilter!=null) {
         mainBitmap = getScaledBitmap(getCroppedBitmap(getBitmapCache(mainBitmap!!), rect))
         if (selectedFilter != null) selectedFilter = null
+        if (degreesRotated != 0) {
+            val mat = Matrix()
+            mat.postRotate(degreesRotated.toFloat()) //degree how much you rotate i rotate 270
+
+            val rotatedBitmap = Bitmap.createBitmap(mainBitmap!!, 0, 0, mainBitmap!!.width, mainBitmap!!.height, mat, true)
+            mainBitmap = rotatedBitmap
+        }
         setImageBitmap(mainBitmap)
         GetFiltersTask(object : TaskCallback<ArrayList<ImageFilter?>?> {
             override fun onTaskDone(data: ArrayList<ImageFilter?>?) {
                 val filterImageAdapter = filterRecylerview!!.adapter as? FilterImageAdapter
                 filterImageAdapter!!.setData(data)
-                filterImageAdapter!!.notifyDataSetChanged()
+                filterImageAdapter.notifyDataSetChanged()
             }
         }, mainBitmap!!).execute()
 
@@ -280,6 +274,7 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
             photoEditorView!!.setTextColor((activity as ImageEditActivity).colorPickerView!!.getDefaultColor())
             if (intent.getBooleanExtra(ImageEditor.EXTRA_HAS_FILTERS, false)) {
                 filterLayout!!.post {
+
                     filterLayoutHeight = filterLayout!!.height
                     filterLayout!!.translationY = filterLayoutHeight.toFloat()
                     photoEditorView!!.setOnTouchListener(
@@ -288,6 +283,22 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
                 }
                 val filterHelper = FilterHelper()
                 filterRecylerview!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                filterRecylerview!!.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+                    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+
+                    }
+
+                    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                        when (e.action) {
+                            MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
+                        }
+                        return false
+                    }
+
+                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+
+                    }
+                })
                 val filterImageAdapter = FilterImageAdapter(filterHelper.getFilters(), this)
                 filterRecylerview!!.adapter = filterImageAdapter
             }
@@ -432,7 +443,8 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
         val resultBit = Bitmap.createBitmap(bitmap!!).copy(Bitmap.Config.ARGB_8888, true)
         val canvas = Canvas(resultBit)
         val data = FloatArray(9)
-        touchMatrix!!.getValues(data)
+        touchMatrix.getValues(data)
+        //touchMatrix.postRotate(degreesToRotate.toFloat())
         val cal = Matrix3(data)
         val inverseMatrix = cal.inverseMatrix()
         val m = Matrix()
@@ -446,6 +458,10 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
         canvas.save()
         canvas.translate(dx.toFloat(), dy.toFloat())
         canvas.scale(scaleX, scaleY)
+//        if(degreesToRotate!=0){
+//            Log.i("canvasRotate","$degreesToRotate")
+//            canvas.rotate(degreesToRotate.toFloat(),dx.toFloat(),dy.toFloat())
+//        }
 //        photoEditorView!!.isDrawingCacheEnabled = true
 //        if (photoEditorView!!.drawingCache != null) {
 //            canvas.drawBitmap(photoEditorView!!.drawingCache, 0f, 0f, null)
@@ -557,28 +573,4 @@ open class PhotoEditorFragment : BaseFragment(), FilterImageAdapterListener {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-//        if (selectedFilter != null) {
-//            ApplyFilterTask(object : TaskCallback<Bitmap?> {
-//                override fun onTaskDone(data: Bitmap?) {
-//                    if (data != null) {
-//                        ProcessingImage(getBitmapCache(data), getCacheFilePath(view!!.context),
-//                                object : TaskCallback<String?> {
-//                                    override fun onTaskDone(data: String?) {
-//                                        mListener!!.onDoneClicked(data)
-//                                    }
-//                                }).execute()
-//                    }
-//                }
-//            }, Bitmap.createBitmap(mainBitmap!!)).execute(selectedFilter)
-//        } else {
-//            ProcessingImage(getBitmapCache(mainBitmap), getCacheFilePath(view!!.context),
-//                    object : TaskCallback<String?> {
-//                        override fun onTaskDone(data: String?) {
-//                            mListener!!.onDoneClicked(data)
-//                        }
-//                    }).execute()
-//        }
-    }
 }

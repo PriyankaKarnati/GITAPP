@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.droidninja.imageeditengine.R
 import com.droidninja.imageeditengine.model.ImageFilter
 import com.droidninja.imageeditengine.utils.Utility
+import java.lang.Exception
 import java.util.*
 
 class FilterImageAdapter(list: ArrayList<ImageFilter?>?, listener: FilterImageAdapterListener?) : RecyclerView.Adapter<FilterImageAdapter.ViewHolder?>() {
@@ -37,7 +38,12 @@ class FilterImageAdapter(list: ArrayList<ImageFilter?>?, listener: FilterImageAd
         var container: FrameLayout? = v!!.findViewById(R.id.container)
 
         init {
-            container!!.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+            try {
+                container!!.layoutTransition.setAnimateParentHierarchy(false)
+                container!!.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -53,8 +59,12 @@ class FilterImageAdapter(list: ArrayList<ImageFilter?>?, listener: FilterImageAd
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent!!.context)
+
         val v = inflater.inflate(R.layout.item_filter_layout, parent, false)
         // set the view's size, margins, paddings and layout parameters
+//        parent.layoutTransition.setAnimateParentHierarchy(false)
+//        val viewGroup = v.findViewById<ViewGroup>(R.id.filter_container)
+//        viewGroup.layoutTransition.setAnimateParentHierarchy(false)
         return ViewHolder(v)
     }
 

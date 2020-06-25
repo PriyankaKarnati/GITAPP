@@ -81,7 +81,7 @@ class MyGalViewModel(
 
             }
             list.clearSelection()
-            getUpdateList.value!!.clear()
+            //getUpdateList.value!!.clear()
             // Log.i("updated List size", "${getUpdateList.value?.size}, ${list.hasSelection()}")
         }
 
